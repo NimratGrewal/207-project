@@ -1,25 +1,20 @@
 # 207-project
 
-On MarkUs for the "week3project" assignment (to appear after labs on Monday), your team will submit the URL to a public GitHub repo. It can be a new repo or you can start from the repo forked from the lab activity and just delete any files that aren’t relevant. Your repo needs to contain:
+- Problem Domain: 
+Want to create a music-based recommendation application that will generate playlists for the User based on their genre & mood input data.
 
-A readme.md file which must include:
-a description of the problem domain your team is tentatively wanting to focus on in the project. (e.g., trivia, finance, real estate, etc…)
-a brief, high-level description of what kind of application your team is thinking of developing.
-This is mostly just so we can give you some initial feedback on whether your team might want to reconsider your project direction.
-a link to the documentation for an API your team can use related to the domain.
-a screenshot of using a tool to try out the API (like https://www.postman.com/ Links to an external site. or https://hoppscotch.io/ Links to an external site. Links to an external site.)
-example output of running your Java code (see below).
-a list of any technical problems blocking progress (if any)
-please don't hesitate to ask such questions on Piazza too of course.
-Java code:
-A minimal example of calling the API from Java.
-The output of the program should indicate the result of the request.
-Tools like those above will generate code snippets for you, as will some API documentation pages. You can also refer to the code from the Grade API lab activity for examples using OkHttp.
-All of your team members as collaborators for the repo.
-Under settings, you can add collaborators.
-Evaluation:
-Your team is being assessed on:
-Whether you have all required elements listed above.
-The overall presentation of the information.
-Your team is not being assessed on:
-Whether you have gotten sample calls to the API fully working. Depending on the API, this might be more involved, so we just need to see a clear attempt by your team. Still include your code and screenshots of what you have attempted so far to earn credit.
+- What kind of application we're developing:
+Users choose from list of genres, and moods (and potentially artists and dates as well) and the application will use that selection of filters to generate customized playlists for the user.
+This application's main purpose is to recommend playlists based on user taste & mood.
+
+-  Link to the documentation for an API:
+Link to Spotify API: https://developer.spotify.com/documentation/web-api
+
+- Screenshot of using a tool to try out the API:=
+In this image, we use Postman to generate the desired JSON output using the tracks endpoint from the Spotify API (we used the ID of the song as a parameter to generate this output).
+This outputs generates information about "Cut to the Feeling" by Carly Rae Jepsen. 
+  
+<img width="1680" alt="Screen Shot 2023-09-27 at 10 53 05 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/22f1903c-6dc3-41c2-aca4-4a192552f0bf">
+
+- Technical Problems Documentation: 
+
