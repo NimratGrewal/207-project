@@ -10,7 +10,7 @@ This application's main purpose is to recommend playlists based on user taste & 
 -  Link to the documentation for an API:
 Link to Spotify API: https://developer.spotify.com/documentation/web-api
 
-- Screenshot of using a tool to try out the API:=
+- Screenshot of using a tool to try out the API:
 In this image, we use Postman to generate the desired JSON output using the tracks endpoint from the Spotify API (we used the ID of the song as a parameter to generate this output).
 This outputs generates information about "Cut to the Feeling" by Carly Rae Jepsen. 
   
