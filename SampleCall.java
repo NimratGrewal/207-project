@@ -33,5 +33,31 @@ public class SampleCall {
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
+
+        String trackId = "11dFghVXANMlKmJXsNCbNl";
+
+        request = new Request.Builder()
+                .url(String.format(String.format("https://api.spotify.com/v1/recommendations?seed_tracks=%s&limit=10", trackId)))
+                .get()
+                .addHeader("Authorization", String.format("Bearer %s", accessToken))
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject responseBody = new JSONObject(response.body().string());
+            JSONArray trackObjects = responseBody.getJSONArray("tracks");
+            ArrayList<String> tracks = new ArrayList<>();
+            for (int i = 0; i < trackObjects.length(); i++) {
+                StringBuilder trackInfo = new StringBuilder(trackObjects.getJSONObject(i).getString("name") + " by ");
+                for (int j = 0; j < trackObjects.getJSONObject(i).getJSONArray("artists").length(); j++) {
+                    trackInfo.append(trackObjects.getJSONObject(i).getJSONArray("artists").getJSONObject(j).getString("name"));
+                }
+                tracks.add(trackInfo.toString());
+            }
+            System.out.println(tracks);
+
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
