@@ -13,8 +13,8 @@ Link to Spotify API: https://developer.spotify.com/documentation/web-api
 - Screenshot of using a tool to try out the API:
 In this image, we use Postman to generate the desired JSON output using the tracks endpoint from the Spotify API (we used the ID of the song as a parameter to generate this output).
 This outputs generates information about "Cut to the Feeling" by Carly Rae Jepsen. 
-  
-<img width="1680" alt="Screen Shot 2023-09-27 at 10 53 05 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/22f1903c-6dc3-41c2-aca4-4a192552f0bf">
+
+<img width="1680" alt="Screen Shot 2023-09-27 at 10 53 05 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/9c72908a-38b7-4a88-9928-c8b15152a8d0">
 
 - Result of API call in Java:
 ![readme_list_of_songs](https://github.com/NimratGrewal/207-project/assets/85083456/76d12420-1a22-4e51-ac6d-43267a42c40c)
