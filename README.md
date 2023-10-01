@@ -17,7 +17,8 @@ This outputs generates information about "Cut to the Feeling" by Carly Rae Jepse
 <img width="1680" alt="Screen Shot 2023-09-27 at 10 53 05 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/22f1903c-6dc3-41c2-aca4-4a192552f0bf">
 
 - Result of API call in Java:
-![img.png](img.png)
+![readme_list_of_songs](https://github.com/NimratGrewal/207-project/assets/85083456/76d12420-1a22-4e51-ac6d-43267a42c40c)
+
 For our API call, we ran a request that gave us 10 songs which were recommended based upon the song "Cut to the Feeling"
 by Carly Rae Jepsen. The request returns songs based upon similarity to the chosen input song(s), and is returned in the
 format of a list.
