@@ -17,7 +17,9 @@ This outputs generates information about "Cut to the Feeling" by Carly Rae Jepse
 <img width="1680" alt="Screen Shot 2023-09-27 at 10 53 05 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/22f1903c-6dc3-41c2-aca4-4a192552f0bf">
 
 - Result of API call in Java:
-  
-<img width="1015" alt="Screen Shot 2023-09-30 at 11 54 25 AM" src="https://github.com/NimratGrewal/207-project/assets/114554275/a648e0fd-636f-4288-8041-0e1871296249">
+![img.png](img.png)
+For our API call, we ran a request that gave us 10 songs which were recommended based upon the song "Cut to the Feeling"
+by Carly Rae Jepsen. The request returns songs based upon similarity to the chosen input song(s), and is returned in the
+format of a list.
 
-Running the request results in a status code 200, which means the API call is successfull. 
+
