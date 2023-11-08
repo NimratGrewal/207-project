@@ -1,26 +1,64 @@
 # 207-project
 
-- Problem Domain: 
-Want to create a music-based recommendation application that will generate playlists for the User based on their genre & mood input data.
+### Summary of Project Domain: Social/Music
 
-- What kind of application we're developing:
-Users choose from list of genres, and moods (and potentially artists and dates as well) and the application will use that selection of filters to generate customized playlists for the user.
-This application's main purpose is to recommend playlists based on user taste & mood.
+### API: Spotify
 
--  Link to the documentation for an API:
-Link to Spotify API: https://developer.spotify.com/documentation/web-api
+#### Our application does the following: 
 
-- Screenshot of using a tool to try out the API:
-In this image, we use Postman to generate the desired JSON output using the tracks endpoint from the Spotify API (we used the ID of the song as a parameter to generate this output).
-This outputs generates information about "Cut to the Feeling" by Carly Rae Jepsen. 
+- Users get a daily prompt, to which they can select a song as a response!
+- For example, let's say the daily prompt for today is: "What is your go-to Christmas song?". The user will be able to answer this with a song of their choice. 
+- Users can also post their response for their friends to view and like
+- In addition, users can also listen to their songs on the app itself!
 
-<img width="1680" alt="Screen Shot 2023-09-27 at 10 53 05 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/9c72908a-38b7-4a88-9928-c8b15152a8d0">
+### Overview of Project Specifications: 
 
-- Result of API call in Java:
-<img width="1729" alt="API Call In Java" src="https://github.com/NimratGrewal/207-project/assets/85083456/1e1c918d-eb59-4abb-be40-2291cba5455e">
+#### Users will have the ability to: 
 
-For our API call, we ran a request that gave us 10 songs which were recommended based upon the song "Cut to the Feeling"
-by Carly Rae Jepsen. The request returns songs based upon similarity to the chosen input song(s), and is returned in the
-format of a list.
+- sign up/log in
+- respond to prompts that are sent daily with a song of choice
+- view their responses + response history
+- delete responses to prompts (or prompt-response pairs)
+- play short intervals of songs 
+
+### User Stories: 
+
+- Main User Story: User gets a Prompt on the Intro page > They will select a Song of choice to the Prompt > Then the User will be able to view that response, and their previous responses on their Main Page > They can also post the Response through their Main Page 
+
+### Entities: 
+
+- User
+- Prompt
+- Response
+- Song
+
+### UI Details: 
+
+- Each action performed in the UI (button, drop-down, pop-up etc) will have a Controller/Interactor/Presenter use case interaction
+- Here is the design of our UI that will highlight some CA code we will have: 
+- {Insert UI pic} 
+
+### Packaging:
+
+- {Insert some information on how we structured the packaging of our code - not too long ... a few lines} 
+
+
+### Further Steps: 
+
+#### If time permits, we would like to add the following features in our application: 
+
+- Multi-user Interactions: view Friends responses; like their responses; see response history; add/remove friends; view likes etc
+
+
+
+
+
+
+
+
+
+
+
+
 
 
