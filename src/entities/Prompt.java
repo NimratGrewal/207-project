@@ -1,4 +1,5 @@
 package entities;
+import java.util.Map;
 import java.util.UUID;
 import java.util.HashMap;
 
@@ -9,12 +10,12 @@ public class Prompt {
 
     private boolean isActive;
 
-    private HashMap <UUID, Response> responses;
+    private HashMap<UUID, Response> responses;
     public Prompt(String promptQuestion) {
         this.promptQuestion = promptQuestion;
         this.promptid = UUID.randomUUID();
         this.isActive = false;
-        this.responses = new HashMap<UUID, Response>();
+        this.responses = new HashMap<>();
     }
 
     public UUID getPromptId() {
