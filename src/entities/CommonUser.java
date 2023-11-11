@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class CommonUser implements User {
 
@@ -19,10 +18,10 @@ public class CommonUser implements User {
      * @param history
      */
 
-    public CommonUser(String username, String password, HashMap<Prompt, Response> history) {
+    public CommonUser(String username, String password) {
         this.username = username;
         this.password = password;
-        this.history = history;
+        this.history = new HashMap<>();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class CommonUser implements User {
     }
 
     @Override
-    public Map<Prompt, Response> getHistory() {
+    public HashMap<Prompt, Response> getHistory() {
         return history;
     }
 
