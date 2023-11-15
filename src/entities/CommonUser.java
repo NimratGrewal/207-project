@@ -1,10 +1,13 @@
 package entities;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class CommonUser implements User {
 
     private final String username;
+
+    private final UUID userId;
 
     private final String password;
     private final HashMap<Prompt, Response> history;
@@ -21,6 +24,7 @@ public class CommonUser implements User {
     public CommonUser(String username, String password) {
         this.username = username;
         this.password = password;
+        this.userId = UUID.randomUUID();
         this.history = new HashMap<>();
     }
 
@@ -33,6 +37,9 @@ public class CommonUser implements User {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public UUID getUserId() { return userId; }
 
     @Override
     public HashMap<Prompt, Response> getHistory() {
