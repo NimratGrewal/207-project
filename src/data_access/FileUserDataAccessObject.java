@@ -1,20 +1,20 @@
 package data_access;
 
+import entities.Prompt;
+import entities.Response;
 import entities.User;
 import entities.UserFactory;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FileUserDataAccessObject {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
 
-    private final Map<String, User> accounts = new HashMap<>();
+    private final Map<UUID, User> accounts = new LinkedHashMap<>();
 
     private UserFactory userFactory;
 
@@ -22,7 +22,7 @@ public class FileUserDataAccessObject {
         this.userFactory = userFactory;
 
         csvFile = new File(csvPath);
-        headers.put("userID", 0);
+        headers.put("userId", 0);
         headers.put("username", 1);
         headers.put("password", 2);
         headers.put("creation_time", 3);
@@ -36,34 +36,56 @@ public class FileUserDataAccessObject {
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
 
-                assert header.equals("userID,username,password,creation_time,prompts,responses");
+                assert header.equals("userId,username,password,creation_time,prompts,responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
                     String[] col = row.split(",");
+                    UUID userId = UUID.fromString(String.valueOf(col[headers.get("userId")]));
                     String username = String.valueOf(col[headers.get("username")]);
                     String password = String.valueOf(col[headers.get("password")]);
                     String creationTimeText = String.valueOf(col[headers.get("creation_time")]);
                     String promptsText = String.valueOf(col[headers.get("prompts")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
                     LocalDateTime ldt = LocalDateTime.parse(creationTimeText);
-                    String[] prompts = promptsText.split(";");
-                    //create prompts
-                    String[] responses = responsesText.split(";");
-                    //api
-                    User user = userFactory.create(username, password, ldt);
-                    accounts.put(username, user);
+                    String[] promptIds = promptsText.split(";");
+                    //FilePromptDataAccessObject needs a getPromptById method
+                    List<Prompt> prompts = new ArrayList<>();
+                    for (String promptID: promptIds) {
+                    }
+                    String[] responseIDs = responsesText.split(";");
+                    //FileResponsesDataAccessObject needs a getResponseById method
+                    List<Prompt> responses = new ArrayList<>();
+                    for (String responseID: responseIDs) {
+
+                    }
+                    User user = userFactory.create(userId, username, password, ldt);
+                    accounts.put(userId, user);
                 }
             }
         }
     }
 
+    /**
+     * Save a new User to accounts
+     * @param user The user to be saved
+     */
+    @Override
+    //TODO: add save method to UserSignUpDataAccessInterface
     public void save(User user) {
-        //add id field + getter in User!!
-        accounts.put(user.getUsername(), user);
+        accounts.put(user.getUserId(), user);
         this.save();
     }
 
+    @Override
+    public User get(UUID userId) {
+        return accounts.get(userId);
+    }
+
+
+    /**
+     * Save the current state of this DataAccessObject in the data file
+     */
     private void save() {
         BufferedWriter writer;
         try {
@@ -72,12 +94,24 @@ public class FileUserDataAccessObject {
             writer.newLine();
 
             for (User user : accounts.values()) {
-                String line = "%s,%s,%s".formatted(
-                        user.getUsername(), user.getPassword(), user.getCreationTime());
+                StringBuilder prompts = new StringBuilder();
+                for (Prompt prompt : user.getHistory().keySet()) {
+                    prompts.append(prompt.getPromptId()).append(";");
+                }
+                String promptsString = prompts.toString();
+
+                StringBuilder responses = new StringBuilder();
+                for (Response response : user.getHistory().values()) {
+                    //TODO: create getResponseId method in Prompt class
+                    responses.append(response.getResponseId()).append(';');
+                }
+                String responseString = responses.toString();
+                String line = "%s,%s,%s,%s,%s".formatted(
+                        //TODO: create getCreationTime method in User class + interface
+                        user.getUsername(), user.getPassword(), user.getCreationTime(), promptsString, responseString);
                 writer.write(line);
                 writer.newLine();
             }
-
             writer.close();
 
         } catch (IOException e) {
@@ -92,7 +126,8 @@ public class FileUserDataAccessObject {
      * @return whether a user exists with username identifier
      */
     @Override
-    public boolean existsByName(String identifier) {
+    //TODO: add existsByName method to UserSignUpDataAccessInterface
+    public boolean existsByName(UUID identifier) {
         return accounts.containsKey(identifier);
     }
 
