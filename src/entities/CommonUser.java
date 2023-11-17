@@ -10,7 +10,7 @@ public class CommonUser implements User {
     private final UUID userId;
 
     private final String password;
-    private final HashMap<Prompt, Response> history;
+    private final HashMap<UUID, Response> history;
 
 
     /**
@@ -18,7 +18,6 @@ public class CommonUser implements User {
      *
      * @param username
      * @param password
-     * @param history
      */
 
     public CommonUser(String username, String password) {
@@ -42,20 +41,20 @@ public class CommonUser implements User {
     public UUID getUserId() { return userId; }
 
     @Override
-    public HashMap<Prompt, Response> getHistory() {
+    public HashMap<UUID, Response> getHistory() {
         return history;
     }
 
     @Override
-    public Response getResponse(Prompt prompt) {
-        return history.get(prompt);
+    public Response getResponse(UUID promptId) {
+        return history.get(promptId);
     }
 
     @Override
-    public void setResponse(Prompt prompt, Response response) {
+    public void setResponse(UUID promptId, Response response) {
         // if this prompt is not yet in history:
-        if (!history.containsKey(prompt)) {
-            this.history.put(prompt, response);
+        if (!history.containsKey(promptId)) {
+            this.history.put(promptId, response);
         } else {
             // trying to set a response to a prompt that has an answer;
             // raise some type of error here;
@@ -63,14 +62,14 @@ public class CommonUser implements User {
     }
 
     @Override
-    public void deleteResponse(Prompt prompt) {
-        history.remove(prompt);
+    public void deleteResponse(UUID promptId) {
+        history.remove(promptId);
     }
 
     @Override
-    public void changeResponse(Prompt prompt, Response response) {
-        if (history.containsKey(prompt)) {
-            history.replace(prompt, response);
+    public void changeResponse(UUID promptId, Response response) {
+        if (history.containsKey(promptId)) {
+            history.replace(promptId, response);
         }
     }
 }

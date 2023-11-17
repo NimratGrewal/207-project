@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 
 public interface User {
@@ -10,14 +10,14 @@ public interface User {
 
     UUID getUserId();
 
-    Map<Prompt, Response> getHistory();
+    HashMap<UUID, Response> getHistory();
 
-    Response getResponse(Prompt prompt);
+    Response getResponse(UUID promptId);
 
-    void setResponse(Prompt prompt, Response response);
+    void setResponse(UUID promptId, Response response);
 
-    void deleteResponse(Prompt prompt);
+    void deleteResponse(UUID promptId);
 
-    void changeResponse(Prompt prompt, Response response);
+    void changeResponse(UUID promptId, Response response);
 
 }
