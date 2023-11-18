@@ -1,5 +1,6 @@
 package entities;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -9,6 +10,8 @@ public interface User {
     String getPassword();
 
     UUID getUserId();
+
+    LocalDateTime getCreationTime();
 
     HashMap<UUID, Response> getHistory();
 

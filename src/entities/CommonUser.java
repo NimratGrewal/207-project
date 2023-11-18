@@ -1,35 +1,46 @@
 package entities;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class CommonUser implements User {
-
     private final String username;
-
     private final UUID userId;
-
     private final String password;
     private final HashMap<UUID, Response> history;
+    private final LocalDateTime creationTime;
 
 
     /**
      * Requires: password is valid.
-     *
      * @param username
      * @param password
+     * @param userId
      */
 
-    public CommonUser(String username, String password) {
+    public CommonUser(String username, String password, LocalDateTime creationTime) {
         this.username = username;
         this.password = password;
         this.userId = UUID.randomUUID();
         this.history = new HashMap<>();
+        this.creationTime = creationTime;
+    }
+
+    public CommonUser(UUID userId, String username, String password, LocalDateTime creationTime) {
+        this.userId = userId;
+        this.password = password;
+        this.username = username;
+        this.creationTime = creationTime;
     }
 
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
     @Override
