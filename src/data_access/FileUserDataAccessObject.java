@@ -1,9 +1,6 @@
 package data_access;
 
-import entities.Prompt;
-import entities.Response;
-import entities.User;
-import entities.UserFactory;
+import entities.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -16,6 +13,8 @@ public class FileUserDataAccessObject {
 
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
 
+    private final Map<User, List<Response>> responses = new LinkedHashMap<>();
+
     private UserFactory userFactory;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory) throws IOException {
@@ -26,8 +25,7 @@ public class FileUserDataAccessObject {
         headers.put("username", 1);
         headers.put("password", 2);
         headers.put("creation_time", 3);
-        headers.put("prompts",4);
-        headers.put("responses",5);
+        headers.put("responses",4);
 
         if (csvFile.length() == 0) {
             save();
@@ -36,7 +34,7 @@ public class FileUserDataAccessObject {
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
 
-                assert header.equals("userId,username,password,creation_time,prompts,responses");
+                assert header.equals("userId,username,password,creation_time,responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
@@ -45,22 +43,27 @@ public class FileUserDataAccessObject {
                     String username = String.valueOf(col[headers.get("username")]);
                     String password = String.valueOf(col[headers.get("password")]);
                     String creationTimeText = String.valueOf(col[headers.get("creation_time")]);
-                    String promptsText = String.valueOf(col[headers.get("prompts")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
                     LocalDateTime ldt = LocalDateTime.parse(creationTimeText);
-                    String[] promptIds = promptsText.split(";");
-                    //FilePromptDataAccessObject needs a getPromptById method
-                    List<Prompt> prompts = new ArrayList<>();
-                    for (String promptID: promptIds) {
-                    }
-                    String[] responseIDs = responsesText.split(";");
-                    //FileResponsesDataAccessObject needs a getResponseById method
-                    List<Prompt> responses = new ArrayList<>();
-                    for (String responseID: responseIDs) {
 
-                    }
-                    User user = userFactory.create(userId, username, password, ldt);
+                    User user = this.userFactory.create(userId, username, password, ldt);
                     accounts.put(userId, user);
+
+                    String[] responseInfo = responsesText.split(";");
+                    List<Prompt> responses = new ArrayList<>();
+                    for (String responseStr: responseInfo) {
+                        String[] responseData = responseStr.split(":");
+                        UUID responseID = UUID.fromString(responseData[0]);
+                        UUID promptID = UUID.fromString(responseData[1]);
+                        String songID = responseData[2];
+
+                        Response response = new Response(responseID, promptID, user, songID);
+                        if (!this.responses.containsKey(user)){
+                            this.responses.put(user, new ArrayList<>());
+                        }
+                        this.responses.get(user).add(response);
+                        user.setResponse(promptID, response);
+                    }
                 }
             }
         }
@@ -75,6 +78,12 @@ public class FileUserDataAccessObject {
     public void save(User user) {
         accounts.put(user.getUserId(), user);
         this.save();
+    }
+
+    @Override
+    //TODO: add save method to SaveResponse
+    public void save(Response response) {
+        responses.put(response.getUser(), response);
     }
 
     @Override
@@ -94,21 +103,18 @@ public class FileUserDataAccessObject {
             writer.newLine();
 
             for (User user : accounts.values()) {
-                StringBuilder prompts = new StringBuilder();
-                for (Prompt prompt : user.getHistory().keySet()) {
-                    prompts.append(prompt.getPromptId()).append(";");
-                }
-                String promptsString = prompts.toString();
-
                 StringBuilder responses = new StringBuilder();
                 for (Response response : user.getHistory().values()) {
-                    //TODO: create getResponseId method in Prompt class
-                    responses.append(response.getResponseId()).append(';');
+                    //TODO: create getResponseId method in Response class
+                    String responseText = "%s:%s:%s".formatted(
+                            response.getResponseId(), response.getPromptId(), response.getSongId());
+                    responses.append(responseText).append(';');
                 }
+                responses.deleteCharAt(responses.length() - 1);
                 String responseString = responses.toString();
-                String line = "%s,%s,%s,%s,%s".formatted(
+                String line = "%s,%s,%s,%s".formatted(
                         //TODO: create getCreationTime method in User class + interface
-                        user.getUsername(), user.getPassword(), user.getCreationTime(), promptsString, responseString);
+                        user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
                 writer.write(line);
                 writer.newLine();
             }
@@ -126,9 +132,8 @@ public class FileUserDataAccessObject {
      * @return whether a user exists with username identifier
      */
     @Override
-    //TODO: add existsByName method to UserSignUpDataAccessInterface
-    public boolean existsByName(UUID identifier) {
+    //TODO: add existsById method to UserSignUpDataAccessInterface??
+    public boolean existsById(UUID identifier) {
         return accounts.containsKey(identifier);
     }
-
 }
