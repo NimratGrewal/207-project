@@ -1,3 +1,4 @@
+import entities.Song;
 import entities.SpotifyAPICaller;
 
 public class SampleCall {
@@ -8,5 +9,8 @@ public class SampleCall {
     public static void main(String[] args) {
         SpotifyAPICaller caller = new SpotifyAPICaller(CLIENT_ID, CLIENT_SECRET);
         System.out.println(caller.getTrack("11dFghVXANMlKmJXsNCbNl").getName());
+        for (Song s: caller.searchForTracks("doughnut")) {
+            System.out.println(s.getName());
+        }
     }
 }
