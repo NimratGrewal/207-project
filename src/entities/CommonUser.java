@@ -32,6 +32,7 @@ public class CommonUser implements User {
         this.password = password;
         this.username = username;
         this.creationTime = creationTime;
+        this.history = new HashMap<>();
     }
 
     @Override
