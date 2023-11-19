@@ -17,7 +17,7 @@ public class FileUserDataAccessObject {
 
     private UserFactory userFactory;
 
-    public FileUserDataAccessObject(String csvPath, UserFactory userFactory) throws IOException {
+    public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
 
         csvFile = new File(csvPath);
@@ -56,7 +56,7 @@ public class FileUserDataAccessObject {
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user, songID);
+                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -97,15 +97,14 @@ public class FileUserDataAccessObject {
             writer.newLine();
 
             for (User user : accounts.values()) {
-                StringBuilder responses = new StringBuilder();
+                List<String> responses = new ArrayList<>();
                 for (Response response : user.getHistory().values()) {
                     //TODO: create getResponseId method in Response class
                     String responseText = "%s:%s:%s".formatted(
                             response.getResponseId(), response.getPromptId(), response.getSongId());
-                    responses.append(responseText).append(';');
+                    responses.add(responseText);
                 }
-                responses.deleteCharAt(responses.length() - 1);
-                String responseString = responses.toString();
+                String responseString = String.join(";",responses);
                 String line = "%s,%s,%s,%s".formatted(
                         //TODO: create getCreationTime method in User class + interface
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
