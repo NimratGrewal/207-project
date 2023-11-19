@@ -1,6 +1,5 @@
 package entities;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class Song {
@@ -8,23 +7,20 @@ public class Song {
     private final String name;
     private final List<String> artists;
     private final String album;
-    private final LocalDate releaseDate;
 
     /**
      * Creates an instance of Song
      *
-     * @param songId the Spotify ID of the song
-     * @param name the title of the song
+     * @param songId  the Spotify ID of the song
+     * @param name    the title of the song
      * @param artists the performing artists on the song
-     * @param album the album on which the song appears
-     * @param releaseDate the release date of the album the song is on
+     * @param album   the album on which the song appears
      */
-    public Song(String songId, String name, List<String> artists, String album, LocalDate releaseDate) {
+    public Song(String songId, String name, List<String> artists, String album) {
         this.songId = songId;
         this.name = name;
         this.artists = artists;
         this.album = album;
-        this.releaseDate = releaseDate;
     }
 
     /**
@@ -57,13 +53,5 @@ public class Song {
      */
     public String getAlbum() {
         return album;
-    }
-
-    /**
-     *
-     * @return release date of this song
-     */
-    public LocalDate getReleaseDate() {
-        return releaseDate;
     }
 }

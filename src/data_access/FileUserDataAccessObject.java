@@ -50,7 +50,6 @@ public class FileUserDataAccessObject {
                     accounts.put(userId, user);
 
                     String[] responseInfo = responsesText.split(";");
-                    List<Prompt> responses = new ArrayList<>();
                     for (String responseStr: responseInfo) {
                         String[] responseData = responseStr.split(":");
                         UUID responseID = UUID.fromString(responseData[0]);
@@ -73,20 +72,15 @@ public class FileUserDataAccessObject {
      * Save a new User to accounts
      * @param user The user to be saved
      */
-    @Override
     //TODO: add save method to UserSignUpDataAccessInterface
     public void save(User user) {
         accounts.put(user.getUserId(), user);
         this.save();
     }
 
-    @Override
     //TODO: add save method to SaveResponse
-    public void save(Response response) {
-        responses.put(response.getUser(), response);
-    }
+    public void save(Response response) { responses.get(response.getUser()).add(response);}
 
-    @Override
     public User get(UUID userId) {
         return accounts.get(userId);
     }
@@ -123,17 +117,5 @@ public class FileUserDataAccessObject {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-
-    /**
-     * Return whether a user exists with username identifier.
-     * @param identifier the username to check.
-     * @return whether a user exists with username identifier
-     */
-    @Override
-    //TODO: add existsById method to UserSignUpDataAccessInterface??
-    public boolean existsById(UUID identifier) {
-        return accounts.containsKey(identifier);
     }
 }
