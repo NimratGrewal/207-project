@@ -1,12 +1,13 @@
 package data_access;
 
 import entities.*;
+import use_case.set_response.SetResponseDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject {
+public class FileUserDataAccessObject implements SetResponseDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -78,9 +79,6 @@ public class FileUserDataAccessObject {
         this.save();
     }
 
-    //TODO: add save method to SaveResponse
-    public void save(Response response) { responses.get(response.getUser()).add(response);}
-
     public User get(UUID userId) {
         return accounts.get(userId);
     }
@@ -116,5 +114,10 @@ public class FileUserDataAccessObject {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void setResponse(User user, Response response) {
+
     }
 }
