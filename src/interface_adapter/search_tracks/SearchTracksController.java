@@ -1,5 +1,17 @@
 package interface_adapter.search_tracks;
 
-public class SearchTracksController {
+import use_case.search_tracks.SearchTracksInputBoundary;
+import use_case.search_tracks.SearchTracksInputData;
 
+public class SearchTracksController {
+    private final SearchTracksInputBoundary searchTracksInteractor;
+
+    public SearchTracksController(SearchTracksInputBoundary searchTracksInteractor) {
+        this.searchTracksInteractor = searchTracksInteractor;
+    }
+
+    public void execute(String query) {
+        SearchTracksInputData searchTracksInputData = new SearchTracksInputData(query);
+        searchTracksInteractor.execute(searchTracksInputData);
+    }
 }
