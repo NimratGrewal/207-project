@@ -17,7 +17,7 @@ public class DeleteInteractor implements DeleteInputBoundary{
 
     @Override
     public void execute(DeleteInputData deleteInputData) {
-        if (responseDataAccessInterface.existsbyId(deleteInputData.getPromptId())) {
+        if (responseDataAccessInterface.existsbyId(deleteInputData.getResponseId())) {
             
 
         }
