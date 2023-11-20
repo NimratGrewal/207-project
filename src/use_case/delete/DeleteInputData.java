@@ -1,2 +1,4 @@
-package use_case.delete;public class DeleteInputData {
+package use_case.delete;
+
+public class DeleteInputData {
 }

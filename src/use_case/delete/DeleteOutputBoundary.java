@@ -1,2 +1,4 @@
-package use_case.delete;public interface DeleteOutputBoundary {
+package use_case.delete;
+
+public interface DeleteOutputBoundary {
 }
