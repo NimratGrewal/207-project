@@ -8,9 +8,7 @@ public class ProfileController implements FeedToProfileInputBoundary{
     public ProfileController(FeedToProfileInputBoundary profileInteractor) {
         this.profileInteractor = profileInteractor;
     }
-
-    @Override
-    public void toProfile() {
-
+    public void profileClicked() {
+        profileInteractor.profileClicked();
     }
 }

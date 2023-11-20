@@ -8,7 +8,7 @@ public class FeedController implements ProfileToFeedInputBoundary {
     public FeedController(ProfileToFeedInputBoundary feedInteractor) {
         this.feedInteractor = feedInteractor;
     }
-    public void toFeed() {
-        feedInteractor.toFeed();
+    public void feedClicked() {
+        feedInteractor.feedClicked();
     }
 }

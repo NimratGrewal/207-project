@@ -2,7 +2,6 @@ package interface_adapter.feed;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.profile.ProfileViewModel;
-import use_case.ProfileToFeed.ProfileToFeedInputBoundary;
 import use_case.ProfileToFeed.ProfileToFeedOutputBoundary;
 
 public class FeedPresenter implements ProfileToFeedOutputBoundary{
@@ -17,7 +16,7 @@ public class FeedPresenter implements ProfileToFeedOutputBoundary{
         this.viewManagerModel = viewManagerModel;
     }
 
-    public void prepareSuccessView() {
+    public void toFeed() {
         FeedState feedState = feedViewModel.getState();
         this.feedViewModel.setState(feedState);
         this.feedViewModel.firePropertyChanged();

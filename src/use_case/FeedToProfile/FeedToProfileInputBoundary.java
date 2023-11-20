@@ -1,5 +1,5 @@
 package use_case.FeedToProfile;
 
 public interface FeedToProfileInputBoundary {
-    void toProfile();
+    void profileClicked();
 }

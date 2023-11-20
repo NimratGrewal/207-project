@@ -7,13 +7,16 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ProfileView implements ProfileToFeedOutputBoundary {
+public class ProfileView implements ProfileToFeedInputBoundary {
     private JFrame profilePage;
     private JButton ToFeed;
     private final ProfileToFeedInputBoundary profileToFeedInputBoundary;
+    private final ProfileToFeedOutputBoundary profileToFeedOutputBoundary;
 
-    public ProfileView(ProfileToFeedInputBoundary profileToFeedInputBoundary) {
+    public ProfileView(ProfileToFeedInputBoundary profileToFeedInputBoundary,
+                       ProfileToFeedOutputBoundary profileToFeedOutputBoundary) {
         this.profileToFeedInputBoundary = profileToFeedInputBoundary;
+        this.profileToFeedOutputBoundary = profileToFeedOutputBoundary;
         initialize();
     }
 
@@ -24,7 +27,7 @@ public class ProfileView implements ProfileToFeedOutputBoundary {
         ToFeed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                profileToFeedInputBoundary.toFeed();
+                profileToFeedInputBoundary.feedClicked();
             }
         });
 
@@ -38,4 +41,8 @@ public class ProfileView implements ProfileToFeedOutputBoundary {
         profilePage.setVisible(true);
     }
 
+    @Override
+    public void feedClicked() {
+        profileToFeedOutputBoundary.toFeed();
+    }
 }

@@ -8,7 +8,7 @@ public class ProfileToFeedInteractor implements ProfileToFeedInputBoundary{
     }
 
     @Override
-    public void toFeed() {
-
+    public void feedClicked() {
+        outputBoundary.toFeed();
     }
 }

@@ -6,7 +6,7 @@ public class FeedtoProfileInteractor implements FeedToProfileInputBoundary{
         this.outputBoundary = outputBoundary;
     }
     @Override
-    public void toProfile() {
-
+    public void profileClicked() {
+        outputBoundary.toProfile();
     }
 }
