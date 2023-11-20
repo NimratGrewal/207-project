@@ -62,6 +62,13 @@ public class CommonUser implements User {
         return history.get(promptId);
     }
 
+    public int getNumberOfResponses() {
+        if (history != null) {
+            return history.size();
+        }
+        return 0;
+    }
+
     @Override
     public void setResponse(UUID promptId, Response response) {
         // if this prompt is not yet in history:

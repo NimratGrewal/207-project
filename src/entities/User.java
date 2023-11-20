@@ -17,6 +17,8 @@ public interface User {
 
     Response getResponse(UUID promptId);
 
+    int getNumberOfResponses();
+
     void setResponse(UUID promptId, Response response);
 
     void deleteResponse(UUID promptId);
