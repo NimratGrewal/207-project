@@ -2,7 +2,6 @@ package interface_adapter.home;
 
 import interface_adapter.ViewManagerModel;
 import use_case.home.HomeOutputBoundary;
-import views.PromptView;
 
 public class HomePresenter implements HomeOutputBoundary {
     private final SearchViewModel searchViewModel;
