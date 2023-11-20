@@ -1,20 +1,26 @@
 package use_case.delete;
 
+import java.util.UUID;
+
 public class DeleteInteractor implements DeleteInputBoundary{
     final DeleteOutputBoundary deletePresenter;
 
-    final DeleteResponseDataAccessInterface deleteResponseDataAccessInterface;
+    final DeleteResponseDataAccessInterface responseDataAccessInterface;
 
-    final DeleteUserDataAccessInterface deleteUserDataAccessInterface;
+    final DeleteUserDataAccessInterface userDataAccessInterface;
 
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface deleteResponseDataAccessInterface, DeleteUserDataAccessInterface deleteUserDataAccessInterface) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface) {
         this.deletePresenter = deletePresenter;
-        this.deleteResponseDataAccessInterface = deleteResponseDataAccessInterface;
-        this.deleteUserDataAccessInterface = deleteUserDataAccessInterface;
+        this.responseDataAccessInterface = responseDataAccessInterface;
+        this.userDataAccessInterface = userDataAccessInterface;
     }
 
     @Override
-    public void execute() {
+    public void execute(DeleteInputData deleteInputData) {
+        if (responseDataAccessInterface.existsbyId(deleteInputData.getPromptId())) {
+            
 
+        }
     }
+
 }
