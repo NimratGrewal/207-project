@@ -1,20 +1,30 @@
 package entities;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 import java.util.HashMap;
 
 
 public class Prompt {
     private final UUID promptid;
-    public final String promptQuestion;
+    private final String promptQuestion;
 
+    private String date;
     private boolean isActive;
-
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private HashMap<UUID, UUID> responses;
-    public Prompt(String promptQuestion) {
+    public Prompt(String promptQuestion, String date) throws ParseException {
         this.promptQuestion = promptQuestion;
         this.promptid = UUID.randomUUID();
-        this.isActive = false;
         this.responses = new HashMap<>();
+        this.date = date;
+        Date parsedDate = dateFormat.parse(date);
+        Date currentDate = new Date();
+        if (parsedDate == currentDate ){
+            this.isActive= true;
+        }
     }
 
     public UUID getPromptId() {
@@ -25,6 +35,9 @@ public class Prompt {
         return isActive;
     }
 
+    public String getDate(){
+        return date;
+    }
     public void setActive(boolean active){
         isActive = active;
     }

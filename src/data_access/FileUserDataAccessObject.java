@@ -1,12 +1,14 @@
 package data_access;
 
 import entities.*;
+import use_case.login.LoginUserDataInterface;
+import use_case.signup.SignupUserDataInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject {
+public class FileUserDataAccessObject implements SignupUserDataInterface, LoginUserDataInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -116,5 +118,15 @@ public class FileUserDataAccessObject {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean existsByName(String identifier) {
+        return false;
+    }
+
+    @Override
+    public User get(String username) {
+        return null;
     }
 }
