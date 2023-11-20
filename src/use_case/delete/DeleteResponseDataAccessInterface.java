@@ -1,2 +1,5 @@
-package use_case.delete;public interface DeleteResponseDataAccessInterface {
+package use_case.delete;
+
+public interface DeleteResponseDataAccessInterface {
+
 }
