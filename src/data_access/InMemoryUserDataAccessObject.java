@@ -1,2 +1,4 @@
-package data_access;public class InMemoryUserDataAccessObject {
+package data_access;
+
+public class InMemoryUserDataAccessObject {
 }
