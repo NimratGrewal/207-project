@@ -19,10 +19,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     private final JButton delete;
 
-    private final JButton yes;
-    private final JButton no;
-
-    public ProfileView(DeleteViewModel deleteViewModel, DeleteController deleteController, JButton yes, JButton no) {
+    public ProfileView(DeleteViewModel deleteViewModel, DeleteController deleteController) {
         this.deleteViewModel = deleteViewModel;
         this.deleteController = deleteController;
 
@@ -35,22 +32,29 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         delete = new JButton(deleteViewModel.DELETE_BUTTON_LABEL);
         buttons.add(delete);
 
-        delete.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(delete)) {
+                    DeleteState state = deleteViewModel.getState();
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogueResult = JOptionPane.showConfirmDialog(delete,
+                            "Are you sure you want to delete Response: " + state.getResponseId() + "?", "Warning", dialogButton);
+
+                    if (dialogueResult == JOptionPane.YES_OPTION) {
                         DeleteState deleteState = deleteViewModel.getState();
                         deleteController.execute(deleteState.getResponseId());
                     }
                 }
-        );
+            }
+        });
     }
-
     public void actionPerformed(ActionEvent e) {}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         DeleteState state = (DeleteState) evt.getNewValue();
-        JOptionPane.showMessageDialog(this, "Are you sure you want to delete Response: " + state.getResponseId());
+        JOptionPane.showConfirmDialog(this, "Response" + state.getResponseId() + "was deleted!");
     }
 }
+

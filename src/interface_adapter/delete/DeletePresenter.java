@@ -21,5 +21,18 @@ public class DeletePresenter implements DeleteOutputBoundary {
         deleteState.setResponseId(deleteOutputData.getResponseId());
         deleteViewModel.firePropertyChanged();
 
+        this.viewManagerModel.setActiveView(deleteViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+
+    }
+
+    @Override
+    public void prepareFailView(String responseDoesNotExist) {
+        DeleteState deleteState = deleteViewModel.getState();
+        deleteState.setResponseError(responseDoesNotExist);
+        deleteViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setActiveView(deleteViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 }
