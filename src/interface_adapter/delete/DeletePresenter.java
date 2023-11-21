@@ -22,4 +22,11 @@ public class DeletePresenter implements DeleteOutputBoundary {
         deleteViewModel.firePropertyChanged();
 
     }
+
+    @Override
+    public void prepareFailView(String responseDoesNotExist) {
+        DeleteState deleteState = deleteViewModel.getState();
+        deleteState.setResponseError(responseDoesNotExist);
+        deleteViewModel.firePropertyChanged();
+    }
 }
