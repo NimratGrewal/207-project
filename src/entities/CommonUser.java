@@ -85,10 +85,4 @@ public class CommonUser implements User {
         history.remove(promptId);
     }
 
-    @Override
-    public void changeResponse(UUID promptId, Response response) {
-        if (history.containsKey(promptId)) {
-            history.replace(promptId, response);
-        }
-    }
 }

@@ -23,6 +23,4 @@ public interface User {
 
     void deleteResponse(UUID promptId);
 
-    void changeResponse(UUID promptId, Response response);
-
 }
