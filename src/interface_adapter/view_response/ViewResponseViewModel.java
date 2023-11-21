@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class ViewResponseViewModel extends ViewModel {
+    public final String CHANGE_BUTTON_LABEL = "Change";
     private ViewResponseState state;
     public ViewResponseViewModel() { super("view response"); }
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);

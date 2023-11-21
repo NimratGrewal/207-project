@@ -5,7 +5,6 @@ public class ViewResponseState {
     private String songName = "";
     private String artistNames = "";
     private String albumName = "";
-
     private String promptText = "";
     public ViewResponseState(ViewResponseState copy) {
         this.songName = copy.getSongName();
