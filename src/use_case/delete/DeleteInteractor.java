@@ -5,22 +5,15 @@ import java.util.UUID;
 public class DeleteInteractor implements DeleteInputBoundary{
     final DeleteOutputBoundary deletePresenter;
 
-    final DeleteResponseDataAccessInterface responseDataAccessInterface;
-
-    final DeleteUserDataAccessInterface userDataAccessInterface;
-
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter) {
         this.deletePresenter = deletePresenter;
-        this.responseDataAccessInterface = responseDataAccessInterface;
-        this.userDataAccessInterface = userDataAccessInterface;
     }
 
     @Override
     public void execute(DeleteInputData deleteInputData) {
-        if (responseDataAccessInterface.existsbyId(deleteInputData.getResponseId())) {
-            
-
-        }
+        UUID responseId = deleteInputData.getResponseId();
+        DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
+        deletePresenter.prepareSuccessView(deleteOutputData);
     }
 
 }
