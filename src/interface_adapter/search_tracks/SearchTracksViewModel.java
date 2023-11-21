@@ -9,7 +9,7 @@ public class SearchTracksViewModel extends ViewModel {
     private SearchTracksState state = new SearchTracksState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     public SearchTracksViewModel(String viewName) {
-        super(viewName);
+        super("search tracks");
     }
 
     @Override
