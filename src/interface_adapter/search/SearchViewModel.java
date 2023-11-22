@@ -1,16 +1,14 @@
-package interface_adapter.search_tracks;
+package interface_adapter.search;
 
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class SearchTracksViewModel extends ViewModel {
-    private SearchTracksState state = new SearchTracksState();
+public class SearchViewModel extends ViewModel {
+    private SearchState state;
+    public SearchViewModel() { super("search"); }
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    public SearchTracksViewModel(String viewName) {
-        super("search tracks");
-    }
 
     @Override
     public void firePropertyChanged() {
@@ -22,11 +20,11 @@ public class SearchTracksViewModel extends ViewModel {
         support.addPropertyChangeListener(listener);
     }
 
-    public SearchTracksState getState() {
-        return this.state;
+    public void setState(SearchState state) {
+        this.state = state;
     }
 
-    public void setState(SearchTracksState state) {
-        this.state = state;
+    public SearchState getState() {
+        return state;
     }
 }

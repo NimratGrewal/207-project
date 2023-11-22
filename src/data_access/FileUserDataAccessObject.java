@@ -1,12 +1,13 @@
 package data_access;
 
 import entities.*;
+import use_case.set_response.SetResponseDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject {
+public class FileUserDataAccessObject implements SetResponseDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -56,7 +57,7 @@ public class FileUserDataAccessObject {
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
+                        Response response = new Response(responseID, promptID, user.getUserId(), caller.getTrack(songID));
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -77,9 +78,6 @@ public class FileUserDataAccessObject {
         accounts.put(user.getUserId(), user);
         this.save();
     }
-
-    //TODO: add save method to SaveResponse
-    public void save(Response response) { responses.get(response.getUser()).add(response);}
 
     public User get(UUID userId) {
         return accounts.get(userId);
@@ -116,5 +114,11 @@ public class FileUserDataAccessObject {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void setResponse(UUID userId, Response response) {
+        accounts.get(userId).setResponse(response.getPromptId(), response);
+        responses.get(accounts.get(userId)).add(response);
     }
 }

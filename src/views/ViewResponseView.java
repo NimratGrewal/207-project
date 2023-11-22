@@ -2,7 +2,7 @@ package views;
 
 import interface_adapter.home.HomeController;
 import interface_adapter.home.HomeState;
-import interface_adapter.home.HomeViewModel;
+import interface_adapter.view_response.ViewResponseViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,25 +11,24 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
+public class ViewResponseView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "home view";
+    public final String viewName = "view response view";
+
+    public final ViewResponseViewModel viewResponseViewModel;
 
     private final HomeController homeController;
 
-    private final HomeViewModel homeViewModel;
-
     final JButton change;
 
-    public HomeView(HomeViewModel homeViewModel, HomeController homeController) {
-        this.homeViewModel = homeViewModel;
+    public ViewResponseView(ViewResponseViewModel viewResponseViewModel, HomeController homeController) {
+        this.viewResponseViewModel = viewResponseViewModel;
         this.homeController = homeController;
-        this.homeViewModel.addPropertyChangeListener(this);
 
         JLabel title = new JLabel("Home Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel buttons = new JPanel();
-        change = new JButton(homeViewModel.CHANGE_BUTTON_LABEL);
+        change = new JButton(viewResponseViewModel.CHANGE_BUTTON_LABEL);
         buttons.add(change);
 
         change.addActionListener(
@@ -58,6 +57,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        HomeState state = (HomeState) evt.getNewValue();
+
     }
 }
