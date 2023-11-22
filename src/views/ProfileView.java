@@ -52,7 +52,6 @@ public class ProfileView extends JPanel {
         JPanel answerPanel = new JPanel();
         answerPanel.setBackground(Color.lightGray);
 
-        // Add margins to create horizontal spacing
         answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         JLabel answerLabel = new JLabel(answerText);
