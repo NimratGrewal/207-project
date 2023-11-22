@@ -19,11 +19,6 @@ public class BaseView extends JFrame {
         setLocationRelativeTo(null);
 
         add(tabbedPane);
-
-        tabbedPane.addChangeListener(e -> {
-            int selectedIndex = tabbedPane.getSelectedIndex();
-            System.out.println("Selected Tab: " + tabbedPane.getTitleAt(selectedIndex));
-        });
     }
 
     public static void main(String[] args) {

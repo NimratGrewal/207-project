@@ -8,20 +8,18 @@ public class ProfileView extends JPanel {
     public ProfileView() {
         setLayout(new BorderLayout());
 
-        // Create a panel for the additional content
+        // overall content panel
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
 
-        // Create a panel for the profile information
+        // profile info panel
         JPanel profilePanel = new JPanel();
         profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
 
-        // Add profile picture placeholder, username, and number of responses
         JLabel profilePictureLabel = new JLabel("Profile Picture Placeholder");
         JLabel usernameLabel = new JLabel("Username: hayatariq");
         JLabel responsesLabel = new JLabel("Responses: 10");
 
-        // Add some padding to create space around the profile info
         profilePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         profilePanel.add(profilePictureLabel);
@@ -32,7 +30,7 @@ public class ProfileView extends JPanel {
         JPanel answersPanel = new JPanel();
         answersPanel.setLayout(new BoxLayout(answersPanel, BoxLayout.Y_AXIS));
 
-        // Add sample answers with outlined boxes and horizontal spacing
+        // generating sample answers
         for (int i = 1; i <= 20; i++) {
             answersPanel.add(createAnswerPanel("Answer " + i));
             answersPanel.add(Box.createVerticalStrut(10)); // Add vertical space between answers
@@ -63,10 +61,4 @@ public class ProfileView extends JPanel {
         return answerPanel;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ProfileView profile = new ProfileView();
-            profile.setVisible(true);
-        });
-    }
 }
