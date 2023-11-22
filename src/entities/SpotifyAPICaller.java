@@ -89,7 +89,18 @@ public class SpotifyAPICaller {
                     artists.add(artistObject.getString("name"));
                 }
                 String album = responseBody.getJSONObject("album").getString("name");
-                return new Song(trackId, songName, artists, album);
+
+                JSONArray albumCovers = responseBody.getJSONObject("album").getJSONArray("images");
+                String albumCoverUrl;
+
+                if (!albumCovers.isEmpty()) {
+                    JSONObject imageObject = albumCovers.getJSONObject(0);
+                    albumCoverUrl = imageObject.getString("url");
+                } else {
+                    // if no images available
+                    throw new RuntimeException("No album cover found for the track");
+                }
+                return new Song(trackId, songName, artists, album, albumCoverUrl);
             }
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
@@ -136,7 +147,18 @@ public class SpotifyAPICaller {
                         JSONObject artistObject = (JSONObject) artist;
                         artists.add(artistObject.getString("name"));
                     }
-                    tracks.add(new Song(songId, songName, artists, album));
+                    JSONArray albumCovers = trackObject.getJSONObject("album").getJSONArray("images");
+                    String albumCoverUrl;
+
+                    if (!albumCovers.isEmpty()) {
+                        JSONObject imageObject = albumCovers.getJSONObject(0);
+                        albumCoverUrl = imageObject.getString("url");
+                    } else {
+                        // if no images available
+                        throw new RuntimeException("No album cover found for the track");
+                    }
+
+                    tracks.add(new Song(songId, songName, artists, album, albumCoverUrl));
                 }
                 return tracks;
             }

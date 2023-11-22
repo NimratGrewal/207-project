@@ -99,7 +99,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
                 for (Response response : user.getHistory().values()) {
                     //TODO: create getResponseId method in Response class
                     String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSongId());
+                            response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
                     responses.add(responseText);
                 }
                 String responseString = String.join(";",responses);
