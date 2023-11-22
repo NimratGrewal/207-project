@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 
 public class Prompt {
-    private final UUID promptid;
+    private final UUID promptId;
     public final String promptQuestion;
 
     private boolean isActive;
@@ -12,13 +12,13 @@ public class Prompt {
     private HashMap<UUID, UUID> responses;
     public Prompt(String promptQuestion) {
         this.promptQuestion = promptQuestion;
-        this.promptid = UUID.randomUUID();
+        this.promptId = UUID.randomUUID();
         this.isActive = false;
         this.responses = new HashMap<>();
     }
 
     public UUID getPromptId() {
-        return promptid;
+        return promptId;
     }
 
     public boolean isActive(){
