@@ -8,6 +8,8 @@ public class Song {
     private final List<String> artists;
     private final String album;
 
+    private final String albumCoverUrl;
+
     /**
      * Creates an instance of Song
      *
@@ -16,11 +18,12 @@ public class Song {
      * @param artists the performing artists on the song
      * @param album   the album on which the song appears
      */
-    public Song(String songId, String name, List<String> artists, String album) {
+    public Song(String songId, String name, List<String> artists, String album, String albumCoverUrl) {
         this.songId = songId;
         this.name = name;
         this.artists = artists;
         this.album = album;
+        this.albumCoverUrl = albumCoverUrl;
     }
 
     /**
@@ -54,4 +57,6 @@ public class Song {
     public String getAlbum() {
         return album;
     }
+
+    public String getAlbumCoverUrl() { return albumCoverUrl; }
 }
