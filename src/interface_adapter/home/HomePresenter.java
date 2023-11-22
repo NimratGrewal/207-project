@@ -1,8 +1,9 @@
 package interface_adapter.home;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.search.SearchState;
+import interface_adapter.search.SearchViewModel;
 import use_case.home.HomeOutputBoundary;
-import views.PromptView;
 
 public class HomePresenter implements HomeOutputBoundary {
     private final SearchViewModel searchViewModel;
@@ -20,7 +21,7 @@ public class HomePresenter implements HomeOutputBoundary {
         this.searchViewModel.setState(searchState);
         this.searchViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setActiveView(promptViewModel.getViewName());
+        this.viewManagerModel.setActiveView(searchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 }
