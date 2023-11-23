@@ -46,7 +46,7 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
 
                     LocalDateTime ldt = LocalDateTime.parse(creationTimeText);
                     Prompt prompt  = new Prompt(prompts_string, dates);
-                    prompts.put(prompt.getPromptText(), prompt);
+                    prompts.put(dates, prompt);
                 }
             } catch (ParseException e) {
                 throw new RuntimeException(e);
@@ -82,13 +82,18 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
     @Override
     public Prompt getCurrentPrompt() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        LocalDateTime date = LocalDateTime.ofInstant()
-        System.out.println(dateFormat.format(date));
+        LocalDateTime date = LocalDateTime.now();
+        String currentDate = dateFormat.format(date);
+        try{
+            return(prompts.get(currentDate));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @Override
     public boolean answeredCurrentPrompt(UUID promptID) {
-        return false;
+
     }
 }
