@@ -1,13 +1,15 @@
 package use_case.login;
 
 import entities.User;
+import entities.Prompt;
 
 public class LoginInteractor implements LoginInputBoundary {
     final LoginUserDataInterface userDataAccessObject;
     final LoginOutputBoundary loginPresenter;
 
     public LoginInteractor(LoginUserDataInterface userDataAccessInterface,
-                           LoginOutputBoundary loginOutputBoundary) {
+                           LoginOutputBoundary loginOutputBoundary,
+                           ) {
         this.userDataAccessObject = userDataAccessInterface;
         this.loginPresenter = loginOutputBoundary;
     }
@@ -25,8 +27,10 @@ public class LoginInteractor implements LoginInputBoundary {
             } else {
 
                 User user = userDataAccessObject.get(loginInputData.getUsername());
+                /// get today's prompt from DAO
+                /// check if user has a response to todays prompt -> if
 
-                LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
+                LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), false);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

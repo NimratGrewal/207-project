@@ -1,6 +1,7 @@
 package data_access;
 
 import entities.*;
+import entities.User;
 import use_case.login.LoginUserDataInterface;
 import use_case.signup.SignupUserDataInterface;
 

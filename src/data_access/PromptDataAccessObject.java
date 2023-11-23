@@ -3,22 +3,23 @@ package data_access;
 import entities.Prompt;
 import entities.User;
 import entities.UserFactory;
+import use_case.login.PromptDataAccessInterface;
 
 import java.io.*;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
-public class PromptDataAccessObject  {
+public class PromptDataAccessObject implements PromptDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
 
     private final Map<String, Prompt> prompts = new LinkedHashMap<>();
+
+    private final Map<UUID, UUID> responses = new LinkedHashMap<>();
 
     public PromptDataAccessObject(String csvPath) throws IOException {
 
@@ -76,5 +77,18 @@ public class PromptDataAccessObject  {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Prompt getCurrentPrompt() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDateTime date = LocalDateTime.ofInstant()
+        System.out.println(dateFormat.format(date));
+
+    }
+
+    @Override
+    public boolean answeredCurrentPrompt(UUID promptID) {
+        return false;
     }
 }

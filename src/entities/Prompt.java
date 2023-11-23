@@ -20,11 +20,6 @@ public class Prompt {
         this.promptid = UUID.randomUUID();
         this.responses = new HashMap<>();
         this.date = date;
-        Date parsedDate = dateFormat.parse(date);
-        Date currentDate = new Date();
-        if (parsedDate == currentDate ){
-            this.isActive= true;
-        }
     }
 
     public UUID getPromptId() {
