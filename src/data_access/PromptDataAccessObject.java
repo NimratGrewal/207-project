@@ -28,7 +28,7 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
         headers.put("prompt_question", 0);
         headers.put("date", 1);
         headers.put("creation_time", 2);
-
+        headers.put("responses", 3):
         if (csvFile.length() == 0) {
             save();
         } else {
