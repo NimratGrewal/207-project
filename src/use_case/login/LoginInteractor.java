@@ -7,11 +7,14 @@ public class LoginInteractor implements LoginInputBoundary {
     final LoginUserDataInterface userDataAccessObject;
     final LoginOutputBoundary loginPresenter;
 
+    final PromptDataAccessInterface promptDataAccessObject;
+
     public LoginInteractor(LoginUserDataInterface userDataAccessInterface,
-                           LoginOutputBoundary loginOutputBoundary,
+                           LoginOutputBoundary loginOutputBoundary, PromptDataAccessInterface promptDataAccessInterface
                            ) {
         this.userDataAccessObject = userDataAccessInterface;
         this.loginPresenter = loginOutputBoundary;
+        this.promptDataAccessObject = promptDataAccessInterface;
     }
 
     @Override
@@ -27,11 +30,15 @@ public class LoginInteractor implements LoginInputBoundary {
             } else {
 
                 User user = userDataAccessObject.get(loginInputData.getUsername());
-                /// get today's prompt from DAO
-                /// check if user has a response to todays prompt -> if
-
-                LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), false);
-                loginPresenter.prepareSuccessView(loginOutputData);
+                Prompt prompt = promptDataAccessObject.getCurrentPrompt();
+                if(user.getHistory().containsKey(prompt.getPromptId())){
+                    LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);
+                    loginPresenter.preparePromptView(promptOutputData, prompt);
+                }
+                else{
+                    LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), true);
+                    loginPresenter.prepareLoggedInView(loginOutputData);
+                }
             }
         }
     }

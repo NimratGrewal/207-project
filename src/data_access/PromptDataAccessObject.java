@@ -1,6 +1,7 @@
 package data_access;
 
 import entities.Prompt;
+import entities.Response;
 import entities.User;
 import entities.UserFactory;
 import use_case.login.PromptDataAccessInterface;
@@ -19,42 +20,56 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
 
     private final Map<String, Prompt> prompts = new LinkedHashMap<>();
 
-    private final Map<UUID, UUID> responses = new LinkedHashMap<>();
+    private final Map<UUID, List<UUID>> responses = new LinkedHashMap<>();
 
     public PromptDataAccessObject(String csvPath) throws IOException {
 
 
         csvFile = new File(csvPath);
         headers.put("prompt_question", 0);
-        headers.put("date", 1);
-        headers.put("creation_time", 2);
-        headers.put("responses", 3):
+        headers.put("prompt_ID", 1);
+        headers.put("date", 2);
+        headers.put("creation_time", 3);
+        headers.put("responses", 4);
         if (csvFile.length() == 0) {
             save();
         } else {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
-                assert header.equals("prompt_question,date,creation_time");
+                assert header.equals("prompt_question,prompt_ID,date,creation_time, responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
                     String[] col = row.split(",");
                     String prompts_string = String.valueOf(col[headers.get("prompt_question")]);
+                    UUID promptID = UUID.fromString(String.valueOf(col[headers.get("prompt_ID")]));
                     String dates = String.valueOf(col[headers.get("date")]);
                     String creationTimeText = String.valueOf(col[headers.get("creation_time")]);
+                    String responsesText = String.valueOf(col[headers.get("responses")]);
 
                     LocalDateTime ldt = LocalDateTime.parse(creationTimeText);
                     Prompt prompt  = new Prompt(prompts_string, dates);
                     prompts.put(dates, prompt);
+                    String[] responseInfo = responsesText.split(";");
+                    for(String uuid_string:responseInfo){
+                        UUID uuid = UUID.fromString(uuid_string);
+                        if (!responses.containsKey(prompt.getPromptId())){
+                            responses.put(prompt.getPromptId(), new ArrayList<>());
+                        }
+                        // for each prompt, add each response uuid as a value.
+                        responses.get(prompt.getPromptId()).add(uuid);
+                    }
                 }
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
         }
     }
-    public void save(Prompt prompt) {
-        prompts.put(prompt.getPromptText(), prompt);
+    public void save(Prompt prompt, Response response) {        if (!responses.containsKey(prompt.getPromptId())){
+        responses.put(prompt.getPromptId(), new ArrayList<>());
+    }
+        responses.get(prompt.getPromptId()).add(response.getResponseId());
         this.save();
     }
 
@@ -66,8 +81,21 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
             writer.newLine();
 
             for (Prompt prompt : prompts.values()) {
-                String line = "%s,%s,%s".formatted(
-                        prompt.getPromptText(), prompt.getDate(), prompt.getCreationTime());
+                UUID promptID = prompt.getPromptId();
+                List<UUID> prompt_responses = responses.get(promptID);
+                StringBuilder all_responses = new StringBuilder();
+                int size = prompt_responses.size();
+                for (int i = 0; i < size; i++) {
+                    UUID ID = prompt_responses.get(i);
+                    all_responses.append(ID.toString());
+                    // should deal with the case where last UUID has a semicolon
+                    if (i < size - 1) {
+                        all_responses.append(";");
+                    }
+                }
+                String result = all_responses.toString();
+                String line = "%s,%s,%s,%s,%s".formatted(
+                        prompt.getPromptText(), prompt.getDate(), prompt.getDate(),prompt.getCreationTime().toString(), result);
                 writer.write(line);
                 writer.newLine();
             }
@@ -93,7 +121,15 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
     }
 
     @Override
-    public boolean answeredCurrentPrompt(UUID promptID) {
+    public boolean answeredCurrentPrompt(UUID answerID) {
+        Prompt curr_prompt = getCurrentPrompt();
+        UUID prompt_id = curr_prompt.getPromptId();
+        try{
+            List<UUID> uuids = responses.get(prompt_id);
+            return uuids.contains(answerID);
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

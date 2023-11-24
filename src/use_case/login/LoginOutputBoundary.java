@@ -1,9 +1,13 @@
 package use_case.login;
 
-public interface LoginOutputBoundary {
-    void prepareSuccessView(LoginOutputData user);
+import entities.Prompt;
+import entities.User;
 
-    void preparePromptView(LoginOutputData user);
+public interface LoginOutputBoundary {
+    void prepareLoggedInView(LoginOutputData user);
+
+
     void prepareFailView(String error);
 
+    void preparePromptView(LoginOutputData user, Prompt prompt);
 }
