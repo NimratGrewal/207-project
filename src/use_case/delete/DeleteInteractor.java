@@ -9,8 +9,7 @@ public class DeleteInteractor implements DeleteInputBoundary {
 
     final DeleteUserDataAccessInterface userDataAccessInterface;
 
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface,
-                            DelteRes) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface) {
         this.deletePresenter = deletePresenter;
         this.responseDataAccessInterface = responseDataAccessInterface;
         this.userDataAccessInterface = userDataAccessInterface;
