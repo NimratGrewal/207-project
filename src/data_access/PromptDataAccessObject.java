@@ -132,4 +132,14 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
             throw new RuntimeException(e);
         }
     }
+
+    public void DeleteResponse(UUID responseID){
+        for (Map.Entry<UUID, List<UUID>> entry : responses.entrySet()) {
+            List<UUID> responseList = entry.getValue();
+            if (responseList.contains(responseID)) {
+                responseList.remove(responseID);
+                break;
+            }
+        }
+    }
 }
