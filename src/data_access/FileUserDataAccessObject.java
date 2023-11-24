@@ -2,12 +2,13 @@ package data_access;
 
 import entities.*;
 import use_case.set_response.SetResponseDataAccessInterface;
+import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface {
+public class FileUserDataAccessObject implements SetResponseDataAccessInterface, UserProfileDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -57,7 +58,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user.getUserId(), caller.getTrack(songID));
+                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -83,6 +84,9 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
         return accounts.get(userId);
     }
 
+    public List<Response> getResponses(User user) {
+        return responses.getOrDefault(user, new ArrayList<>());
+    }
 
     /**
      * Save the current state of this DataAccessObject in the data file
@@ -117,8 +121,25 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
     }
 
     @Override
-    public void setResponse(UUID userId, Response response) {
+    public void setResponse(Response response) {
+        UUID userId = null;
         accounts.get(userId).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(userId)).add(response);
     }
+
+    @Override
+    public String getActivePromptText() {
+        return null;
+    }
+
+    @Override
+    public UUID getActivePromptId() {
+        return null;
+    }
+
+    @Override
+    public UUID getLoggedInUserId() {
+        return null;
+    }
+
 }

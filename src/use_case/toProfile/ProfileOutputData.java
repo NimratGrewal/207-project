@@ -1,18 +1,16 @@
-package interface_adapter.profile;
+package use_case.toProfile;
 
 import entities.Response;
 
 import java.util.List;
 
-public class ProfileState {
+public class ProfileOutputData {
     private final String username;
     private final List<Response> responseHistory;
-    private final int numberOfResponses;
 
-    public ProfileState(String username, List<Response> responseHistory, int numberOfResponses) {
+    public ProfileOutputData(String username, List<Response> responseHistory) {
         this.username = username;
         this.responseHistory = responseHistory;
-        this.numberOfResponses = numberOfResponses;
     }
 
     public String getUsername() {
@@ -24,6 +22,6 @@ public class ProfileState {
     }
 
     public int getNumberOfResponses() {
-        return numberOfResponses;
+        return responseHistory.size();
     }
 }

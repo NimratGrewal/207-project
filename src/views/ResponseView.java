@@ -1,4 +1,6 @@
 package views;
 
-public class ResponseView {
+import javax.swing.*;
+
+public class ResponseView extends JPanel {
 }
