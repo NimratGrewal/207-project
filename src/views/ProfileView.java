@@ -5,7 +5,6 @@ import java.awt.*;
 
 import entities.Response;
 import interface_adapter.profile.ProfileController;
-import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 
 import java.awt.event.ActionEvent;
@@ -95,7 +94,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     }
 
     private JPanel createResponseBox(Response response) {
-        return new ResponseBox(response);
+        return new FeedResponseBox(response);
     }
 
     @Override
