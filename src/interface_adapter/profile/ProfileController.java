@@ -1,21 +1,21 @@
 package interface_adapter.profile;
 
+import use_case.toProfile.ProfileInputBoundary;
+import use_case.toProfile.ProfileInputData;
 import use_case.toProfile.ProfileInteractor;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.UUID;
 
-public class ProfileController implements ActionListener {
-    private final ProfileInteractor profileInteractor;
+public class ProfileController {
+    private final ProfileInputBoundary profileInteractor;
 
-    public ProfileController(ProfileInteractor profileInteractor) {
+    public ProfileController(ProfileInputBoundary profileInteractor) {
         this.profileInteractor = profileInteractor;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Handle user interactions and trigger the interactor
-        // Update the ProfileViewState and call the interactor
+    public void execute(UUID userID) {
+        ProfileInputData inputData = new ProfileInputData(userID);
+        profileInteractor.execute(inputData);
     }
 }
 

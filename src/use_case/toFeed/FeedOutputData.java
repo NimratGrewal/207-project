@@ -1,4 +1,4 @@
-package interface_adapter.feed;
+package use_case.toFeed;
 
 import entities.Prompt;
 import entities.Response;
@@ -6,12 +6,11 @@ import entities.Response;
 import java.time.LocalDate;
 import java.util.List;
 
-public class FeedState {
+public class FeedOutputData {
     private final LocalDate promptDate;
     private final Prompt promptOfTheDay;
     private final List<Response> promptResponses;
-
-    public FeedState(LocalDate promptDate, Prompt promptOfTheDay, List<Response> promptResponses) {
+    public FeedOutputData(LocalDate promptDate, Prompt promptOfTheDay, List<Response> promptResponses) {
         this.promptDate = promptDate;
         this.promptOfTheDay = promptOfTheDay;
         this.promptResponses = promptResponses;

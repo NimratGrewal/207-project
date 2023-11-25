@@ -1,21 +1,29 @@
 package interface_adapter.profile;
 
+import entities.Response;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 public class ProfileViewModel {
-    private final String username;
-    private final List<String> responseHistory; // Replace with actual response data type
+    private ProfileState state;
 
-    public ProfileViewModel(String username, List<String> responseHistory) {
-        this.username = username;
-        this.responseHistory = responseHistory;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public void setState(ProfileState state) {
+        ProfileState oldState = this.state;
+        this.state = state;
+        support.firePropertyChange("state", oldState, this.state);
     }
 
-    public String getUsername() {
-        return username;
+    public ProfileState getState() {
+        return state;
     }
 
-    public List<String> getResponseHistory() {
-        return responseHistory;
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
     }
 }
+
+

@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 import entities.Response;
+import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
+import interface_adapter.profile.ProfileViewModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,18 +14,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
-    private final ProfileState profileState;
+    private final ProfileViewModel viewModel;
+    private final ProfileController profileController;
     private final JLabel usernameLabel;
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
 
-    public ProfileView(ProfileState profileState, JLabel usernameLabel,
-                       JLabel responsesLabel) {
-        this.profileState = profileState;
-        this.usernameLabel = usernameLabel;
-        this.responsesLabel = responsesLabel;
+    public ProfileView(ProfileViewModel viewModel, ProfileController profileController) {
+        this.viewModel = viewModel;
+        this.profileController = profileController;
+
+        viewModel.addPropertyChangeListener(this); // Listen to changes in the ViewModel
 
         setLayout(new BorderLayout());
+
+        usernameLabel = new JLabel();
+        responsesLabel = new JLabel();
 
         // overall content panel
         JPanel contentPanel = new JPanel();
@@ -32,6 +38,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         // profile info panel
         JPanel profilePanel = new JPanel();
         profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+
+        usernameLabel.setText("Username: " + viewModel.getState().getUsername());
+        responsesLabel.setText("Responses: " + viewModel.getState().getNumberOfResponses());
 
         JLabel profilePictureLabel = new JLabel("Profile Picture Placeholder");
 
@@ -44,6 +53,12 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         // responses panel
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
+
+        for (Response response : viewModel.getState().getResponseHistory()) {
+            JPanel responseBoxPanel = createResponseBox(response);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+        }
 
         // scroll pane for answers
         JScrollPane scrollPane = new JScrollPane(responsesPanel);
@@ -85,32 +100,28 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        // ViewModel state has changed, update the UI
+        setFields();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    private void setFields() {
+        usernameLabel.setText("Username: " + viewModel.getState().getUsername());
+        responsesLabel.setText("Responses: " + viewModel.getState().getNumberOfResponses());
 
-    }
-
-    public void updateUI(ProfileState updatedState) {
-        usernameLabel.setText("Username: " + updatedState.getUsername());
-        responsesLabel.setText("Responses: " + updatedState.getNumberOfResponses());
-
-        // Clear the existing response panels before adding the updated ones
         responsesPanel.removeAll();
 
-        // Iterate over the response history and add a ResponseBox for each response
-        for (Response response : updatedState.getResponseHistory()) {
+        for (Response response : viewModel.getState().getResponseHistory()) {
             JPanel responseBoxPanel = createResponseBox(response);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
 
-        // Revalidate and repaint the panel to reflect the changes
         responsesPanel.revalidate();
         responsesPanel.repaint();
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
     }
 }
