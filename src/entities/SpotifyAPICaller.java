@@ -9,7 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,18 +92,15 @@ public class SpotifyAPICaller {
                     artists.add(artistObject.getString("name"));
                 }
                 String album = responseBody.getJSONObject("album").getString("name");
-
-                JSONArray albumCovers = responseBody.getJSONObject("album").getJSONArray("images");
-                String albumCoverUrl;
-
-                if (!albumCovers.isEmpty()) {
-                    JSONObject imageObject = albumCovers.getJSONObject(0);
-                    albumCoverUrl = imageObject.getString("url");
+              
+                if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
+                    URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
+                  Image albumArt = new ImageIcon(ImageURL).getImage();
+                  return new Song(trackId, songName, artists, album, albumArt);
                 } else {
                     // if no images available
                     throw new RuntimeException("No album cover found for the track");
                 }
-                return new Song(trackId, songName, artists, album, albumCoverUrl);
             }
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
@@ -147,18 +147,15 @@ public class SpotifyAPICaller {
                         JSONObject artistObject = (JSONObject) artist;
                         artists.add(artistObject.getString("name"));
                     }
-                    JSONArray albumCovers = trackObject.getJSONObject("album").getJSONArray("images");
-                    String albumCoverUrl;
-
-                    if (!albumCovers.isEmpty()) {
-                        JSONObject imageObject = albumCovers.getJSONObject(0);
-                        albumCoverUrl = imageObject.getString("url");
+  
+                    if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
+                        URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
+                        Image albumArt = new ImageIcon(ImageURL).getImage();
+                        tracks.add(new Song(songId, songName, artists, album, albumArt));
                     } else {
-                        // if no images available
-                        throw new RuntimeException("No album cover found for the track");
+                    // if no images available
+                    throw new RuntimeException("No album cover found for the track");
                     }
-
-                    tracks.add(new Song(songId, songName, artists, album, albumCoverUrl));
                 }
                 return tracks;
             }
