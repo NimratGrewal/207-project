@@ -3,6 +3,7 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 
+import data_access.FileUserDataAccessObject;
 import entities.Response;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileViewModel;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.UUID;
 
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     private final ProfileViewModel viewModel;
@@ -18,10 +20,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JLabel usernameLabel;
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
+    private final FileUserDataAccessObject fileUserDataAccessObject;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController) {
+    public ProfileView(ProfileViewModel viewModel, ProfileController profileController,
+                       FileUserDataAccessObject fileUserDataAccessObject) {
         this.viewModel = viewModel;
         this.profileController = profileController;
+        this.fileUserDataAccessObject = fileUserDataAccessObject;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -53,10 +58,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
-        for (Response response : viewModel.getState().getResponseHistory()) {
-            JPanel responseBoxPanel = createProfileResponseBox(response);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+        for (UUID responseId : viewModel.getState().getResponseIds()) {
+            Response response = getResponseById(responseId);
+            if (response != null) {
+                JPanel responseBoxPanel = createProfileResponseBox(response);
+                responsesPanel.add(responseBoxPanel);
+                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+            }
         }
 
         // scroll pane for answers
@@ -93,13 +101,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 //        });
     }
 
+    private Response getResponseById(UUID responseId) {
+        return fileUserDataAccessObject.getResponseById(viewModel.getState().getUserID(), responseId);
+    }
     private JPanel createProfileResponseBox(Response response) {
         return new views.ProfileResponseBox(response);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // ViewModel state has changed, update the UI
         setFields();
     }
 
@@ -109,10 +119,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         responsesPanel.removeAll();
 
-        for (Response response : viewModel.getState().getResponseHistory()) {
-            JPanel responseBoxPanel = createProfileResponseBox(response);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+        for (UUID responseId : viewModel.getState().getResponseIds()) {
+            Response response = getResponseById(responseId);
+            if (response != null) {
+                JPanel responseBoxPanel = createProfileResponseBox(response);
+                responsesPanel.add(responseBoxPanel);
+                responsesPanel.add(Box.createVerticalStrut(10));
+            }
         }
 
         responsesPanel.revalidate();

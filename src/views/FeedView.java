@@ -18,10 +18,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private final FeedController feedController;
     private final JLabel dateAndPromptLabel;
     private final JPanel responsesPanel;
+    private final PromptDataAccessObject promptDataAccessObject;
 
-    public FeedView(FeedViewModel viewModel, FeedController feedController) {
+    public FeedView(FeedViewModel viewModel, FeedController feedController,
+                    PromptDataAccessObject promptDataAccessObject) {
         this.viewModel = viewModel;
         this.feedController = feedController;
+        this.promptDataAccessObject = promptDataAccessObject;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -51,10 +54,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
-        for (UUID response : viewModel.getState().getPromptResponses()) {
-            JPanel responseBoxPanel = createFeedResponseBox(response);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10));
+        for (UUID responseId : viewModel.getState().getPromptResponses()) {
+            Response response = promptDataAccessObject.getResponseById(responseId);
+            if (response != null) {
+                JPanel responseBoxPanel = createFeedResponseBox(response);
+                responsesPanel.add(responseBoxPanel);
+                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+            }
         }
 
         // scroll pane for answers
@@ -91,10 +97,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
         responsesPanel.removeAll();
 
-        for (UUID response : viewModel.getState().getPromptResponses()) {
-            JPanel responseBoxPanel = createFeedResponseBox(response);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+        for (UUID responseId : viewModel.getState().getPromptResponses()) {
+            Response response = promptDataAccessObject.getResponseById(responseId);
+            if (response != null) {
+                JPanel responseBoxPanel = createFeedResponseBox(response);
+                responsesPanel.add(responseBoxPanel);
+                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+            }
         }
 
         responsesPanel.revalidate();

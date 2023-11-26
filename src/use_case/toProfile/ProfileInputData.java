@@ -3,14 +3,14 @@ package use_case.toProfile;
 import java.util.UUID;
 
 public class ProfileInputData {
-    private final UUID userId;
+    private final UUID userID;
 
-    public ProfileInputData(UUID userId) {
-        this.userId = userId;
+    public ProfileInputData(UUID userID) {
+        this.userID = userID;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UUID getUserID() {
+        return userID;
     }
 
 }

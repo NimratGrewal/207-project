@@ -137,6 +137,19 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         responses.get(accounts.get(userId)).add(response);
     }
 
+    public Response getResponseById(UUID userId, UUID responseId) {
+        User user = accounts.get(userId);
+        if (user != null && responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                if (response.getResponseId().equals(responseId)) {
+                    return response;
+                }
+            }
+        }
+        return null; // Response not found
+    }
+
     @Override
     public String getActivePromptText() {
         return null;

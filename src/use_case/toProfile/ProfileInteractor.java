@@ -18,8 +18,8 @@ public class ProfileInteractor implements ProfileInputBoundary {
 
     @Override
     public void execute(ProfileInputData inputData) {
-        UUID userId = inputData.getUserId();
-        User user = userDataAccessObject.get(userId);
+        UUID userID = inputData.getUserID();
+        User user = userDataAccessObject.get(userID);
 
         // Assuming getUsername is a method in the User class
         String username = user.getUsername();
@@ -27,7 +27,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
         List<UUID> responseIds = userDataAccessObject.getResponseIds(user);
 
         // Create ProfileOutputData with the required information
-        ProfileOutputData outputData = new ProfileOutputData(username, responseIds);
+        ProfileOutputData outputData = new ProfileOutputData(userID, username, responseIds);
 
         // Pass the output data to the presenter
         presenter.present(outputData);

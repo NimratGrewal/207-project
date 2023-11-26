@@ -16,10 +16,11 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     @Override
     public void present(ProfileOutputData outputData) {
+        UUID userID = outputData.getUserID();
         String username = outputData.getUsername();
         List<UUID> responseIds = outputData.getResponseIds();
 
-        ProfileState profileState = new ProfileState(username, responseIds);
+        ProfileState profileState = new ProfileState(userID, username, responseIds);
         profileViewModel.setState(profileState);
     }
 }
