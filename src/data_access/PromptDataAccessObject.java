@@ -29,15 +29,14 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
         headers.put("prompt_question", 0);
         headers.put("prompt_ID", 1);
         headers.put("date", 2);
-        headers.put("creation_time", 3);
-        headers.put("responses", 4);
+        headers.put("responses", 3);
         if (csvFile.length() == 0) {
             save();
         } else {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
-                assert header.equals("prompt_question,prompt_ID,date,creation_time, responses");
+                assert header.equals("prompt_question,prompt_ID,date, responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
@@ -45,10 +44,8 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
                     String prompts_string = String.valueOf(col[headers.get("prompt_question")]);
                     UUID promptID = UUID.fromString(String.valueOf(col[headers.get("prompt_ID")]));
                     String dates = String.valueOf(col[headers.get("date")]);
-                    String creationTimeText = String.valueOf(col[headers.get("creation_time")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
 
-                    LocalDateTime ldt = LocalDateTime.parse(creationTimeText);
                     Prompt prompt  = new Prompt(prompts_string, dates);
                     prompts.put(dates, prompt);
                     String[] responseInfo = responsesText.split(";");
