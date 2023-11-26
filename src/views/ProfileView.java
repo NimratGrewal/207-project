@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -46,7 +47,11 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         usernameLabel.setText("Username: " + viewModel.getState().getUsername());
         responsesLabel.setText("Responses: " + viewModel.getState().getNumberOfResponses());
 
-        JLabel profilePictureLabel = new JLabel("Profile Picture Placeholder");
+        JLabel profilePictureLabel = new JLabel();
+
+        ImageIcon profilePictureIcon = new ImageIcon(
+                (Objects.requireNonNull(getClass().getResource("/images/Portrait_placeholder.png"))));
+        profilePictureLabel.setIcon(profilePictureIcon);
 
         profilePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
