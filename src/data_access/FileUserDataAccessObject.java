@@ -7,7 +7,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface {
+public class FileUserDataAccessObject{
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -57,7 +57,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user.getUserId(), caller.getTrack(songID));
+                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -116,7 +116,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
         }
     }
 
-    @Override
     public void setResponse(UUID userId, Response response) {
         accounts.get(userId).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(userId)).add(response);
