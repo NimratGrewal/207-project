@@ -1,4 +1,7 @@
 package interface_adapter.search_users;
 
-public class SearchUsersPresenter {
+import use_case.search_tracks.SearchTracksOutputData;
+
+public class SearchUsersPresenter implements SearchTracksOutputData {
+
 }
