@@ -58,8 +58,8 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user.getUserId(), caller.getTrack(songID));
-                        if (!this.responses.containsKey(user)) {
+                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
+                        if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
                         this.responses.get(user).add(response);
@@ -118,7 +118,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         }
     }
 
-    @Override
     public void setResponse(UUID userId, Response response) {
         accounts.get(userId).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(userId)).add(response);

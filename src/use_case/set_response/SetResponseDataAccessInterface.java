@@ -2,6 +2,7 @@ package use_case.set_response;
 
 import entities.Response;
 import entities.Song;
+import entities.User;
 
 import java.util.UUID;
 
@@ -12,5 +13,5 @@ public interface SetResponseDataAccessInterface {
 
     public UUID getActivePromptId();
 
-    public UUID getLoggedInUserId();
+    public User getLoggedInUser();
 }
