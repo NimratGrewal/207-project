@@ -147,4 +147,14 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
             throw new RuntimeException(e);
         }
     }
+
+    public Prompt getPromptByID(UUID promptID){
+        Collection <Prompt> prompts_list = prompts.values();
+        for(Prompt prompt:prompts_list){
+            if (prompt.getPromptId() == promptID){
+                return prompt;
+            }
+        }
+        return null;
+    }
 }

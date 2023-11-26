@@ -33,7 +33,6 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-
     }
 
     @Override
