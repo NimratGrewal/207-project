@@ -18,14 +18,15 @@ public class FeedInteractor implements FeedInputBoundary {
 
     public void execute(FeedInputData inputData) {
         UUID promptID = inputData.getPromptID();
-        Prompt prompt = PromptDataAccessObject.get(promptID);
+        Prompt prompt = promptDataAccessObject.getPromptById(promptID);
 
-        String promptText = prompt.getPromptText();
         LocalDate promptDate = prompt.getPromptDate();
-        List<Response> promptResponses = prompt.getPromptResponse();
+        List<Response> promptResponses = promptDataAccessObject.getPromptResponses(promptID);
 
         FeedOutputData outputData = new FeedOutputData(promptDate, prompt, promptResponses);
 
         presenter.present(outputData);
     }
 }
+
+

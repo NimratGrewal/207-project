@@ -23,7 +23,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         this.viewModel = viewModel;
         this.profileController = profileController;
 
-        viewModel.addPropertyChangeListener(this); // Listen to changes in the ViewModel
+        viewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
 
@@ -54,7 +54,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
         for (Response response : viewModel.getState().getResponseHistory()) {
-            JPanel responseBoxPanel = createResponseBox(response);
+            JPanel responseBoxPanel = createProfileResponseBox(response);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
@@ -93,8 +93,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 //        });
     }
 
-    private JPanel createResponseBox(Response response) {
-        return new FeedResponseBox(response);
+    private JPanel createProfileResponseBox(Response response) {
+        return new views.ProfileResponseBox(response);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         responsesPanel.removeAll();
 
         for (Response response : viewModel.getState().getResponseHistory()) {
-            JPanel responseBoxPanel = createResponseBox(response);
+            JPanel responseBoxPanel = createProfileResponseBox(response);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }

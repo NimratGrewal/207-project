@@ -1,10 +1,19 @@
-package Views;
+package views;
+
+import entities.Response;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class FeedResponseBox extends JPanel {
-    public FeedResponseBox(String username, String songName, String artist, String albumName, String genre) {
+    public FeedResponseBox(Response response) {
+        String username = response.getUser().getUsername();
+        String songName = response.getSong().getName();
+//        List<String> songArtists = response.getSong().getArtists();
+        String songAlbum = response.getSong().getAlbum();
+        String albumCoverUrl = response.getSong().getAlbumCoverUrl();
+
+        ImageIcon albumCover = new ImageIcon(albumCoverUrl);
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -19,21 +28,19 @@ public class FeedResponseBox extends JPanel {
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        JLabel albumCoverLabel = new JLabel("Album Cover"); // Replace with your actual image or component
+        JLabel albumCoverLabel = new JLabel("Album Cover");
         leftPanel.add(albumCoverLabel, BorderLayout.CENTER);
 
         JPanel rightPanel = new JPanel(new GridLayout(4, 1));
         rightPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JLabel songLabel = new JLabel("Song: " + songName);
-        JLabel artistLabel = new JLabel("Artist: " + artist);
-        JLabel albumLabel = new JLabel("Album: " + albumName);
-        JLabel genreLabel = new JLabel("Genre: " + genre);
+//        JLabel artistLabel = new JLabel("Artist: " + songArtists);
+        JLabel albumLabel = new JLabel("Album: " + songAlbum);
 
         rightPanel.add(songLabel);
-        rightPanel.add(artistLabel);
+//        rightPanel.add(artistLabel);
         rightPanel.add(albumLabel);
-        rightPanel.add(genreLabel);
 
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
