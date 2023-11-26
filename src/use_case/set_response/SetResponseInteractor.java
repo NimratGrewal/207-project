@@ -5,17 +5,14 @@ import entities.Song;
 import entities.SpotifyAPICaller;
 
 public class SetResponseInteractor implements SetResponseInputBoundary {
-    private final SetResponseDataAccessInterface userDataAccessObject;
-    private final SetResponseDataAccessInterface promptDataAccessObject;
+    private final SetResponseDataAccessInterface dataAccessObject;
     private final SetResponseOutputBoundary setResponsePresenter;
 
     private final SpotifyAPICaller caller;
 
-    public SetResponseInteractor(SetResponseDataAccessInterface userDataAccessObject,
-                                 SetResponseDataAccessInterface promptDataAccessObject,
+    public SetResponseInteractor(SetResponseDataAccessInterface dataAccessObject,
                                  SetResponseOutputBoundary setResponsePresenter, SpotifyAPICaller caller) {
-        this.userDataAccessObject = userDataAccessObject;
-        this.promptDataAccessObject = promptDataAccessObject;
+        this.dataAccessObject = dataAccessObject;
         this.setResponsePresenter = setResponsePresenter;
         this.caller = caller;
     }
@@ -25,17 +22,16 @@ public class SetResponseInteractor implements SetResponseInputBoundary {
         Song song = caller.getTrack(setResponseInputData.getSongId());
 
         Response response = new Response(
-                promptDataAccessObject.getActivePromptId(),
-                userDataAccessObject.getLoggedInUser(),
+                dataAccessObject.getActivePromptId(),
+                dataAccessObject.getLoggedInUser(),
                 song);
-        userDataAccessObject.setResponse(response);
-        promptDataAccessObject.setResponse(response);
+        dataAccessObject.setResponse(response);
 
         SetResponseOutputData setResponseOutputData = new SetResponseOutputData(
                 song.getName(),
                 song.getAlbum(),
                 String.join(", ", song.getArtists()),
-                promptDataAccessObject.getActivePromptText(),
+                dataAccessObject.getActivePromptText(),
                 song.getAlbumArt(100));
         setResponsePresenter.prepareSuccessView(setResponseOutputData);
     }

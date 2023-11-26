@@ -8,16 +8,14 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface {
+public class FileUserDataAccessObject {
     private final File csvFile;
-
     private final Map<String, Integer> headers = new LinkedHashMap<>();
-
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
-
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
-
     private UserFactory userFactory;
+
+    private User loggedInUser;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
@@ -118,12 +116,16 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         }
     }
 
-    public void setResponse(UUID userId, Response response) {
-        accounts.get(userId).setResponse(response.getPromptId(), response);
-        responses.get(accounts.get(userId)).add(response);
+    /**
+     * Sets the current logged in user's response to response
+     * @param response The response for the current user
+     */
+    public void setResponse(Response response) {
+        loggedInUser.setResponse(response.getPromptId(), response);
+        responses.get(loggedInUser).add(response);
     }
 
-    @Override
+
     public boolean responseExistsById(UUID responseId) {
         for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
             List<Response> responses = entry.getValue();
@@ -137,7 +139,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return false;
     }
 
-    @Override
     public void deleteResponse(UUID responseId) {
         for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
             List<Response> responses = entry.getValue();
@@ -150,5 +151,13 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
 
             }
         }
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }
