@@ -12,8 +12,8 @@ public class DeleteController {
         this.deleteInteractor = deleteInteractor;
     }
 
-    public void execute(UUID promptId) {
-        DeleteInputData deleteInputData = new DeleteInputData(promptId);
+    public void execute(UUID responseId) {
+        DeleteInputData deleteInputData = new DeleteInputData(responseId);
 
         deleteInteractor.execute(deleteInputData);}
 }

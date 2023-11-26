@@ -2,7 +2,7 @@ package use_case.delete;
 
 import java.util.UUID;
 
-public class DeleteInteractor implements DeleteInputBoundary{
+public class DeleteInteractor implements DeleteInputBoundary {
     final DeleteOutputBoundary deletePresenter;
 
     final DeleteResponseDataAccessInterface responseDataAccessInterface;
@@ -17,10 +17,17 @@ public class DeleteInteractor implements DeleteInputBoundary{
 
     @Override
     public void execute(DeleteInputData deleteInputData) {
-        if (responseDataAccessInterface.existsbyId(deleteInputData.getPromptId())) {
-            
+        UUID responseId = deleteInputData.getResponseId();
+        if (responseDataAccessInterface.existsById(responseId) && userDataAccessInterface.responseExistsById(responseId)) {
+            responseDataAccessInterface.deleteResponse(responseId);
+            userDataAccessInterface.deleteResponse(responseId);
+
+            DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
+            deletePresenter.prepareSuccessView(deleteOutputData);
+        } else {
+            deletePresenter.prepareFailView("Response does not exist");
 
         }
-    }
 
+    }
 }

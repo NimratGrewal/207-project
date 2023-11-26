@@ -1,4 +1,14 @@
 package interface_adapter.profile;
 
-public class ProfileController {
-}
+//import use_case.FeedToProfile.FeedToProfileInputBoundary;
+//
+//public class ProfileController implements FeedToProfileInputBoundary{
+//    private final FeedToProfileInputBoundary profileInteractor;
+//
+//    public ProfileController(FeedToProfileInputBoundary profileInteractor) {
+//        this.profileInteractor = profileInteractor;
+//    }
+//    public void profileClicked() {
+//        profileInteractor.profileClicked();
+//    }
+//}

@@ -16,15 +16,14 @@ public class CommonUser implements User {
      * Requires: password is valid.
      * @param username
      * @param password
-     * @param userId
      */
 
-    public CommonUser(String username, String password, LocalDateTime creationTime) {
+    public CommonUser(String username, String password) {
         this.username = username;
         this.password = password;
         this.userId = UUID.randomUUID();
         this.history = new HashMap<>();
-        this.creationTime = creationTime;
+        this.creationTime = LocalDateTime.now();
     }
 
     public CommonUser(UUID userId, String username, String password, LocalDateTime creationTime) {
@@ -62,6 +61,13 @@ public class CommonUser implements User {
         return history.get(promptId);
     }
 
+    public int getNumberOfResponses() {
+        if (history != null) {
+            return history.size();
+        }
+        return 0;
+    }
+
     @Override
     public void setResponse(UUID promptId, Response response) {
         // if this prompt is not yet in history:
@@ -78,10 +84,4 @@ public class CommonUser implements User {
         history.remove(promptId);
     }
 
-    @Override
-    public void changeResponse(UUID promptId, Response response) {
-        if (history.containsKey(promptId)) {
-            history.replace(promptId, response);
-        }
-    }
 }

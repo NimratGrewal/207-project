@@ -4,11 +4,11 @@ import java.util.UUID;
 
 public class DeleteInputData {
 
-    final private UUID promptId;
+    final private UUID responseId;
 
-    public DeleteInputData(UUID promptId) {
-        this.promptId = promptId;
+    public DeleteInputData(UUID responseId) {
+        this.responseId = responseId;
     }
 
-    UUID getPromptId() {return this.promptId;}
+    UUID getResponseId() {return this.responseId;}
 }

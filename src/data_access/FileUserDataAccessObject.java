@@ -1,15 +1,14 @@
 package data_access;
 
 import entities.*;
-import entities.User;
-import use_case.login.LoginUserDataInterface;
-import use_case.signup.SignupUserDataInterface;
+import use_case.delete.DeleteUserDataAccessInterface;
+import use_case.set_response.SetResponseDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SignupUserDataInterface, LoginUserDataInterface {
+public class FileUserDataAccessObject implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -28,7 +27,7 @@ public class FileUserDataAccessObject implements SignupUserDataInterface, LoginU
         headers.put("username", 1);
         headers.put("password", 2);
         headers.put("creation_time", 3);
-        headers.put("responses",4);
+        headers.put("responses", 4);
 
         if (csvFile.length() == 0) {
             save();
@@ -53,7 +52,7 @@ public class FileUserDataAccessObject implements SignupUserDataInterface, LoginU
                     accounts.put(userId, user);
 
                     String[] responseInfo = responsesText.split(";");
-                    for (String responseStr: responseInfo) {
+                    for (String responseStr : responseInfo) {
                         String[] responseData = responseStr.split(":");
                         UUID responseID = UUID.fromString(responseData[0]);
                         UUID promptID = UUID.fromString(responseData[1]);
@@ -73,6 +72,7 @@ public class FileUserDataAccessObject implements SignupUserDataInterface, LoginU
 
     /**
      * Save a new User to accounts
+     *
      * @param user The user to be saved
      */
     //TODO: add save method to UserSignUpDataAccessInterface
@@ -80,9 +80,6 @@ public class FileUserDataAccessObject implements SignupUserDataInterface, LoginU
         accounts.put(user.getUserId(), user);
         this.save();
     }
-
-    //TODO: add save method to SaveResponse
-    public void save(Response response) { responses.get(response.getUser()).add(response);}
 
     public User get(UUID userId) {
         return accounts.get(userId);
@@ -104,10 +101,10 @@ public class FileUserDataAccessObject implements SignupUserDataInterface, LoginU
                 for (Response response : user.getHistory().values()) {
                     //TODO: create getResponseId method in Response class
                     String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSongId());
+                            response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
                     responses.add(responseText);
                 }
-                String responseString = String.join(";",responses);
+                String responseString = String.join(";", responses);
                 String line = "%s,%s,%s,%s".formatted(
                         //TODO: create getCreationTime method in User class + interface
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
@@ -121,13 +118,37 @@ public class FileUserDataAccessObject implements SignupUserDataInterface, LoginU
         }
     }
 
+    public void setResponse(UUID userId, Response response) {
+        accounts.get(userId).setResponse(response.getPromptId(), response);
+        responses.get(accounts.get(userId)).add(response);
+    }
+
     @Override
-    public boolean existsByName(String identifier) {
+    public boolean responseExistsById(UUID responseId) {
+        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
+            List<Response> responses = entry.getValue();
+            for (Response response : responses) {
+                UUID responseID = response.getResponseId();
+                if (responseID == responseId) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     @Override
-    public User get(String username) {
-        return null;
+    public void deleteResponse(UUID responseId) {
+        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
+            List<Response> responses = entry.getValue();
+            for (Response response : responses) {
+                UUID responseID = response.getResponseId();
+                if (responseID == responseId) {
+                    responses.remove(response);
+                    break;
+                }
+
+            }
+        }
     }
 }
