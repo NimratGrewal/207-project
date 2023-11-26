@@ -5,6 +5,7 @@ import use_case.toProfile.ProfileOutputBoundary;
 import use_case.toProfile.ProfileOutputData;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ProfilePresenter implements ProfileOutputBoundary {
     private final ProfileViewModel profileViewModel;
@@ -16,11 +17,9 @@ public class ProfilePresenter implements ProfileOutputBoundary {
     @Override
     public void present(ProfileOutputData outputData) {
         String username = outputData.getUsername();
-        List<Response> responseHistory = outputData.getResponseHistory();
-        int numberOfResponses = responseHistory.size();
+        List<UUID> responseIds = outputData.getResponseIds();
 
-        ProfileState profileState = new ProfileState(username, responseHistory, numberOfResponses);
-
+        ProfileState profileState = new ProfileState(username, responseIds);
         profileViewModel.setState(profileState);
     }
 }

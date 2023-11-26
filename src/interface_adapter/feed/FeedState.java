@@ -1,19 +1,17 @@
 package interface_adapter.feed;
 
-import entities.Prompt;
-import entities.Response;
-
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class FeedState {
     private final LocalDate promptDate;
-    private final Prompt promptOfTheDay;
-    private final List<Response> promptResponses;
+    private final String promptText;
+    private final List<UUID> promptResponses;
 
-    public FeedState(LocalDate promptDate, Prompt promptOfTheDay, List<Response> promptResponses) {
+    public FeedState(LocalDate promptDate, String promptText, List<UUID> promptResponses) {
         this.promptDate = promptDate;
-        this.promptOfTheDay = promptOfTheDay;
+        this.promptText = promptText;
         this.promptResponses = promptResponses;
     }
 
@@ -21,11 +19,11 @@ public class FeedState {
         return promptDate;
     }
 
-    public Prompt getPromptOfTheDay() {
-        return promptOfTheDay;
+    public String getPromptText() {
+        return promptText;
     }
 
-    public List<Response> getPromptResponses() {
+    public List<UUID> getPromptResponses() {
         return promptResponses;
     }
 }

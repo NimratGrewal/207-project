@@ -84,8 +84,18 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return accounts.get(userId);
     }
 
-    public List<Response> getResponses(User user) {
-        return responses.getOrDefault(user, new ArrayList<>());
+    @Override
+    public List<UUID> getResponseIds(User user) {
+        List<UUID> responseIds = new ArrayList<>();
+
+        if (responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                responseIds.add(response.getResponseId());
+            }
+        }
+
+        return responseIds;
     }
 
     /**
@@ -141,5 +151,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
     public UUID getLoggedInUserId() {
         return null;
     }
+
 
 }

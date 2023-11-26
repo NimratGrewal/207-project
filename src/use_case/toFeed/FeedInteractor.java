@@ -1,8 +1,5 @@
 package use_case.toFeed;
 
-import entities.Prompt;
-import entities.Response;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -18,12 +15,13 @@ public class FeedInteractor implements FeedInputBoundary {
 
     public void execute(FeedInputData inputData) {
         UUID promptID = inputData.getPromptID();
-        Prompt prompt = promptDataAccessObject.getPromptById(promptID);
 
-        LocalDate promptDate = prompt.getPromptDate();
-        List<Response> promptResponses = promptDataAccessObject.getPromptResponses(promptID);
+        // necessary info from prompt dao... need these methods!!!
+        String promptText = promptDataAccessObject.getPromptText(promptID);
+        LocalDate promptDate = promptDataAccessObject.getPromptDate(promptID);
+        List<UUID> promptResponses = promptDataAccessObject.getPromptResponses(promptID);
 
-        FeedOutputData outputData = new FeedOutputData(promptDate, prompt, promptResponses);
+        FeedOutputData outputData = new FeedOutputData(promptDate, promptText, promptResponses);
 
         presenter.present(outputData);
     }

@@ -3,25 +3,22 @@ package use_case.toProfile;
 import entities.Response;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ProfileOutputData {
     private final String username;
-    private final List<Response> responseHistory;
+    private final List<UUID> responseIds;
 
-    public ProfileOutputData(String username, List<Response> responseHistory) {
+    public ProfileOutputData(String username, List<UUID> responseIds) {
         this.username = username;
-        this.responseHistory = responseHistory;
+        this.responseIds = responseIds;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public List<Response> getResponseHistory() {
-        return responseHistory;
-    }
-
-    public int getNumberOfResponses() {
-        return responseHistory.size();
+    public List<UUID> getResponseIds() {
+        return responseIds;
     }
 }

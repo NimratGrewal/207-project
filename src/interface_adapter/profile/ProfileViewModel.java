@@ -1,10 +1,7 @@
 package interface_adapter.profile;
 
-import entities.Response;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.List;
 
 public class ProfileViewModel {
     private ProfileState state;

@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface UserProfileDataAccessInterface {
     User get(UUID userId);
-    List<Response> getResponses(User user);
+    List<UUID> getResponseIds(User user);
 }

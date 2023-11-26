@@ -2,7 +2,6 @@ package interface_adapter.profile;
 
 import use_case.toProfile.ProfileInputBoundary;
 import use_case.toProfile.ProfileInputData;
-import use_case.toProfile.ProfileInteractor;
 
 import java.util.UUID;
 

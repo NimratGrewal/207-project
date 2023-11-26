@@ -6,6 +6,7 @@ import entities.User;
 import java.util.List;
 import java.util.UUID;
 
+// Modified ProfileInteractor
 public class ProfileInteractor implements ProfileInputBoundary {
     private final UserProfileDataAccessInterface userDataAccessObject;
     private final ProfileOutputBoundary presenter;
@@ -23,12 +24,13 @@ public class ProfileInteractor implements ProfileInputBoundary {
         // Assuming getUsername is a method in the User class
         String username = user.getUsername();
 
-        List<Response> responseHistory = userDataAccessObject.getResponses(user);
+        List<UUID> responseIds = userDataAccessObject.getResponseIds(user);
 
         // Create ProfileOutputData with the required information
-        ProfileOutputData outputData = new ProfileOutputData(username, responseHistory);
+        ProfileOutputData outputData = new ProfileOutputData(username, responseIds);
 
         // Pass the output data to the presenter
         presenter.present(outputData);
     }
 }
+
