@@ -34,7 +34,7 @@ public class Response {
         return user;
     }
 
-    public String getSongId() {
-        return this.song.getSongId();
+    public Song getSong() {
+        return this.song;
     }
 }

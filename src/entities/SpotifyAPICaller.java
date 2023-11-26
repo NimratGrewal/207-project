@@ -92,9 +92,15 @@ public class SpotifyAPICaller {
                     artists.add(artistObject.getString("name"));
                 }
                 String album = responseBody.getJSONObject("album").getString("name");
-                URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
-                Image albumArt = new ImageIcon(ImageURL).getImage();
-                return new Song(trackId, songName, artists, album, albumArt);
+              
+                if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
+                    URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
+                  Image albumArt = new ImageIcon(ImageURL).getImage();
+                  return new Song(trackId, songName, artists, album, albumArt);
+                } else {
+                    // if no images available
+                    throw new RuntimeException("No album cover found for the track");
+                }
             }
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
@@ -141,9 +147,15 @@ public class SpotifyAPICaller {
                         JSONObject artistObject = (JSONObject) artist;
                         artists.add(artistObject.getString("name"));
                     }
-                    URL ImageURL = new URL(trackObject.getJSONArray("images").getJSONObject(0).getString("url"));
-                    Image albumArt = new ImageIcon(ImageURL).getImage();
-                    tracks.add(new Song(songId, songName, artists, album, albumArt));
+  
+                    if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
+                        URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
+                        Image albumArt = new ImageIcon(ImageURL).getImage();
+                        tracks.add(new Song(songId, songName, artists, album, albumArt));
+                    } else {
+                    // if no images available
+                    throw new RuntimeException("No album cover found for the track");
+                    }
                 }
                 return tracks;
             }
