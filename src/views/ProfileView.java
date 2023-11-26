@@ -39,10 +39,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         // overall content panel
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 10));
+        contentPanel.setBackground(Color.WHITE);
 
         // profile info panel
         JPanel profilePanel = new JPanel();
         profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+        profilePanel.setBackground(Color.WHITE);
 
         usernameLabel.setText("Username: " + viewModel.getState().getUsername());
         responsesLabel.setText("Responses: " + viewModel.getState().getNumberOfResponses());
@@ -53,11 +56,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                 (Objects.requireNonNull(getClass().getResource("/images/Portrait_placeholder.png"))));
         profilePictureLabel.setIcon(profilePictureIcon);
 
-        profilePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        JButton logout = new JButton("Log out");
 
         profilePanel.add(profilePictureLabel);
+        profilePanel.add(Box.createVerticalStrut(20));
         profilePanel.add(usernameLabel);
+        profilePanel.add(Box.createVerticalStrut(5));
         profilePanel.add(responsesLabel);
+        profilePanel.add(Box.createVerticalGlue());
+        profilePanel.add(logout);
 
         // responses panel
         responsesPanel = new JPanel();
@@ -74,7 +81,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         // scroll pane for answers
         JScrollPane scrollPane = new JScrollPane(responsesPanel);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 10));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBackground(Color.WHITE);
 
         // space around answer boxes in scroll panel
         responsesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
