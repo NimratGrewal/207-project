@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface, UserProfileDataAccessInterface, DeleteUserDataAccessInterface {
+public class FileUserDataAccessObject {
     private final File csvFile;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
@@ -85,7 +85,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return accounts.get(userId);
     }
 
-    @Override
     public List<UUID> getResponseIds(User user) {
         List<UUID> responseIds = new ArrayList<>();
 
@@ -154,28 +153,10 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return null; // Response not found
     }
 
-    @Override
-    public String getActivePromptText() {
-        return null;
-    }
-
-    @Override
-    public UUID getActivePromptId() {
-        return null;
-    }
-
-    @Override
-    public UUID getLoggedInUserId() {
-        return null;
-    }
-
-    @Override
     public boolean responseExistsById(UUID responseId) {
-        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
-            List<Response> responses = entry.getValue();
-            for (Response response : responses) {
-                UUID responseID = response.getResponseId();
-                if (responseID == responseId) {
+        for (List<Response> responseList: responses.values()){
+            for (Response response: responseList) {
+                if (responseId.equals(response.getResponseId())){
                     return true;
                 }
             }
@@ -184,17 +165,10 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
     }
 
     public void deleteResponse(UUID responseId) {
-        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
-            List<Response> responses = entry.getValue();
-            for (Response response : responses) {
-                UUID responseID = response.getResponseId();
-                if (responseID == responseId) {
-                    responses.remove(response);
-                    break;
-                }
-
-            }
+        for (List<Response> responseList: responses.values()){
+            responseList.removeIf(response -> responseId.equals(response.getResponseId()));
         }
+        save();
     }
 
     public User getLoggedInUser() {

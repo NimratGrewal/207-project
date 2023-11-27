@@ -53,7 +53,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         JLabel profilePictureLabel = new JLabel();
 
         ImageIcon profilePictureIcon = new ImageIcon(
-                (Objects.requireNonNull(getClass().getResource("/images/Portrait_placeholder.png"))));
+                (Objects.requireNonNull(getClass().getResource("/views/assets/Portrait_placeholder.png"))));
         profilePictureLabel.setIcon(profilePictureIcon);
 
         JButton logout = new JButton("Log out");
