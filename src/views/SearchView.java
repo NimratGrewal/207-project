@@ -39,7 +39,8 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         this.searchTracksViewModel = searchTracksViewModel;
         this.searchTracksViewModel.addPropertyChangeListener(this);
 
-        promptText = new JLabel(SearchViewModel.TITLE_LABEL);
+        JLabel title = new JLabel(SearchViewModel.TITLE_LABEL);
+        promptText = new JLabel();
 
         searchBarField = new JTextField();
 
@@ -96,6 +97,13 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.add(title);
+        this.add(promptText);
+        this.add(listScroller);
+        this.add(setResponse);
     }
 
     @Override
