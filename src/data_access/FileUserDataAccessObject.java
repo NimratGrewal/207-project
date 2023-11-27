@@ -9,16 +9,15 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface, UserProfileDataAccessInterface, DeleteUserDataAccessInterface {
+
+public class FileUserDataAccessObject {
     private final File csvFile;
-
     private final Map<String, Integer> headers = new LinkedHashMap<>();
-
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
-
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
-
     private UserFactory userFactory;
+
+    private User loggedInUser;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
@@ -86,7 +85,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return accounts.get(userId);
     }
 
-    @Override
     public List<UUID> getResponseIds(User user) {
         List<UUID> responseIds = new ArrayList<>();
 
@@ -132,10 +130,14 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         }
     }
 
-    @Override
-    public void setResponse(UUID userId, Response response) {
-        accounts.get(userId).setResponse(response.getPromptId(), response);
-        responses.get(accounts.get(userId)).add(response);
+
+    /**
+     * Sets the current logged in user's response to response
+     * @param response The response for the current user
+     */
+    public void setResponse(Response response) {
+        loggedInUser.setResponse(response.getPromptId(), response);
+        responses.get(loggedInUser).add(response);
     }
 
     public Response getResponseById(UUID userId, UUID responseId) {
@@ -151,28 +153,10 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return null; // Response not found
     }
 
-    @Override
-    public String getActivePromptText() {
-        return null;
-    }
-
-    @Override
-    public UUID getActivePromptId() {
-        return null;
-    }
-
-    @Override
-    public UUID getLoggedInUserId() {
-        return null;
-    }
-
-    @Override
     public boolean responseExistsById(UUID responseId) {
-        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
-            List<Response> responses = entry.getValue();
-            for (Response response : responses) {
-                UUID responseID = response.getResponseId();
-                if (responseID == responseId) {
+        for (List<Response> responseList: responses.values()){
+            for (Response response: responseList) {
+                if (responseId.equals(response.getResponseId())){
                     return true;
                 }
             }
@@ -180,18 +164,18 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return false;
     }
 
-    @Override
     public void deleteResponse(UUID responseId) {
-        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
-            List<Response> responses = entry.getValue();
-            for (Response response : responses) {
-                UUID responseID = response.getResponseId();
-                if (responseID == responseId) {
-                    responses.remove(response);
-                    break;
-                }
-
-            }
+        for (List<Response> responseList: responses.values()){
+            responseList.removeIf(response -> responseId.equals(response.getResponseId()));
         }
+        save();
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }

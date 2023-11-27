@@ -41,7 +41,7 @@ public class Prompt {
     public HashMap<UUID, UUID> getPromptResponse(){
         return responses;
     }
-    public void setResponses(UUID userID, UUID responseId){
+    public void setResponse(UUID userID, UUID responseId){
         if (!responses.containsKey(userID)) {
             responses.put(userID, responseId);
         }
