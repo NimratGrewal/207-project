@@ -1,6 +1,5 @@
 package interface_adapter.profile;
 
-import entities.Response;
 import use_case.toProfile.ProfileOutputBoundary;
 import use_case.toProfile.ProfileOutputData;
 

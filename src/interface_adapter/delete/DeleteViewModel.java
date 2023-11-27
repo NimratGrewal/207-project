@@ -8,7 +8,6 @@ import java.beans.PropertyChangeSupport;
 public class DeleteViewModel extends ViewModel {
 
     public final String TITLE_LABEL = "Delete View";
-    public static final String DELETE_BUTTON_LABEL = "Delete";
     private DeleteState state = new DeleteState();
     public DeleteViewModel() {
         super("delete");

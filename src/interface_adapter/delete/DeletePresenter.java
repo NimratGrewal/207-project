@@ -1,38 +1,31 @@
 package interface_adapter.delete;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.profile.ProfileState;
+import interface_adapter.profile.ProfileViewModel;
 import use_case.delete.DeleteOutputBoundary;
 import use_case.delete.DeleteOutputData;
 
 public class DeletePresenter implements DeleteOutputBoundary {
 
-    private final DeleteViewModel deleteViewModel;
+    private final ProfileViewModel profileViewModel;
 
     private ViewManagerModel viewManagerModel;
 
-    public DeletePresenter(DeleteViewModel deleteViewModel, ViewManagerModel viewManagerModel) {
-        this.deleteViewModel = deleteViewModel;
+    public DeletePresenter(ProfileViewModel profileViewModel, ViewManagerModel viewManagerModel) {
+        this.profileViewModel = profileViewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
     @Override
     public void prepareSuccessView(DeleteOutputData deleteOutputData) {
-        DeleteState deleteState = deleteViewModel.getState();
-        deleteState.setResponseId(deleteOutputData.getResponseId());
-        deleteViewModel.firePropertyChanged();
+        ProfileState profileState = profileViewModel.getState();
+        profileState.setResponseId(deleteOutputData.getResponseId());
+        profileViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setActiveView(deleteViewModel.getViewName());
+        this.viewManagerModel.setActiveView(profileViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
     }
 
-    @Override
-    public void prepareFailView(String responseDoesNotExist) {
-        DeleteState deleteState = deleteViewModel.getState();
-        deleteState.setResponseError(responseDoesNotExist);
-        deleteViewModel.firePropertyChanged();
-
-        this.viewManagerModel.setActiveView(deleteViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
-    }
 }

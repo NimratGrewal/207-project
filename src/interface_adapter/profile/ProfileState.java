@@ -8,17 +8,26 @@ public class ProfileState {
     private final String username;
     private final List<UUID> responseIds;
     private final int numberOfResponses;
+    private UUID responseId;
 
     public ProfileState(UUID userID, String username, List<UUID> responseIds) {
         this.userID = userID;
         this.username = username;
         this.responseIds = responseIds;
         this.numberOfResponses = responseIds.size();
+        this.responseId = null;
     }
 
     public UUID getUserID() {
         return userID;
     }
+
+    public void setResponseId(UUID responseId) {
+        this.responseId = responseId;
+    }
+
+    public UUID getResponseId(){ return responseId;}
+
 
     public String getUsername() {
         return username;
