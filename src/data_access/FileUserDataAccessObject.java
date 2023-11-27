@@ -3,12 +3,13 @@ package data_access;
 import entities.*;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
+import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface {
+public class FileUserDataAccessObject implements SetResponseDataAccessInterface, UserProfileDataAccessInterface, DeleteUserDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -85,6 +86,19 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         return accounts.get(userId);
     }
 
+    @Override
+    public List<UUID> getResponseIds(User user) {
+        List<UUID> responseIds = new ArrayList<>();
+
+        if (responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                responseIds.add(response.getResponseId());
+            }
+        }
+
+        return responseIds;
+    }
 
     /**
      * Save the current state of this DataAccessObject in the data file
@@ -118,9 +132,38 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         }
     }
 
+    @Override
     public void setResponse(UUID userId, Response response) {
         accounts.get(userId).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(userId)).add(response);
+    }
+
+    public Response getResponseById(UUID userId, UUID responseId) {
+        User user = accounts.get(userId);
+        if (user != null && responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                if (response.getResponseId().equals(responseId)) {
+                    return response;
+                }
+            }
+        }
+        return null; // Response not found
+    }
+
+    @Override
+    public String getActivePromptText() {
+        return null;
+    }
+
+    @Override
+    public UUID getActivePromptId() {
+        return null;
+    }
+
+    @Override
+    public UUID getLoggedInUserId() {
+        return null;
     }
 
     @Override

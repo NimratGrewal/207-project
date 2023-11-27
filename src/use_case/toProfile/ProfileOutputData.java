@@ -1,19 +1,19 @@
-package interface_adapter.profile;
+package use_case.toProfile;
+
+import entities.Response;
 
 import java.util.List;
 import java.util.UUID;
 
-public class ProfileState {
+public class ProfileOutputData {
     private final UUID userID;
     private final String username;
     private final List<UUID> responseIds;
-    private final int numberOfResponses;
 
-    public ProfileState(UUID userID, String username, List<UUID> responseIds) {
+    public ProfileOutputData(UUID userID, String username, List<UUID> responseIds) {
         this.userID = userID;
         this.username = username;
         this.responseIds = responseIds;
-        this.numberOfResponses = responseIds.size();
     }
 
     public UUID getUserID() {
@@ -27,9 +27,4 @@ public class ProfileState {
     public List<UUID> getResponseIds() {
         return responseIds;
     }
-
-    public int getNumberOfResponses() {
-        return numberOfResponses;
-    }
-
 }
