@@ -1,15 +1,15 @@
-package interface_adapter.feed;
+package use_case.toFeed;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class FeedState {
+public class FeedOutputData {
     private final LocalDate promptDate;
     private final String promptText;
     private final List<UUID> promptResponses;
 
-    public FeedState(LocalDate promptDate, String promptText, List<UUID> promptResponses) {
+    public FeedOutputData(LocalDate promptDate, String promptText, List<UUID> promptResponses) {
         this.promptDate = promptDate;
         this.promptText = promptText;
         this.promptResponses = promptResponses;
