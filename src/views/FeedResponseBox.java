@@ -19,6 +19,7 @@ public class FeedResponseBox extends JPanel {
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        topPanel.setBackground(Color.GRAY);
 
         JLabel usernameLabel = new JLabel(username + " said");
         usernameLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -31,9 +32,11 @@ public class FeedResponseBox extends JPanel {
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         JLabel albumCoverLabel = new JLabel(albumCover);
         leftPanel.add(albumCoverLabel, BorderLayout.CENTER);
+        leftPanel.setBackground(Color.lightGray);
 
         JPanel rightPanel = new JPanel(new GridLayout(4, 1));
         rightPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        rightPanel.setBackground(Color.lightGray);
 
         JLabel songLabel = new JLabel("Song: " + songName);
         JLabel artistLabel = new JLabel("Artist: " + songArtists);

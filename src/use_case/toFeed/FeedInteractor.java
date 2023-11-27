@@ -17,8 +17,8 @@ public class FeedInteractor implements FeedInputBoundary {
         UUID promptID = inputData.getPromptID();
 
         // necessary info from prompt dao... need these methods!!!
-        String promptText = promptDataAccessObject.getPromptText(promptID);
-        LocalDate promptDate = promptDataAccessObject.getPromptDate(promptID);
+        String promptText = promptDataAccessObject.getPromptByID(promptID).getPromptText();
+        LocalDate promptDate = promptDataAccessObject.getPromptByID(promptID).getPromptDate();
         List<UUID> promptResponses = promptDataAccessObject.getPromptResponses(promptID);
 
         FeedOutputData outputData = new FeedOutputData(promptDate, promptText, promptResponses);
