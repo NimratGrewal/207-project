@@ -92,7 +92,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(contentPanel, BorderLayout.CENTER);
-
+      
 //        JPanel buttons = new JPanel();
 //        delete = new JButton(deleteViewModel.DELETE_BUTTON_LABEL);
 //        buttons.add(delete);

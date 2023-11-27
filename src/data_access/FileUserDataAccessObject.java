@@ -1,13 +1,15 @@
 package data_access;
 
 import entities.*;
+import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
+import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FileUserDataAccessObject implements SetResponseDataAccessInterface {
+public class FileUserDataAccessObject implements SetResponseDataAccessInterface, UserProfileDataAccessInterface, DeleteUserDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -26,7 +28,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
         headers.put("username", 1);
         headers.put("password", 2);
         headers.put("creation_time", 3);
-        headers.put("responses",4);
+        headers.put("responses", 4);
 
         if (csvFile.length() == 0) {
             save();
@@ -51,13 +53,13 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
                     accounts.put(userId, user);
 
                     String[] responseInfo = responsesText.split(";");
-                    for (String responseStr: responseInfo) {
+                    for (String responseStr : responseInfo) {
                         String[] responseData = responseStr.split(":");
                         UUID responseID = UUID.fromString(responseData[0]);
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user.getUserId(), caller.getTrack(songID));
+                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -71,6 +73,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
 
     /**
      * Save a new User to accounts
+     *
      * @param user The user to be saved
      */
     //TODO: add save method to UserSignUpDataAccessInterface
@@ -83,6 +86,19 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
         return accounts.get(userId);
     }
 
+    @Override
+    public List<UUID> getResponseIds(User user) {
+        List<UUID> responseIds = new ArrayList<>();
+
+        if (responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                responseIds.add(response.getResponseId());
+            }
+        }
+
+        return responseIds;
+    }
 
     /**
      * Save the current state of this DataAccessObject in the data file
@@ -102,7 +118,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
                             response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
                     responses.add(responseText);
                 }
-                String responseString = String.join(";",responses);
+                String responseString = String.join(";", responses);
                 String line = "%s,%s,%s,%s".formatted(
                         //TODO: create getCreationTime method in User class + interface
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
@@ -120,5 +136,62 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface 
     public void setResponse(UUID userId, Response response) {
         accounts.get(userId).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(userId)).add(response);
+    }
+
+    public Response getResponseById(UUID userId, UUID responseId) {
+        User user = accounts.get(userId);
+        if (user != null && responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                if (response.getResponseId().equals(responseId)) {
+                    return response;
+                }
+            }
+        }
+        return null; // Response not found
+    }
+
+    @Override
+    public String getActivePromptText() {
+        return null;
+    }
+
+    @Override
+    public UUID getActivePromptId() {
+        return null;
+    }
+
+    @Override
+    public UUID getLoggedInUserId() {
+        return null;
+    }
+
+    @Override
+    public boolean responseExistsById(UUID responseId) {
+        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
+            List<Response> responses = entry.getValue();
+            for (Response response : responses) {
+                UUID responseID = response.getResponseId();
+                if (responseID == responseId) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void deleteResponse(UUID responseId) {
+        for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
+            List<Response> responses = entry.getValue();
+            for (Response response : responses) {
+                UUID responseID = response.getResponseId();
+                if (responseID == responseId) {
+                    responses.remove(response);
+                    break;
+                }
+
+            }
+        }
     }
 }

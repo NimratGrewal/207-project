@@ -25,8 +25,8 @@ public class SetResponseInteractor implements SetResponseInputBoundary {
         Song song = caller.getTrack(setResponseInputData.getSongId());
 
         Response response = new Response(
-                userDataAccessObject.getLoggedInUserId(),
                 promptDataAccessObject.getActivePromptId(),
+                userDataAccessObject.getLoggedInUser(),
                 song);
         userDataAccessObject.setResponse(response);
         promptDataAccessObject.setResponse(response);
@@ -35,8 +35,8 @@ public class SetResponseInteractor implements SetResponseInputBoundary {
                 song.getName(),
                 song.getAlbum(),
                 String.join(", ", song.getArtists()),
-                promptDataAccessObject.getActivePromptText()
-        );
+                promptDataAccessObject.getActivePromptText(),
+                song.getAlbumArt(100));
         setResponsePresenter.prepareSuccessView(setResponseOutputData);
     }
 }
