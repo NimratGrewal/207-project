@@ -5,6 +5,7 @@ import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_tracks.SearchTracksController;
 import interface_adapter.search_tracks.SearchTracksState;
 import interface_adapter.search_tracks.SearchTracksViewModel;
+import interface_adapter.set_response.SetResponseController;
 import views.components.SearchResultsListCellRenderer;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class SearchView extends JPanel implements PropertyChangeListener {
     private final SearchViewModel searchViewModel;
     private final SearchTracksController searchTracksController;
+    private final SetResponseController setResponseController;
     private final SearchTracksViewModel searchTracksViewModel;
 
     private final JLabel promptText;
@@ -31,8 +33,10 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final JButton setResponse;
     public SearchView (SearchViewModel searchViewModel,
                        SearchTracksController searchTracksController,
+                       SetResponseController setResponseController,
                        SearchTracksViewModel searchTracksViewModel) {
         this.searchViewModel = searchViewModel;
+        this.setResponseController = setResponseController;
         this.searchViewModel.addPropertyChangeListener(this);
 
         this.searchTracksController = searchTracksController;
@@ -92,7 +96,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(setResponse)) {
-                            //start setResponse controller
+                            setResponseController.execute(listModel.getElementAt(searchResults.getSelectedIndex()).get("id"));
                         }
                     }
                 }
