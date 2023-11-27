@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ProfileView extends JPanel implements ProfileResponseBoxListenerInterface, PropertyChangeListener {
+
     private final ProfileViewModel viewModel;
     private final ProfileController profileController;
     private final DeleteController deleteController;
@@ -78,7 +79,12 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
             if (response != null) {
                 JPanel responseBoxPanel = createProfileResponseBox(response);
                 responsesPanel.add(responseBoxPanel);
-                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+                responsesPanel.add(Box.createVerticalStrut(10));// Add vertical space between response panels
+
+                // Add ProfileView as a listener to each response box's delete button
+                if (responseBoxPanel instanceof ProfileResponseBox) {
+                    ((ProfileResponseBox) responseBoxPanel).addDeleteButtonListener(this);
+                }
             }
         }
 
@@ -98,7 +104,6 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
       
         JPanel buttons = new JPanel();
 
-        }
 
 //        delete = new JButton(ProfileViewModel.DELETE_BUTTON_LABEL);
 //        buttons.add(delete);
@@ -127,14 +132,18 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
         return fileUserDataAccessObject.getResponseById(viewModel.getState().getUserID(), responseId);
     }
     private JPanel createProfileResponseBox(Response response) {
-        ProfileResponseBox responseBox = new ProfileResponseBox(response);
-        responseBox.setProfileResponseBoxListener(this); // Set the listener
-        return responseBox;
+        return new ProfileResponseBox(response);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         setFields();
+
+        if ("deleteResponse".equals(evt.getPropertyName())) {
+            UUID responseId = (UUID) evt.getNewValue();
+            // Pass responseId to delete controller
+            deleteController.execute(responseId);
+        }
     }
 
     private void setFields() {
@@ -161,18 +170,19 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
 
     }
 
-    @Override
-    public void onDeleteAction(ProfileState state) {
-        deleteController.execute(state.getResponseId());
-    }
 
-    @Override
-    public ProfileState beforeDeleteAction(UUID responseId) {
-        ProfileState state = viewModel.getState();
-        state.setResponseId(responseId);
-        viewModel.setState(state);
-        return state;
-    }
+//    @Override
+//    public void onDeleteAction(ProfileState state) {
+//        deleteController.execute(state.getResponseId());
+//    }
+//
+//    @Override
+//    public ProfileState beforeDeleteAction(UUID responseId) {
+//        ProfileState state = viewModel.getState();
+//        state.setResponseId(responseId);
+//        viewModel.setState(state);
+//        return state;
+//    }
 }
 
 
