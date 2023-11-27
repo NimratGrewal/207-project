@@ -24,7 +24,7 @@ public class ProfileResponseBox extends FeedResponseBox {
     //    }
     JButton delete = new JButton("delete");
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    // private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public ProfileResponseBox(Response response, PromptDataAccessObject promptDataAccessObject) {
         super(response);
@@ -58,7 +58,7 @@ public class ProfileResponseBox extends FeedResponseBox {
                     int dialogueResult = JOptionPane.showConfirmDialog(delete,
                             "Are you sure you want to delete this response" + response.getResponseId() + "?", "Warning", dialogButton);
                     if (dialogueResult == JOptionPane.YES_OPTION) {
-                        support.firePropertyChange("deleteResponse", null, response.getResponseId());
+                        firePropertyChange("deleteResponse", null, response.getResponseId());
                     }
                 }
 
@@ -71,9 +71,9 @@ public class ProfileResponseBox extends FeedResponseBox {
         delete.addPropertyChangeListener(listener);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
-    }
+    // public void addPropertyChangeListener(PropertyChangeListener listener) {
+    //     support.addPropertyChangeListener(listener);
+    //}
 
 }
 
