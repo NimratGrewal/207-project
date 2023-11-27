@@ -127,7 +127,7 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
         return fileUserDataAccessObject.getResponseById(viewModel.getState().getUserID(), responseId);
     }
     private JPanel createProfileResponseBox(Response response) {
-        ProfileResponseBox responseBox = new ProfileResponseBox(response, promptDataAccessObject);
+        ProfileResponseBox responseBox = new ProfileResponseBox(response);
         responseBox.setProfileResponseBoxListener(this); // Set the listener
         return responseBox;
     }

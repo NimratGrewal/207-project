@@ -11,8 +11,6 @@ public class HomeViewModel extends ViewModel {
 
     private HomeState state = new HomeState();
 
-    public static final String CHANGE_BUTTON_LABEL = "Change";
-
     public HomeViewModel() {
         super("home");
     }
