@@ -4,7 +4,9 @@ import entities.Song;
 import entities.SpotifyAPICaller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchTracksInteractor implements SearchTracksInputBoundary {
     final SearchTracksOutputBoundary searchTracksPresenter;
@@ -18,13 +20,13 @@ public class SearchTracksInteractor implements SearchTracksInputBoundary {
     @Override
     public void execute(SearchTracksInputData searchTracksInputData) {
         List<Song> trackList = caller.searchForTracks(searchTracksInputData.getQuery());
-        List<String[]> songsInfo = new ArrayList<>();
+        List<Map<String, String>> songsInfo = new ArrayList<>();
         for (Song s: trackList) {
-            String[] songInfo = new String[4];
-            songInfo[0] = s.getSongId();
-            songInfo[1] = s.getName();
-            songInfo[2] = String.join(", ", s.getArtists());
-            songInfo[3] = s.getAlbum();
+            Map<String, String> songInfo = new HashMap<>();
+            songInfo.put("id", s.getSongId());
+            songInfo.put("name", s.getName());
+            songInfo.put("album", s.getAlbum());
+            songInfo.put("artists", String.join(", ", s.getArtists()));
             songsInfo.add(songInfo);
         }
 
