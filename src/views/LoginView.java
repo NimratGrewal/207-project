@@ -1,5 +1,6 @@
 package views;
 import interface_adapter.login.LoginController;
+import interface_adapter.signup.SignupViewModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.loginController = loginController;
         this.loginView = loginView;
         JPanel loginPanel = new JPanel();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1500, 1000);
         loginPanel.add(login);
         loginPanel.add(password);

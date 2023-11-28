@@ -63,7 +63,8 @@ public class PromptDataAccessObject {
             }
         }
     }
-    public void save(Prompt prompt, Response response) {        if (!responses.containsKey(prompt.getPromptId())){
+    public void save(Prompt prompt, Response response) {
+        if (!responses.containsKey(prompt.getPromptId())){
         responses.put(prompt.getPromptId(), new ArrayList<>());
     }
         responses.get(prompt.getPromptId()).add(response.getResponseId());
