@@ -1,7 +1,7 @@
 package use_case.toProfile;
 
+import data_access.DataAccessObjectFacade;
 import entities.*;
-import use_case.toFeed.FeedDataAccessInterface;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -10,21 +10,18 @@ import java.util.UUID;
 import java.util.Map;
 
 public class ProfileInteractor implements ProfileInputBoundary {
-    private final UserProfileDataAccessInterface userDataAccessObject;
-    private final FeedDataAccessInterface feedDataAccessObject;
+    private final DataAccessObjectFacade dataAccessObjectFacade;
     private final ProfileOutputBoundary presenter;
-    public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject,
-                             FeedDataAccessInterface feedDataAccessObject,
+    public ProfileInteractor(DataAccessObjectFacade dataAccessObjectFacade,
                              ProfileOutputBoundary presenter) {
-        this.userDataAccessObject = userDataAccessObject;
-        this.feedDataAccessObject = feedDataAccessObject;
+        this.dataAccessObjectFacade = dataAccessObjectFacade;
         this.presenter = presenter;
     }
 
     @Override
     public void execute(ProfileInputData inputData) {
         UUID userId = inputData.getLoggedInUserID();
-        User user = userDataAccessObject.getLoggedInUser(userId);
+        User user = dataAccessObjectFacade.getUser(userId);
 
         String username = user.getUsername();
         int numberOfResponses = user.getNumberOfResponses();
@@ -33,7 +30,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
         for (Map.Entry<UUID, Response> entry : userResponses.entrySet()) {
             UUID promptId = entry.getKey();
-            Prompt prompt = feedDataAccessObject.getPrompt(promptId);
+            Prompt prompt = dataAccessObjectFacade.getPromptById(promptId);
             String promptText = prompt.getPromptText();
             LocalDate promptDate = prompt.getPromptDate();
 

@@ -1,34 +1,30 @@
 package use_case.toFeed;
 
+import data_access.DataAccessObjectFacade;
 import entities.Response;
 import entities.Song;
-import entities.SpotifyAPICaller;
 import entities.User;
-import use_case.toProfile.UserProfileDataAccessInterface;
 
 import javax.swing.*;
 import java.time.LocalDate;
 import java.util.*;
 
 public class FeedInteractor implements FeedInputBoundary {
-    private final UserProfileDataAccessInterface userDataAccessObject;
-    private final FeedDataAccessInterface feedDataAccessObject;
+    private final DataAccessObjectFacade dataAccessObjectFacade;
     private final FeedOutputBoundary presenter;
 
-    public FeedInteractor(UserProfileDataAccessInterface userDataAccessObject,
-                          FeedDataAccessInterface feedDataAccessObject,
+    public FeedInteractor(DataAccessObjectFacade dataAccessObjectFacade,
                           FeedOutputBoundary presenter) {
-        this.userDataAccessObject = userDataAccessObject;
-        this.feedDataAccessObject = feedDataAccessObject;
+        this.dataAccessObjectFacade = dataAccessObjectFacade;
         this.presenter = presenter;
     }
 
     public void execute(FeedInputData inputData) {
         UUID promptID = inputData.getDailyPromptID();
 
-        String promptText = feedDataAccessObject.getCurrentPrompt(promptID).getPromptText();
-        LocalDate promptDate = feedDataAccessObject.getCurrentPrompt(promptID).getPromptDate();
-        Map<UUID, UUID> promptUserAndResponses = feedDataAccessObject.getPrompt(promptID).getPromptResponse();
+        String promptText = dataAccessObjectFacade.getCurrentPromptById(promptID).getPromptText();
+        LocalDate promptDate = dataAccessObjectFacade.getCurrentPromptById(promptID).getPromptDate();
+        Map<UUID, UUID> promptUserAndResponses = dataAccessObjectFacade.getPromptById(promptID).getPromptResponse();
 
         List<UUID> promptResponses = new ArrayList<>();
 
@@ -39,10 +35,10 @@ public class FeedInteractor implements FeedInputBoundary {
 
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
         for (UUID responseId : promptResponses) {
-            Response response = userDataAccessObject.getResponseById(responseId);
+            Response response = dataAccessObjectFacade.getResponseById(responseId);
             UUID userId = response.getUserId();
 
-            User user = userDataAccessObject.getUser(userId);
+            User user = dataAccessObjectFacade.getUser(userId);
             String username = user.getUsername();
 
             Song song = response.getSong();

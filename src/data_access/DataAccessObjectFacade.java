@@ -6,12 +6,14 @@ import entities.User;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.login.PromptDataAccessInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
+import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.util.List;
 import java.util.UUID;
 
-public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface, UserProfileDataAccessInterface, PromptDataAccessInterface {
+public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface,
+        UserProfileDataAccessInterface, PromptDataAccessInterface, FeedDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
     public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject) {
@@ -32,7 +34,7 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public void setResponse(Response response) {
         userDataAccessObject.setResponse(response);
-        promptDataAccessObject.setResponse(userDataAccessObject.getLoggedInUser().getUserId(), response);
+        promptDataAccessObject.setResponse(userDataAccessObject.getLoggedInUserId(), response);
     }
 
     @Override
@@ -46,16 +48,30 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public User getLoggedInUser() {
-        return userDataAccessObject.getLoggedInUser();
+    public UUID getLoggedInUserId() {
+        return userDataAccessObject.getLoggedInUserId();
     }
 
     @Override
-    public User get(UUID userId) {
-        return userDataAccessObject.get(userId);
+    public Response getResponseById(UUID responseId) {
+        return null;
     }
 
     @Override
+    public Prompt getPromptById(UUID promptId) {
+        return null;
+    }
+
+    @Override
+    public Prompt getCurrentPromptById(UUID promptId) {
+        return null;
+    }
+
+    @Override
+    public User getUser(UUID userId) {
+        return userDataAccessObject.getUser(userId);
+    }
+
     public List<UUID> getResponseIds(User user) {
         return userDataAccessObject.getResponseIds(user);
     }

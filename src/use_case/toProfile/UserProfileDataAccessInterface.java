@@ -6,7 +6,7 @@ import entities.User;
 import java.util.UUID;
 
 public interface UserProfileDataAccessInterface {
-    User getLoggedInUser(UUID userId);
+    UUID getLoggedInUserId();
 
     User getUser(UUID userId);
 

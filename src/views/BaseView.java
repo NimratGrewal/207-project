@@ -9,7 +9,7 @@ import java.util.UUID;
 public class BaseView extends JTabbedPane {
     private ProfileController profileController;
     private FeedController feedController;
-    public BaseView(SearchView searchView, ResponseView responseView,
+    public BaseView(SearchView searchView, ViewResponseView viewResponseView,
                     FeedView feedPage, ProfileView profilePage, UUID dailyPromptId, UUID loggedInUserId) {
         addTab("Home", null);
         addTab("Feed", null, feedPage);

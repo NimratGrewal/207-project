@@ -6,9 +6,9 @@ import entities.User;
 import java.util.UUID;
 
 public interface FeedDataAccessInterface {
-    Prompt getPrompt(UUID promptId);
+    Prompt getPromptById(UUID promptId);
 
-    Prompt getCurrentPrompt(UUID promptId);
+    Prompt getCurrentPromptById(UUID promptId);
 
     User getUser(UUID userId);
 }

@@ -18,8 +18,6 @@ public class FileUserDataAccessObject {
     private UserFactory userFactory;
     private User loggedInUser;
 
-    private User loggedInUser;
-
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
 
@@ -82,11 +80,6 @@ public class FileUserDataAccessObject {
         this.save();
     }
 
-    @Override
-    public User getLoggedInUser(UUID userId) {
-        return null;
-    }
-
     public User getUser(UUID userId) {
         return accounts.get(userId);
     }
@@ -119,7 +112,7 @@ public class FileUserDataAccessObject {
                 List<String> responses = new ArrayList<>();
                 for (Response response : user.getHistory().values()) {
                     String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSongId());
+                            response.getResponseId(), response.getPromptId(), response.getSong());
                     responses.add(responseText);
                 }
                 String responseString = String.join(";", responses);
@@ -176,20 +169,12 @@ public class FileUserDataAccessObject {
         save();
     }
 
-    public User getLoggedInUser() {
-        return loggedInUser;
+    public UUID getLoggedInUserId() {
+        return loggedInUser.getUserId();
     }
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
 
-    public void setLoggedInUser(User user) {
-        this.loggedInUser = user;
-    }
-
-    @Override
-    public User getLoggedInUser() {
-        return loggedInUser;
-    }
 }
