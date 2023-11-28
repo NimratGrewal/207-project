@@ -1,7 +1,7 @@
 package use_case.toProfile;
 
 import entities.*;
-import use_case.toFeed.PromptDataAccessInterface;
+import use_case.toFeed.FeedDataAccessInterface;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -11,18 +11,14 @@ import java.util.Map;
 
 public class ProfileInteractor implements ProfileInputBoundary {
     private final UserProfileDataAccessInterface userDataAccessObject;
-    private final PromptDataAccessInterface promptDataAccessObject;
+    private final FeedDataAccessInterface feedDataAccessObject;
     private final ProfileOutputBoundary presenter;
-    private final SpotifyAPICaller spotifyAPICaller;
-
     public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject,
-                             PromptDataAccessInterface promptDataAccessObject,
-                             ProfileOutputBoundary presenter,
-                             SpotifyAPICaller spotifyAPICaller) {
+                             FeedDataAccessInterface feedDataAccessObject,
+                             ProfileOutputBoundary presenter) {
         this.userDataAccessObject = userDataAccessObject;
-        this.promptDataAccessObject = promptDataAccessObject;
+        this.feedDataAccessObject = feedDataAccessObject;
         this.presenter = presenter;
-        this.spotifyAPICaller = spotifyAPICaller;
     }
 
     @Override
@@ -37,14 +33,13 @@ public class ProfileInteractor implements ProfileInputBoundary {
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
         for (Map.Entry<UUID, Response> entry : userResponses.entrySet()) {
             UUID promptId = entry.getKey();
-            Prompt prompt = promptDataAccessObject.getPrompt(promptId);
+            Prompt prompt = feedDataAccessObject.getPrompt(promptId);
             String promptText = prompt.getPromptText();
             LocalDate promptDate = prompt.getPromptDate();
 
             Response response = entry.getValue();
 
-            String songId = response.getSongId();
-            Song song = spotifyAPICaller.getTrack(songId);
+            Song song = response.getSong();
 
             ImageIcon albumArt = song.getAlbumArt(100);
 
