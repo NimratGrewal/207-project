@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import interface_adapter.profile.ProfileController;
-import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.delete.DeleteController;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -24,9 +24,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController) {
+    public ProfileView(ProfileViewModel viewModel, ProfileController profileController, DeleteController deleteController) {
         this.viewModel = viewModel;
         this.profileController = profileController;
+        this.deleteController = deleteController;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -79,6 +80,11 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
             JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+
+            if (responseBoxPanel instanceof ProfileResponseBox) {
+                ((ProfileResponseBox) responseBoxPanel).addDeleteButtonListener(this);
+            }
+
         }
 
         // scroll pane for answers
@@ -94,29 +100,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(contentPanel, BorderLayout.CENTER);
-
-
-
-//        delete = new JButton(ProfileViewModel.DELETE_BUTTON_LABEL);
-//        buttons.add(delete);
-//
-//        delete.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (e.getSource().equals(delete)) {
-//                    ProfileState state = viewModel.getState();
-//                    state.setResponseId();
-//                    int dialogButton = JOptionPane.YES_NO_OPTION;
-//                    int dialogueResult = JOptionPane.showConfirmDialog(delete,
-//                            "Are you sure you want to delete Response: " + state.getResponseId() + "?", "Warning", dialogButton);
-//
-//                    if (dialogueResult == JOptionPane.YES_OPTION) {
-//                        ProfileState profilestate = viewModel.getState();
-//                        ProfileView.this.deleteController.execute(profilestate.getResponseId());
-//                    }
-//                }
-//            }
-//        });
 
     }
 
