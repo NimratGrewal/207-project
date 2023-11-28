@@ -13,17 +13,21 @@ public class ProfileInteractor implements ProfileInputBoundary {
     private final UserProfileDataAccessInterface userDataAccessObject;
     private final PromptDataAccessInterface promptDataAccessObject;
     private final ProfileOutputBoundary presenter;
+    private final SpotifyAPICaller spotifyAPICaller;
 
     public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject,
-                             PromptDataAccessInterface promptDataAccessObject, ProfileOutputBoundary presenter) {
+                             PromptDataAccessInterface promptDataAccessObject,
+                             ProfileOutputBoundary presenter,
+                             SpotifyAPICaller spotifyAPICaller) {
         this.userDataAccessObject = userDataAccessObject;
         this.promptDataAccessObject = promptDataAccessObject;
         this.presenter = presenter;
+        this.spotifyAPICaller = spotifyAPICaller;
     }
 
     @Override
     public void execute(ProfileInputData inputData) {
-        UUID userId = inputData.getUserID();
+        UUID userId = inputData.getLoggedInUserID();
         User user = userDataAccessObject.getLoggedInUser(userId);
 
         String username = user.getUsername();
@@ -40,8 +44,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
             Response response = entry.getValue();
 
             String songId = response.getSongId();
-            Song song = promptDataAccessObject.getSongById(songId);
-            //TODO: create getSongById method somewhere
+            Song song = spotifyAPICaller.getTrack(songId);
 
             ImageIcon albumArt = song.getAlbumArt(100);
 

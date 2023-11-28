@@ -83,8 +83,18 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         this.save();
     }
 
+    @Override
+    public User getLoggedInUser(UUID userId) {
+        return null;
+    }
+
     public User getUser(UUID userId) {
         return accounts.get(userId);
+    }
+
+    @Override
+    public Response getResponseById(UUID responseId) {
+        return null;
     }
 
     /**

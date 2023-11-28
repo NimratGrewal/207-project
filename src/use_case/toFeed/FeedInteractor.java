@@ -14,19 +14,23 @@ public class FeedInteractor implements FeedInputBoundary {
     private final UserProfileDataAccessInterface userDataAccessObject;
     private final PromptDataAccessInterface promptDataAccessObject;
     private final FeedOutputBoundary presenter;
+    private final SpotifyAPICaller spotifyAPICaller;
 
     public FeedInteractor(UserProfileDataAccessInterface userDataAccessObject,
-                          PromptDataAccessInterface promptDataAccessObject, FeedOutputBoundary presenter) {
+                          PromptDataAccessInterface promptDataAccessObject,
+                          FeedOutputBoundary presenter,
+                          SpotifyAPICaller spotifyAPICaller) {
         this.userDataAccessObject = userDataAccessObject;
         this.promptDataAccessObject = promptDataAccessObject;
         this.presenter = presenter;
+        this.spotifyAPICaller = spotifyAPICaller;
     }
 
     public void execute(FeedInputData inputData) {
-        UUID promptID = inputData.getPromptID();
+        UUID promptID = inputData.getDailyPromptID();
 
-        String promptText = promptDataAccessObject.getPrompt(promptID).getPromptText();
-        LocalDate promptDate = promptDataAccessObject.getPrompt(promptID).getPromptDate();
+        String promptText = promptDataAccessObject.getCurrentPrompt(promptID).getPromptText();
+        LocalDate promptDate = promptDataAccessObject.getCurrentPrompt(promptID).getPromptDate();
         Map<UUID, UUID> promptUserAndResponses = promptDataAccessObject.getPrompt(promptID).getPromptResponse();
 
         List<UUID> promptResponses = new ArrayList<>();
@@ -38,16 +42,14 @@ public class FeedInteractor implements FeedInputBoundary {
 
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
         for (UUID responseId : promptResponses) {
-            //TODO: create getResponseById method somewhere
-            Response response = promptDataAccessObject.getResponseById(responseId);
+            Response response = userDataAccessObject.getResponseById(responseId);
             UUID userId = response.getUserId();
 
-            User user = promptDataAccessObject.getUser(userId);
+            User user = userDataAccessObject.getUser(userId);
             String username = user.getUsername();
 
             String songId = response.getSongId();
-            //TODO: create getSongById method somewhere
-            Song song = promptDataAccessObject.getSongById(songId);
+            Song song = spotifyAPICaller.getTrack(songId);
 
             ImageIcon albumArt = song.getAlbumArt(100);
 

@@ -10,9 +10,6 @@ import java.util.UUID;
 public interface PromptDataAccessInterface {
     Prompt getPrompt(UUID promptId);
 
-    Response getResponseById(UUID responseId);
-
-    Song getSongById(String songId);
     Prompt getCurrentPrompt(UUID promptId);
 
     User getUser(UUID userId);
