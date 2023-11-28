@@ -14,13 +14,6 @@ public class ProfileState {
         this.responseInfoMap = responseInfoMap;
     }
 
-    public void setResponseId(UUID responseId) {
-        this.responseId = responseId;
-    }
-
-    public UUID getResponseId(){ return responseId;}
-
-
     public String getUsername() {
         return username;
     }
