@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import interface_adapter.profile.ProfileController;
-import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.delete.DeleteController;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -24,9 +24,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController) {
+    public ProfileView(ProfileViewModel viewModel, ProfileController profileController, DeleteController deleteController) {
         this.viewModel = viewModel;
         this.profileController = profileController;
+        this.deleteController = deleteController;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -79,6 +80,11 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
             JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+
+            if (responseBoxPanel instanceof ProfileResponseBox) {
+                ((ProfileResponseBox) responseBoxPanel).addDeleteButtonListener(this);
+            }
+
         }
 
         // scroll pane for answers
