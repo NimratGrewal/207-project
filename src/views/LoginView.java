@@ -1,5 +1,6 @@
 package views;
 import interface_adapter.login.LoginController;
+import interface_adapter.signup.SignupViewModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,7 +46,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
     }
 
     @Override

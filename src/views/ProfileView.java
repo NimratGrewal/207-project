@@ -102,29 +102,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         add(contentPanel, BorderLayout.CENTER);
 
-
-
-//        delete = new JButton(ProfileViewModel.DELETE_BUTTON_LABEL);
-//        buttons.add(delete);
-//
-//        delete.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (e.getSource().equals(delete)) {
-//                    ProfileState state = viewModel.getState();
-//                    state.setResponseId();
-//                    int dialogButton = JOptionPane.YES_NO_OPTION;
-//                    int dialogueResult = JOptionPane.showConfirmDialog(delete,
-//                            "Are you sure you want to delete Response: " + state.getResponseId() + "?", "Warning", dialogButton);
-//
-//                    if (dialogueResult == JOptionPane.YES_OPTION) {
-//                        ProfileState profilestate = viewModel.getState();
-//                        ProfileView.this.deleteController.execute(profilestate.getResponseId());
-//                    }
-//                }
-//            }
-//        });
-
     }
 
     private Response getResponseById(UUID responseId) {

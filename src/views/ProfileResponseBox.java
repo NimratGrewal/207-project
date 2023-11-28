@@ -49,7 +49,6 @@ public class ProfileResponseBox extends FeedResponseBox {
                         firePropertyChange("deleteResponse", null, response.getResponseId());
                     }
                 }
-
             }
         });
 
