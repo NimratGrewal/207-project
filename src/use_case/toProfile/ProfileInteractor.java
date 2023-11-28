@@ -41,7 +41,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
             Response response = entry.getValue();
 
             UUID songId = response.getSongId();
-            Song song = SpotifyAPICaller.getSongById();
+            Song song = promptDataAccessObject.getSongById(songId);
             //TODO: create getSongById method somewhere
 
             ImageIcon albumArt = song.getAlbumArt(100);

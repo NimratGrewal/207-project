@@ -1,9 +1,6 @@
 package entities;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class Prompt {
@@ -13,12 +10,12 @@ public class Prompt {
     private boolean isActive;
     private LocalDate promptDate;
 
-    private List<UUID> responses;
+    private Map<UUID, UUID> responses;
     public Prompt(String promptQuestion, LocalDate promptDate) {
         this.promptQuestion = promptQuestion;
         this.promptId = UUID.randomUUID();
         this.isActive = false;
-        this.responses = new ArrayList<>();
+        this.responses = new HashMap<>();
         this.promptDate = promptDate;
     }
 
@@ -40,7 +37,7 @@ public class Prompt {
     public LocalDate getPromptDate() {
         return promptDate;
     }
-    public List<UUID> getPromptResponse(){
+    public Map<UUID, UUID> getPromptResponse(){
         return responses;
     }
     public void setResponses(UUID userID, UUID responseId){
