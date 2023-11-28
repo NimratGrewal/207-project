@@ -19,6 +19,7 @@ public class SetResponsePresenter implements SetResponseOutputBoundary {
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
         viewResponseState.setSongName(setResponseOutputData.getSongName());
         viewResponseState.setAlbumName(setResponseOutputData.getAlbumName());
+        viewResponseState.setAlbumCover(setResponseOutputData.getAlbumArt());
         viewResponseState.setArtistNames(setResponseOutputData.getArtistNames());
         viewResponseState.setPromptText(setResponseOutputData.getPromptText());
         viewResponseViewModel.setState(viewResponseState);
