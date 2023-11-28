@@ -39,7 +39,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
 
             Response response = entry.getValue();
 
-            UUID songId = response.getSongId();
+            String songId = response.getSongId();
             Song song = promptDataAccessObject.getSongById(songId);
             //TODO: create getSongById method somewhere
 

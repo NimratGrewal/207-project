@@ -45,7 +45,7 @@ public class FeedInteractor implements FeedInputBoundary {
             User user = promptDataAccessObject.getUser(userId);
             String username = user.getUsername();
 
-            UUID songId = response.getSongId();
+            String songId = response.getSongId();
             //TODO: create getSongById method somewhere
             Song song = promptDataAccessObject.getSongById(songId);
 

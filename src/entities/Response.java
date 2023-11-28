@@ -6,7 +6,7 @@ public class Response {
     private final UUID responseId;
     private final UUID promptId;
     private final UUID userId;
-    private final UUID songId;
+    private final String songId;
 
     public Response(UUID responseId, UUID promptId, UUID userId, String songId) {
         this.responseId = responseId;
@@ -27,7 +27,7 @@ public class Response {
         return userId;
     }
 
-    public UUID getSongId() {
+    public String getSongId() {
         return this.songId;
     }
 }

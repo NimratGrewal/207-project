@@ -12,7 +12,7 @@ public interface PromptDataAccessInterface {
 
     Response getResponseById(UUID responseId);
 
-    Song getSongById(UUID songId);
+    Song getSongById(String songId);
     Prompt getCurrentPrompt(UUID promptId);
 
     User getUser(UUID userId);
