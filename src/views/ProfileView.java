@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -15,9 +15,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
+public class ProfileView extends JPanel implements PropertyChangeListener {
+
     private final ProfileViewModel viewModel;
     private final ProfileController profileController;
+    private final DeleteController deleteController;
     private final JLabel usernameLabel;
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
@@ -50,7 +52,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         JLabel profilePictureLabel = new JLabel();
 
         ImageIcon profilePictureIcon = new ImageIcon(
-                (Objects.requireNonNull(getClass().getResource("/images/Portrait_placeholder.png"))));
+                (Objects.requireNonNull(getClass().getResource("/views/assets/Portrait_placeholder.png"))));
         profilePictureLabel.setIcon(profilePictureIcon);
 
         JButton logout = new JButton("Log out");
@@ -92,27 +94,30 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(contentPanel, BorderLayout.CENTER);
-      
-//        JPanel buttons = new JPanel();
-//        delete = new JButton(deleteViewModel.DELETE_BUTTON_LABEL);
+
+
+
+//        delete = new JButton(ProfileViewModel.DELETE_BUTTON_LABEL);
 //        buttons.add(delete);
 //
 //        delete.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
 //                if (e.getSource().equals(delete)) {
-//                    DeleteState state = deleteViewModel.getState();
+//                    ProfileState state = viewModel.getState();
+//                    state.setResponseId();
 //                    int dialogButton = JOptionPane.YES_NO_OPTION;
 //                    int dialogueResult = JOptionPane.showConfirmDialog(delete,
 //                            "Are you sure you want to delete Response: " + state.getResponseId() + "?", "Warning", dialogButton);
 //
 //                    if (dialogueResult == JOptionPane.YES_OPTION) {
-//                        DeleteState deleteState = deleteViewModel.getState();
-//                        deleteController.execute(deleteState.getResponseId());
+//                        ProfileState profilestate = viewModel.getState();
+//                        ProfileView.this.deleteController.execute(profilestate.getResponseId());
 //                    }
 //                }
 //            }
 //        });
+
     }
 
     private JPanel createProfileResponseBox(UUID responseId, Map<String, Object> responseInfo,
@@ -129,6 +134,12 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         setFields();
+
+        if ("deleteResponse".equals(evt.getPropertyName())) {
+            UUID responseId = (UUID) evt.getNewValue();
+            // Pass responseId to delete controller
+            deleteController.execute(responseId);
+        }
     }
 
     private void setFields() {
@@ -159,10 +170,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public void actionPerformed(ActionEvent e) {
 
     }
+
 }
 
-//    @Override
-//    public void propertyChange(PropertyChangeEvent evt) {
-//        DeleteState state = (DeleteState) evt.getNewValue();
-//        JOptionPane.showConfirmDialog(this, "Response" + state.getResponseId() + "was deleted!");
-//    }
+
+

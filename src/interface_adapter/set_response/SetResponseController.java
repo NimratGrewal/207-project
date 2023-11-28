@@ -12,7 +12,7 @@ public class SetResponseController {
         this.setResponseInteractor = setResponseInteractor;
     }
 
-    public void execute(String songId, UUID promptId, UUID userId) {
+    public void execute(String songId) {
         SetResponseInputData setResponseInputData = new SetResponseInputData(songId);
         setResponseInteractor.execute(setResponseInputData);
     }
