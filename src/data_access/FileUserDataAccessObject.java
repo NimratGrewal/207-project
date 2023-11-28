@@ -114,7 +114,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
                 List<String> responses = new ArrayList<>();
                 for (Response response : user.getHistory().values()) {
                     String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
+                            response.getResponseId(), response.getPromptId(), response.getSongId());
                     responses.add(responseText);
                 }
                 String responseString = String.join(";", responses);
@@ -155,6 +155,11 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
 
     @Override
     public UUID getActivePromptId() {
+        return null;
+    }
+
+    @Override
+    public User getLoggedInUser() {
         return null;
     }
 

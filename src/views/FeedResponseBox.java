@@ -3,10 +3,11 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.UUID;
 
 
 public class FeedResponseBox extends JPanel {
-    public FeedResponseBox(String username, String songName, String[] songArtists, String songAlbum, ImageIcon albumArt) {
+    public FeedResponseBox(UUID responseId, String username, String songName, String[] songArtists, String songAlbum, ImageIcon albumArt) {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());

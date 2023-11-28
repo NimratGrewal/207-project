@@ -3,7 +3,6 @@ package interface_adapter.profile;
 import use_case.toProfile.ProfileOutputBoundary;
 import use_case.toProfile.ProfileOutputData;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 

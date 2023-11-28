@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
 public class FeedView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -55,13 +57,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
-        for (UUID responseId : viewModel.getState().getPromptResponses()) {
-            Response response = promptDataAccessObject.getResponseById(responseId);
-            if (response != null) {
-                JPanel responseBoxPanel = createFeedResponseBox(response);
-                responsesPanel.add(responseBoxPanel);
-                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
-            }
+        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+            UUID userId = entry.getKey();
+            Map<String, Object> responseInfo = entry.getValue();
+
+            JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
 
         // scroll pane for answers
@@ -78,8 +80,15 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
         add(contentPanel, BorderLayout.CENTER);
     }
-    private JPanel createFeedResponseBox(Response response) {
-        return new views.FeedResponseBox(response);
+    private JPanel createFeedResponseBox(Map<String, Object> responseInfo) {
+        UUID responseId = (UUID) responseInfo.get("Response ID");
+        String username = (String) responseInfo.get("Username");
+        String songName = (String) responseInfo.get("Song Name");
+        String[] songArtists = ((String[]) responseInfo.get("Song Artists"));
+        String songAlbum = (String) responseInfo.get("Song Album");
+        ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
+
+        return new FeedResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt);
     }
 
     @Override
@@ -98,13 +107,13 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
         responsesPanel.removeAll();
 
-        for (UUID responseId : viewModel.getState().getPromptResponses()) {
-            Response response = promptDataAccessObject.getResponseById(responseId);
-            if (response != null) {
-                JPanel responseBoxPanel = createFeedResponseBox(response);
-                responsesPanel.add(responseBoxPanel);
-                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
-            }
+        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+            UUID userId = entry.getKey();
+            Map<String, Object> responseInfo = entry.getValue();
+
+            JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
 
         responsesPanel.revalidate();

@@ -78,11 +78,9 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             UUID responseId = entry.getKey();
             Map<String, Object> responseInfo = entry.getValue();
 
-            // Retrieve additional information needed for ProfileResponseBox
             LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
             String promptText = (String) responseInfo.get("Prompt Text");
 
-            // Create ProfileResponseBox with the additional information
             JPanel responseBoxPanel = createProfileResponseBox(responseInfo, promptDate, promptText);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels

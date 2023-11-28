@@ -5,21 +5,14 @@ import java.util.UUID;
 public class Response {
     private final UUID responseId;
     private final UUID promptId;
-    private final User user;
-    private final Song song;
+    private final UUID userId;
+    private final UUID songId;
 
-    public Response(UUID responseId, UUID promptId, User user, Song song) {
+    public Response(UUID responseId, UUID promptId, UUID userId, UUID songId) {
         this.responseId = responseId;
         this.promptId = promptId;
-        this.user = user;
-        this.song = song;
-    }
-
-    public Response(UUID promptId, User user, Song song) {
-        this.responseId = UUID.randomUUID();
-        this.promptId = promptId;
-        this.user = user;
-        this.song = song;
+        this.userId = userId;
+        this.songId = songId;
     }
 
     public UUID getResponseId() {
@@ -30,11 +23,11 @@ public class Response {
         return promptId;
     }
 
-    public User getUser() {
-        return user;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public Song getSong() {
-        return this.song;
+    public UUID getSongId() {
+        return this.songId;
     }
 }

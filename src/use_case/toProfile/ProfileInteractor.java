@@ -1,9 +1,6 @@
 package use_case.toProfile;
 
-import entities.Prompt;
-import entities.Response;
-import entities.Song;
-import entities.User;
+import entities.*;
 import use_case.toFeed.PromptDataAccessInterface;
 
 import javax.swing.*;
@@ -43,7 +40,10 @@ public class ProfileInteractor implements ProfileInputBoundary {
             UUID promptId = entry.getKey();
             Response response = entry.getValue();
 
-            Song song = response.getSong();
+            UUID songId = response.getSongId();
+            Song song = SpotifyAPICaller.getSongById();
+            //TODO: create getSongById method somewhere
+
             ImageIcon albumArt = song.getAlbumArt(100);
 
             Map<String, Object> responseInfo = new HashMap<>();
