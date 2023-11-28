@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class PromptDataAccessObject implements PromptDataAccessInterface {
+public class PromptDataAccessObject {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -63,7 +63,8 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
             }
         }
     }
-    public void save(Prompt prompt, Response response) {        if (!responses.containsKey(prompt.getPromptId())){
+    public void save(Prompt prompt, Response response) {
+        if (!responses.containsKey(prompt.getPromptId())){
         responses.put(prompt.getPromptId(), new ArrayList<>());
     }
         responses.get(prompt.getPromptId()).add(response.getResponseId());
@@ -104,7 +105,6 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
         }
     }
 
-    @Override
     public Prompt getCurrentPrompt() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         LocalDateTime date = LocalDateTime.now();
@@ -117,7 +117,6 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
 
     }
 
-    @Override
     public boolean answeredCurrentPrompt(UUID answerID) {
         Prompt curr_prompt = getCurrentPrompt();
         UUID prompt_id = curr_prompt.getPromptId();
@@ -156,5 +155,10 @@ public class PromptDataAccessObject implements PromptDataAccessInterface {
             }
         }
         return null;
+    }
+
+    public void setResponse(UUID userId, Response response) {
+        getCurrentPrompt().setResponse(userId, response.getResponseId());
+        save();
     }
 }

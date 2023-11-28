@@ -3,28 +3,27 @@ package use_case.toProfile;
 import entities.Response;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProfileOutputData {
-    private final UUID userID;
     private final String username;
-    private final List<UUID> responseIds;
+    private final int numberOfResponses;
+    private final Map<UUID, Map<String, Object>> responseInfoMap;
 
-    public ProfileOutputData(UUID userID, String username, List<UUID> responseIds) {
-        this.userID = userID;
+    public ProfileOutputData(String username, int numberOfResponses, Map<UUID, Map<String, Object>> responseInfoMap) {
         this.username = username;
-        this.responseIds = responseIds;
-    }
-
-    public UUID getUserID() {
-        return userID;
+        this.numberOfResponses = numberOfResponses;
+        this.responseInfoMap = responseInfoMap;
     }
 
     public String getUsername() {
         return username;
     }
-
-    public List<UUID> getResponseIds() {
-        return responseIds;
+    public int getNumberOfResponses() {
+        return numberOfResponses;
+    }
+    public Map<UUID, Map<String, Object>> getResponseInfoMap() {
+        return responseInfoMap;
     }
 }

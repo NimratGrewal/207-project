@@ -1,10 +1,10 @@
 package interface_adapter.profile;
 
-import entities.Response;
 import use_case.toProfile.ProfileOutputBoundary;
 import use_case.toProfile.ProfileOutputData;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProfilePresenter implements ProfileOutputBoundary {
@@ -16,11 +16,11 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 
     @Override
     public void present(ProfileOutputData outputData) {
-        UUID userID = outputData.getUserID();
         String username = outputData.getUsername();
-        List<UUID> responseIds = outputData.getResponseIds();
+        int numberOfResponses = outputData.getNumberOfResponses();
+        Map<UUID, Map<String, Object>> responseInfoMap = outputData.getResponseInfoMap();
 
-        ProfileState profileState = new ProfileState(userID, username, responseIds);
+        ProfileState profileState = new ProfileState(username, numberOfResponses, responseInfoMap);
         profileViewModel.setState(profileState);
     }
 }

@@ -82,7 +82,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         this.save();
     }
 
-    public User get(UUID userId) {
+    public User getUser(UUID userId) {
         return accounts.get(userId);
     }
 
@@ -113,14 +113,12 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
             for (User user : accounts.values()) {
                 List<String> responses = new ArrayList<>();
                 for (Response response : user.getHistory().values()) {
-                    //TODO: create getResponseId method in Response class
                     String responseText = "%s:%s:%s".formatted(
                             response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
                     responses.add(responseText);
                 }
                 String responseString = String.join(";", responses);
                 String line = "%s,%s,%s,%s".formatted(
-                        //TODO: create getCreationTime method in User class + interface
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
                 writer.write(line);
                 writer.newLine();
@@ -132,7 +130,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
         }
     }
 
-    @Override
     public void setResponse(UUID userId, Response response) {
         accounts.get(userId).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(userId)).add(response);

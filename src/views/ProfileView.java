@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import data_access.FileUserDataAccessObject;
-import entities.Response;
+import data_access.PromptDataAccessObject;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileViewModel;
 
@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,12 +24,14 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
     private final FileUserDataAccessObject fileUserDataAccessObject;
+    private final PromptDataAccessObject promptDataAccessObject;
 
     public ProfileView(ProfileViewModel viewModel, ProfileController profileController,
-                       FileUserDataAccessObject fileUserDataAccessObject) {
+                       FileUserDataAccessObject fileUserDataAccessObject, PromptDataAccessObject promptDataAccessObject) {
         this.viewModel = viewModel;
         this.profileController = profileController;
         this.fileUserDataAccessObject = fileUserDataAccessObject;
+        this.promptDataAccessObject = promptDataAccessObject;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -70,13 +74,18 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
-        for (UUID responseId : viewModel.getState().getResponseIds()) {
-            Response response = getResponseById(responseId);
-            if (response != null) {
-                JPanel responseBoxPanel = createProfileResponseBox(response);
-                responsesPanel.add(responseBoxPanel);
-                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
-            }
+        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+            UUID responseId = entry.getKey();
+            Map<String, Object> responseInfo = entry.getValue();
+
+            // Retrieve additional information needed for ProfileResponseBox
+            LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
+            String promptText = (String) responseInfo.get("Prompt Text");
+
+            // Create ProfileResponseBox with the additional information
+            JPanel responseBoxPanel = createProfileResponseBox(responseInfo, promptDate, promptText);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
 
         // scroll pane for answers
@@ -115,11 +124,14 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 //        });
     }
 
-    private Response getResponseById(UUID responseId) {
-        return fileUserDataAccessObject.getResponseById(viewModel.getState().getUserID(), responseId);
-    }
-    private JPanel createProfileResponseBox(Response response) {
-        return new views.ProfileResponseBox(response);
+    private JPanel createProfileResponseBox(Map<String, Object> responseInfo, LocalDate promptDate, String promptText) {
+        String username = (String) responseInfo.get("Username");
+        String songName = (String) responseInfo.get("Song Name");
+        String[] songArtists = ((String[]) responseInfo.get("Song Artists"));
+        String songAlbum = (String) responseInfo.get("Song Album");
+        ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
+
+        return new ProfileResponseBox(username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
     }
 
     @Override
@@ -133,13 +145,18 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         responsesPanel.removeAll();
 
-        for (UUID responseId : viewModel.getState().getResponseIds()) {
-            Response response = getResponseById(responseId);
-            if (response != null) {
-                JPanel responseBoxPanel = createProfileResponseBox(response);
-                responsesPanel.add(responseBoxPanel);
-                responsesPanel.add(Box.createVerticalStrut(10));
-            }
+        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+            UUID responseId = entry.getKey();
+            Map<String, Object> responseInfo = entry.getValue();
+
+            // Retrieve additional information needed for ProfileResponseBox
+            LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
+            String promptText = (String) responseInfo.get("Prompt Text");
+
+            // Create ProfileResponseBox with the additional information
+            JPanel responseBoxPanel = createProfileResponseBox(responseInfo, promptDate, promptText);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
 
         responsesPanel.revalidate();
