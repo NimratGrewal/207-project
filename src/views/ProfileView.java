@@ -16,7 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ProfileView extends JPanel implements ProfileResponseBoxListenerInterface, PropertyChangeListener {
+public class ProfileView extends JPanel implements PropertyChangeListener {
 
     private final ProfileViewModel viewModel;
     private final ProfileController profileController;
@@ -101,8 +101,7 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(contentPanel, BorderLayout.CENTER);
-      
-        JPanel buttons = new JPanel();
+
 
 
 //        delete = new JButton(ProfileViewModel.DELETE_BUTTON_LABEL);
@@ -170,19 +169,6 @@ public class ProfileView extends JPanel implements ProfileResponseBoxListenerInt
 
     }
 
-
-//    @Override
-//    public void onDeleteAction(ProfileState state) {
-//        deleteController.execute(state.getResponseId());
-//    }
-//
-//    @Override
-//    public ProfileState beforeDeleteAction(UUID responseId) {
-//        ProfileState state = viewModel.getState();
-//        state.setResponseId(responseId);
-//        viewModel.setState(state);
-//        return state;
-//    }
 }
 
 
