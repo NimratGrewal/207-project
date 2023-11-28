@@ -24,7 +24,8 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController, DeleteController deleteController) {
+    public ProfileView(ProfileViewModel viewModel, ProfileController profileController,
+                       DeleteController deleteController) {
         this.viewModel = viewModel;
         this.profileController = profileController;
         this.deleteController = deleteController;
@@ -147,11 +148,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         responsesPanel.revalidate();
         responsesPanel.repaint();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 
 }

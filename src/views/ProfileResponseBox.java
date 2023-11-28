@@ -25,6 +25,11 @@ public class ProfileResponseBox extends FeedResponseBox {
             topPanel.add(promptLabel, BorderLayout.NORTH);
             topPanel.remove(0);
 
+            JPanel deletePanel = new JPanel(new BorderLayout());
+            deletePanel.add(delete, BorderLayout.CENTER);
+
+            add(deletePanel, BorderLayout.EAST);
+
             delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,7 +43,6 @@ public class ProfileResponseBox extends FeedResponseBox {
                 }
             }
         });
-
     }
 
     public void addDeleteButtonListener(PropertyChangeListener listener) {
