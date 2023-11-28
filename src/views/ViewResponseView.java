@@ -1,7 +1,6 @@
 package views;
 
 import interface_adapter.home.HomeController;
-import interface_adapter.home.HomeState;
 import interface_adapter.view_response.ViewResponseViewModel;
 
 import javax.swing.*;
