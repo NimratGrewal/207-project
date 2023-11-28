@@ -1,14 +1,18 @@
 package interface_adapter.view_response;
 
+import javax.swing.*;
+
 public class ViewResponseState {
 
     private String songName = "";
     private String artistNames = "";
+    private ImageIcon albumCover;
     private String albumName = "";
     private String promptText = "";
     public ViewResponseState(ViewResponseState copy) {
         this.songName = copy.getSongName();
         this.artistNames = copy.getArtistNames();
+        this.albumCover = copy.getAlbumCover();
         this.albumName = copy.getAlbumName();
         this.promptText = copy.getPromptText();
     }
@@ -45,5 +49,13 @@ public class ViewResponseState {
 
     public void setPromptText(String promptText) {
         this.promptText = promptText;
+    }
+
+    public void setAlbumCover(ImageIcon albumCover) {
+        this.albumCover = albumCover;
+    }
+
+    public ImageIcon getAlbumCover() {
+        return albumCover;
     }
 }
