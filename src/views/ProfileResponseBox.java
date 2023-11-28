@@ -1,38 +1,26 @@
 package views;
 
+import data_access.PromptDataAccessObject;
 import entities.Prompt;
 import entities.Response;
 import interface_adapter.profile.ProfileState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
 import java.util.UUID;
 import java.beans.PropertyChangeSupport;
 
 
 public class ProfileResponseBox extends FeedResponseBox {
-    private final PromptDataAccessObject promptDataAccessObject;
-
-    //    }
-    JButton delete = new JButton("delete");
-
-    // private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    public ProfileResponseBox(Response response, PromptDataAccessObject promptDataAccessObject) {
-        super(response);
-        this.promptDataAccessObject = promptDataAccessObject;
-
-        UUID promptID = response.getPromptId();
-        Prompt prompt = promptDataAccessObject.getPromptById(promptID);
+    public ProfileResponseBox(UUID responseId, String username, String songName, String[] songArtists,
+                              String songAlbum, ImageIcon albumArt, LocalDate promptDate, String promptText) {
+        super(responseId, username, songName, songArtists, songAlbum, albumArt);
 
         JPanel topPanel = (JPanel) getComponent(0);
 
-        JLabel dateLabel = new JLabel("Date: " + prompt.getPromptDate());
-        JLabel promptLabel = new JLabel("Prompt: " + prompt.getPromptText());
+        JLabel dateLabel = new JLabel("Date: " + promptDate);
+        JLabel promptLabel = new JLabel("Prompt: " + promptText);
         dateLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         topPanel.add(dateLabel, BorderLayout.NORTH);

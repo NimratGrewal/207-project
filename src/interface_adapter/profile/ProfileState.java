@@ -1,25 +1,17 @@
 package interface_adapter.profile;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProfileState {
-    private final UUID userID;
     private final String username;
-    private final List<UUID> responseIds;
     private final int numberOfResponses;
-    private UUID responseId;
+    private final Map<UUID, Map<String, Object>> responseInfoMap;
 
-    public ProfileState(UUID userID, String username, List<UUID> responseIds) {
-        this.userID = userID;
+    public ProfileState(String username, int numberOfResponses, Map<UUID, Map<String, Object>> responseInfoMap) {
         this.username = username;
-        this.responseIds = responseIds;
-        this.numberOfResponses = responseIds.size();
-        this.responseId = null;
-    }
-
-    public UUID getUserID() {
-        return userID;
+        this.numberOfResponses = numberOfResponses;
+        this.responseInfoMap = responseInfoMap;
     }
 
     public void setResponseId(UUID responseId) {
@@ -32,13 +24,11 @@ public class ProfileState {
     public String getUsername() {
         return username;
     }
-
-    public List<UUID> getResponseIds() {
-        return responseIds;
-    }
-
     public int getNumberOfResponses() {
         return numberOfResponses;
+    }
+    public Map<UUID, Map<String, Object>> getResponseInfoMap() {
+        return responseInfoMap;
     }
 
 }

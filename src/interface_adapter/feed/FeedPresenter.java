@@ -4,7 +4,7 @@ import use_case.toFeed.FeedOutputBoundary;
 import use_case.toFeed.FeedOutputData;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class FeedPresenter implements FeedOutputBoundary {
@@ -18,9 +18,9 @@ public class FeedPresenter implements FeedOutputBoundary {
     public void present(FeedOutputData outputData) {
         LocalDate promptDate = outputData.getPromptDate();
         String promptText = outputData.getPromptText();
-        List<UUID> promptResponses = outputData.getPromptResponses();
+        Map<UUID, Map<String, Object>> responseInfoMap = outputData.getResponseInfoMap();
 
-        FeedState feedState = new FeedState(promptDate, promptText, promptResponses);
+        FeedState feedState = new FeedState(promptDate, promptText, responseInfoMap);
         feedViewModel.setState(feedState);
     }
 }

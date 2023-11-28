@@ -6,13 +6,14 @@ import use_case.toFeed.FeedInputData;
 import java.util.UUID;
 
 public class FeedController {
-    private FeedInputBoundary feedInteractor;
+    private final FeedInputBoundary feedInteractor;
+
     public FeedController(FeedInputBoundary feedInteractor) {
         this.feedInteractor = feedInteractor;
     }
 
-    public void execute(UUID promptID) {
-        FeedInputData inputData = new FeedInputData(promptID);
+    public void execute(UUID dailyPromptId) {
+        FeedInputData inputData = new FeedInputData(dailyPromptId);
         feedInteractor.execute(inputData);
     }
 

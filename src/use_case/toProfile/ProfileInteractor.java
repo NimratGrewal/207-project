@@ -1,35 +1,61 @@
 package use_case.toProfile;
 
-import entities.Response;
-import entities.User;
+import entities.*;
+import use_case.toFeed.FeedDataAccessInterface;
 
-import java.util.List;
+import javax.swing.*;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.UUID;
+import java.util.Map;
 
-// Modified ProfileInteractor
 public class ProfileInteractor implements ProfileInputBoundary {
     private final UserProfileDataAccessInterface userDataAccessObject;
+    private final FeedDataAccessInterface feedDataAccessObject;
     private final ProfileOutputBoundary presenter;
-
-    public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject, ProfileOutputBoundary presenter) {
+    public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject,
+                             FeedDataAccessInterface feedDataAccessObject,
+                             ProfileOutputBoundary presenter) {
         this.userDataAccessObject = userDataAccessObject;
+        this.feedDataAccessObject = feedDataAccessObject;
         this.presenter = presenter;
     }
 
     @Override
     public void execute(ProfileInputData inputData) {
-        UUID userID = inputData.getUserID();
-        User user = userDataAccessObject.get(userID);
+        UUID userId = inputData.getLoggedInUserID();
+        User user = userDataAccessObject.getLoggedInUser(userId);
 
-        // Assuming getUsername is a method in the User class
         String username = user.getUsername();
+        int numberOfResponses = user.getNumberOfResponses();
+        Map<UUID, Response> userResponses = user.getHistory();
 
-        List<UUID> responseIds = userDataAccessObject.getResponseIds(user);
+        Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
+        for (Map.Entry<UUID, Response> entry : userResponses.entrySet()) {
+            UUID promptId = entry.getKey();
+            Prompt prompt = feedDataAccessObject.getPrompt(promptId);
+            String promptText = prompt.getPromptText();
+            LocalDate promptDate = prompt.getPromptDate();
 
-        // Create ProfileOutputData with the required information
-        ProfileOutputData outputData = new ProfileOutputData(userID, username, responseIds);
+            Response response = entry.getValue();
 
-        // Pass the output data to the presenter
+            Song song = response.getSong();
+
+            ImageIcon albumArt = song.getAlbumArt(100);
+
+            Map<String, Object> responseInfo = new HashMap<>();
+            responseInfo.put("Prompt Date", promptDate);
+            responseInfo.put("Prompt Text", promptText);
+            responseInfo.put("Song Name", song.getName());
+            responseInfo.put("Song Artists", song.getArtists());
+            responseInfo.put("Song Album", song.getAlbum());
+            responseInfo.put("Album Art", albumArt);
+
+            responseInfoMap.put(promptId, responseInfo);
+        }
+
+        ProfileOutputData outputData = new ProfileOutputData(username, numberOfResponses, responseInfoMap);
+
         presenter.present(outputData);
     }
 }

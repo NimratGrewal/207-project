@@ -16,6 +16,7 @@ public class FileUserDataAccessObject {
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
     private UserFactory userFactory;
+    private User loggedInUser;
 
     private User loggedInUser;
 
@@ -58,7 +59,7 @@ public class FileUserDataAccessObject {
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
+                        Response response = new Response(responseID, promptID, userId, songID);
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -81,9 +82,15 @@ public class FileUserDataAccessObject {
         this.save();
     }
 
-    public User get(UUID userId) {
+    @Override
+    public User getLoggedInUser(UUID userId) {
+        return null;
+    }
+
+    public User getUser(UUID userId) {
         return accounts.get(userId);
     }
+
 
     public List<UUID> getResponseIds(User user) {
         List<UUID> responseIds = new ArrayList<>();
@@ -111,14 +118,12 @@ public class FileUserDataAccessObject {
             for (User user : accounts.values()) {
                 List<String> responses = new ArrayList<>();
                 for (Response response : user.getHistory().values()) {
-                    //TODO: create getResponseId method in Response class
                     String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
+                            response.getResponseId(), response.getPromptId(), response.getSongId());
                     responses.add(responseText);
                 }
                 String responseString = String.join(";", responses);
                 String line = "%s,%s,%s,%s".formatted(
-                        //TODO: create getCreationTime method in User class + interface
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
                 writer.write(line);
                 writer.newLine();
@@ -177,5 +182,14 @@ public class FileUserDataAccessObject {
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
+    }
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
+
+    @Override
+    public User getLoggedInUser() {
+        return loggedInUser;
     }
 }

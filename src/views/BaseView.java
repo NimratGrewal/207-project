@@ -9,10 +9,8 @@ import java.util.UUID;
 public class BaseView extends JTabbedPane {
     private ProfileController profileController;
     private FeedController feedController;
-    private UUID userID;
-    private UUID promptID;
     public BaseView(SearchView searchView, ResponseView responseView,
-                    FeedView feedPage, ProfileView profilePage) {
+                    FeedView feedPage, ProfileView profilePage, UUID dailyPromptId, UUID loggedInUserId) {
         addTab("Home", null);
         addTab("Feed", null, feedPage);
         addTab("Profile", null, profilePage);
@@ -23,9 +21,9 @@ public class BaseView extends JTabbedPane {
                 case 0:
                     break;
                 case 1:
-                    feedController.execute(promptID);
+                    feedController.execute(dailyPromptId);
                 case 2:
-                    profileController.execute(userID);
+                    profileController.execute(loggedInUserId);
             }
         });
     }

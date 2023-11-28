@@ -3,12 +3,12 @@ package use_case.toFeed;
 import java.util.UUID;
 
 public class FeedInputData {
-    private final UUID promptID;
-    public FeedInputData(UUID promptID) {
-        this.promptID = promptID;
+    private final UUID dailyPromptID;
+    public FeedInputData(UUID dailyPromptID) {
+        this.dailyPromptID = dailyPromptID;
     }
 
-    public UUID getPromptID() {
-        return promptID;
+    public UUID getDailyPromptID() {
+        return dailyPromptID;
     }
 }
