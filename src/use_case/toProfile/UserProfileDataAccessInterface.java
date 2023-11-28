@@ -5,5 +5,6 @@ import entities.User;
 import java.util.UUID;
 
 public interface UserProfileDataAccessInterface {
-    User getUser(UUID userId);
+    User getLoggedInUser(UUID userId);
+
 }

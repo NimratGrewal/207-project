@@ -3,8 +3,6 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 
-import data_access.FileUserDataAccessObject;
-import data_access.PromptDataAccessObject;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileViewModel;
 
@@ -23,15 +21,10 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JLabel usernameLabel;
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
-    private final FileUserDataAccessObject fileUserDataAccessObject;
-    private final PromptDataAccessObject promptDataAccessObject;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController,
-                       FileUserDataAccessObject fileUserDataAccessObject, PromptDataAccessObject promptDataAccessObject) {
+    public ProfileView(ProfileViewModel viewModel, ProfileController profileController) {
         this.viewModel = viewModel;
         this.profileController = profileController;
-        this.fileUserDataAccessObject = fileUserDataAccessObject;
-        this.promptDataAccessObject = promptDataAccessObject;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -81,7 +74,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
             String promptText = (String) responseInfo.get("Prompt Text");
 
-            JPanel responseBoxPanel = createProfileResponseBox(responseInfo, promptDate, promptText);
+            JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
@@ -122,14 +115,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 //        });
     }
 
-    private JPanel createProfileResponseBox(Map<String, Object> responseInfo, LocalDate promptDate, String promptText) {
+    private JPanel createProfileResponseBox(UUID responseId, Map<String, Object> responseInfo,
+                                            LocalDate promptDate, String promptText) {
         String username = (String) responseInfo.get("Username");
         String songName = (String) responseInfo.get("Song Name");
         String[] songArtists = ((String[]) responseInfo.get("Song Artists"));
         String songAlbum = (String) responseInfo.get("Song Album");
         ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
-        return new ProfileResponseBox(username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
+        return new ProfileResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
     }
 
     @Override
@@ -152,7 +146,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             String promptText = (String) responseInfo.get("Prompt Text");
 
             // Create ProfileResponseBox with the additional information
-            JPanel responseBoxPanel = createProfileResponseBox(responseInfo, promptDate, promptText);
+            JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
             responsesPanel.add(responseBoxPanel);
             responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }

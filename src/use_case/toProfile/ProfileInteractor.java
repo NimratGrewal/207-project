@@ -24,12 +24,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
     @Override
     public void execute(ProfileInputData inputData) {
         UUID userId = inputData.getUserID();
-        User user = userDataAccessObject.getUser(userId);
-
-        Prompt prompt = promptDataAccessObject.getPrompt(inputData.getPromptID());
-
-        LocalDate promptDate = prompt.getPromptDate();
-        String promptText = prompt.getPromptText();
+        User user = userDataAccessObject.getLoggedInUser(userId);
 
         String username = user.getUsername();
         int numberOfResponses = user.getNumberOfResponses();
@@ -38,6 +33,10 @@ public class ProfileInteractor implements ProfileInputBoundary {
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
         for (Map.Entry<UUID, Response> entry : userResponses.entrySet()) {
             UUID promptId = entry.getKey();
+            Prompt prompt = promptDataAccessObject.getPrompt(promptId);
+            String promptText = prompt.getPromptText();
+            LocalDate promptDate = prompt.getPromptDate();
+
             Response response = entry.getValue();
 
             UUID songId = response.getSongId();

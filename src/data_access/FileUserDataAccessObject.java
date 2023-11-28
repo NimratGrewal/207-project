@@ -19,6 +19,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
 
     private UserFactory userFactory;
+    private User loggedInUser;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
@@ -59,7 +60,7 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, user, caller.getTrack(songID));
+                        Response response = new Response(responseID, promptID, userId, songID);
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }
@@ -84,20 +85,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
 
     public User getUser(UUID userId) {
         return accounts.get(userId);
-    }
-
-    @Override
-    public List<UUID> getResponseIds(User user) {
-        List<UUID> responseIds = new ArrayList<>();
-
-        if (responses.containsKey(user)) {
-            List<Response> userResponses = responses.get(user);
-            for (Response response : userResponses) {
-                responseIds.add(response.getResponseId());
-            }
-        }
-
-        return responseIds;
     }
 
     /**
@@ -159,16 +146,6 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
     }
 
     @Override
-    public User getLoggedInUser() {
-        return null;
-    }
-
-    @Override
-    public UUID getLoggedInUserId() {
-        return null;
-    }
-
-    @Override
     public boolean responseExistsById(UUID responseId) {
         for (Map.Entry<User, List<Response>> entry : responses.entrySet()) {
             List<Response> responses = entry.getValue();
@@ -195,5 +172,14 @@ public class FileUserDataAccessObject implements SetResponseDataAccessInterface,
 
             }
         }
+    }
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
+
+    @Override
+    public User getLoggedInUser() {
+        return loggedInUser;
     }
 }

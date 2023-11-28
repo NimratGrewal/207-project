@@ -12,8 +12,8 @@ public class ProfileController {
         this.profileInteractor = profileInteractor;
     }
 
-    public void execute(UUID userID, UUID promptID) {
-        ProfileInputData inputData = new ProfileInputData(userID, promptID);
+    public void execute(UUID loggedInUserId) {
+        ProfileInputData inputData = new ProfileInputData(loggedInUserId);
         profileInteractor.execute(inputData);
     }
 }

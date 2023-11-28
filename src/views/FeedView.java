@@ -1,7 +1,6 @@
 package views;
 
 import data_access.PromptDataAccessObject;
-import entities.Response;
 import interface_adapter.feed.FeedController;
 import interface_adapter.feed.FeedViewModel;
 
@@ -11,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,13 +19,10 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private final FeedController feedController;
     private final JLabel dateAndPromptLabel;
     private final JPanel responsesPanel;
-    private final PromptDataAccessObject promptDataAccessObject;
 
-    public FeedView(FeedViewModel viewModel, FeedController feedController,
-                    PromptDataAccessObject promptDataAccessObject) {
+    public FeedView(FeedViewModel viewModel, FeedController feedController) {
         this.viewModel = viewModel;
         this.feedController = feedController;
-        this.promptDataAccessObject = promptDataAccessObject;
 
         viewModel.addPropertyChangeListener(this);
 

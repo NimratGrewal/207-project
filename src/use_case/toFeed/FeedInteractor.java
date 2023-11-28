@@ -1,7 +1,5 @@
 package use_case.toFeed;
 
-import data_access.FileUserDataAccessObject;
-import data_access.PromptDataAccessObject;
 import entities.Response;
 import entities.Song;
 import entities.SpotifyAPICaller;
@@ -44,7 +42,7 @@ public class FeedInteractor implements FeedInputBoundary {
             Response response = promptDataAccessObject.getResponseById(responseId);
             UUID userId = response.getUserId();
 
-            User user = userDataAccessObject.getUser(userId);
+            User user = promptDataAccessObject.getUser(userId);
             String username = user.getUsername();
 
             UUID songId = response.getSongId();

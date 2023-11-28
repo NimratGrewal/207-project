@@ -10,9 +10,9 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class ProfileResponseBox extends FeedResponseBox {
-    public ProfileResponseBox(String username, String songName, String[] songArtists,
+    public ProfileResponseBox(UUID responseId, String username, String songName, String[] songArtists,
                               String songAlbum, ImageIcon albumArt, LocalDate promptDate, String promptText) {
-        super(username, songName, songArtists, songAlbum, albumArt);
+        super(responseId, username, songName, songArtists, songAlbum, albumArt);
 
         JPanel topPanel = (JPanel) getComponent(0);
 

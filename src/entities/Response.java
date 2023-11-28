@@ -8,7 +8,7 @@ public class Response {
     private final UUID userId;
     private final UUID songId;
 
-    public Response(UUID responseId, UUID promptId, UUID userId, UUID songId) {
+    public Response(UUID responseId, UUID promptId, UUID userId, String songId) {
         this.responseId = responseId;
         this.promptId = promptId;
         this.userId = userId;
