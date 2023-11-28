@@ -16,10 +16,6 @@ import java.beans.PropertyChangeSupport;
 
 public class ProfileResponseBox extends FeedResponseBox {
     private final PromptDataAccessObject promptDataAccessObject;
-    // private ProfileResponseBoxListenerInterface listener;
-
-//    public void setProfileResponseBoxListener(ProfileResponseBoxListenerInterface listener) {
-//        this.listener = listener;
 
     //    }
     JButton delete = new JButton("delete");
