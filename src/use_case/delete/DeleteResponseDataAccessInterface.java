@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface DeleteResponseDataAccessInterface {
 
-    boolean existsById(UUID responseId);
+    boolean responseexistsById(UUID responseId);
 
     void deleteResponse(UUID responseId);
 }

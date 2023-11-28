@@ -5,28 +5,32 @@ import java.awt.*;
 
 import data_access.FileUserDataAccessObject;
 import entities.Response;
+import interface_adapter.delete.DeleteController;
 import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
+public class ProfileView extends JPanel implements PropertyChangeListener {
+
     private final ProfileViewModel viewModel;
     private final ProfileController profileController;
+    private final DeleteController deleteController;
     private final JLabel usernameLabel;
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
     private final FileUserDataAccessObject fileUserDataAccessObject;
 
     public ProfileView(ProfileViewModel viewModel, ProfileController profileController,
-                       FileUserDataAccessObject fileUserDataAccessObject) {
+                       DeleteController deleteController, FileUserDataAccessObject fileUserDataAccessObject) {
         this.viewModel = viewModel;
         this.profileController = profileController;
+        this.deleteController = deleteController;
         this.fileUserDataAccessObject = fileUserDataAccessObject;
 
         viewModel.addPropertyChangeListener(this);
@@ -75,7 +79,12 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             if (response != null) {
                 JPanel responseBoxPanel = createProfileResponseBox(response);
                 responsesPanel.add(responseBoxPanel);
-                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+                responsesPanel.add(Box.createVerticalStrut(10));// Add vertical space between response panels
+
+                // Add ProfileView as a listener to each response box's delete button
+                if (responseBoxPanel instanceof ProfileResponseBox) {
+                    ((ProfileResponseBox) responseBoxPanel).addDeleteButtonListener(this);
+                }
             }
         }
 
@@ -92,39 +101,48 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(contentPanel, BorderLayout.CENTER);
-      
-//        JPanel buttons = new JPanel();
-//        delete = new JButton(deleteViewModel.DELETE_BUTTON_LABEL);
+
+
+
+//        delete = new JButton(ProfileViewModel.DELETE_BUTTON_LABEL);
 //        buttons.add(delete);
 //
 //        delete.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
 //                if (e.getSource().equals(delete)) {
-//                    DeleteState state = deleteViewModel.getState();
+//                    ProfileState state = viewModel.getState();
+//                    state.setResponseId();
 //                    int dialogButton = JOptionPane.YES_NO_OPTION;
 //                    int dialogueResult = JOptionPane.showConfirmDialog(delete,
 //                            "Are you sure you want to delete Response: " + state.getResponseId() + "?", "Warning", dialogButton);
 //
 //                    if (dialogueResult == JOptionPane.YES_OPTION) {
-//                        DeleteState deleteState = deleteViewModel.getState();
-//                        deleteController.execute(deleteState.getResponseId());
+//                        ProfileState profilestate = viewModel.getState();
+//                        ProfileView.this.deleteController.execute(profilestate.getResponseId());
 //                    }
 //                }
 //            }
 //        });
+
     }
 
     private Response getResponseById(UUID responseId) {
         return fileUserDataAccessObject.getResponseById(viewModel.getState().getUserID(), responseId);
     }
     private JPanel createProfileResponseBox(Response response) {
-        return new views.ProfileResponseBox(response);
+        return new ProfileResponseBox(response);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         setFields();
+
+        if ("deleteResponse".equals(evt.getPropertyName())) {
+            UUID responseId = (UUID) evt.getNewValue();
+            // Pass responseId to delete controller
+            deleteController.execute(responseId);
+        }
     }
 
     private void setFields() {
@@ -150,10 +168,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public void actionPerformed(ActionEvent e) {
 
     }
+
 }
 
-//    @Override
-//    public void propertyChange(PropertyChangeEvent evt) {
-//        DeleteState state = (DeleteState) evt.getNewValue();
-//        JOptionPane.showConfirmDialog(this, "Response" + state.getResponseId() + "was deleted!");
-//    }
+
+
