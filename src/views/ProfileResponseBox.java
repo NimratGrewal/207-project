@@ -17,7 +17,6 @@ import java.beans.PropertyChangeSupport;
 public class ProfileResponseBox extends FeedResponseBox {
     private final PromptDataAccessObject promptDataAccessObject;
 
-    //    }
     JButton delete = new JButton("delete");
 
     // private final PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -39,17 +38,10 @@ public class ProfileResponseBox extends FeedResponseBox {
         topPanel.add(promptLabel, BorderLayout.NORTH);
         topPanel.remove(0);
 
-
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(delete)) {
-//                    ProfileState state = listener.beforeDeleteAction(response.getResponseId());
-//                    int dialogButton = JOptionPane.YES_NO_OPTION;
-//                    int dialogueResult = JOptionPane.showConfirmDialog(delete,
-//                            "Are you sure you want to delete this response"+ state.getResponseId() + "?", "Warning", dialogButton);
-//                    if (dialogueResult == JOptionPane.YES_OPTION) {
-//                        listener.onDeleteAction(state); // delegate task to onDeleteAction method
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogueResult = JOptionPane.showConfirmDialog(delete,
                             "Are you sure you want to delete this response" + response.getResponseId() + "?", "Warning", dialogButton);
@@ -66,10 +58,6 @@ public class ProfileResponseBox extends FeedResponseBox {
     public void addDeleteButtonListener(PropertyChangeListener listener) {
         delete.addPropertyChangeListener(listener);
     }
-
-    // public void addPropertyChangeListener(PropertyChangeListener listener) {
-    //     support.addPropertyChangeListener(listener);
-    //}
 
 }
 
