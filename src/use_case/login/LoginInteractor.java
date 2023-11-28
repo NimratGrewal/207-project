@@ -1,7 +1,10 @@
 package use_case.login;
 
+import data_access.FileUserDataAccessObject;
 import entities.User;
 import entities.Prompt;
+
+import java.io.File;
 
 public class LoginInteractor implements LoginInputBoundary {
     final LoginUserDataInterface userDataAccessObject;
@@ -30,6 +33,9 @@ public class LoginInteractor implements LoginInputBoundary {
             } else {
 
                 User user = userDataAccessObject.get(loginInputData.getUsername());
+
+                ((FileUserDataAccessObject) userDataAccessObject).setLoggedInUser(user);
+
                 Prompt prompt = promptDataAccessObject.getCurrentPrompt();
                 if(user.getHistory().containsKey(prompt.getPromptId())){
                     LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);

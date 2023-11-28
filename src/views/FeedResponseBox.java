@@ -1,20 +1,13 @@
 package views;
 
-import entities.Response;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.UUID;
 
 
 public class FeedResponseBox extends JPanel {
-    public FeedResponseBox(Response response) {
-        String username = response.getUser().getUsername();
-        String songName = response.getSong().getName();
-        List<String> songArtists = response.getSong().getArtists();
-        String songAlbum = response.getSong().getAlbum();
-        ImageIcon albumCover = response.getSong().getAlbumArt(100);
-
+    public FeedResponseBox(UUID responseId, String username, String songName, String[] songArtists, String songAlbum, ImageIcon albumArt) {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -30,7 +23,7 @@ public class FeedResponseBox extends JPanel {
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        JLabel albumCoverLabel = new JLabel(albumCover);
+        JLabel albumCoverLabel = new JLabel(albumArt);
         leftPanel.add(albumCoverLabel, BorderLayout.CENTER);
         leftPanel.setBackground(Color.lightGray);
 
@@ -39,7 +32,7 @@ public class FeedResponseBox extends JPanel {
         rightPanel.setBackground(Color.lightGray);
 
         JLabel songLabel = new JLabel("Song: " + songName);
-        JLabel artistLabel = new JLabel("Artist: " + songArtists);
+        JLabel artistLabel = new JLabel("Artist: " + Arrays.toString(songArtists));
         JLabel albumLabel = new JLabel("Album: " + songAlbum);
 
         rightPanel.add(songLabel);

@@ -24,7 +24,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.loginController = loginController;
         this.loginView = loginView;
         JPanel loginPanel = new JPanel();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1500, 1000);
         loginPanel.add(login);
         loginPanel.add(password);

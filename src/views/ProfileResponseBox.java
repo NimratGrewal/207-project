@@ -1,52 +1,39 @@
 package views;
 
-import entities.Prompt;
-import entities.Response;
-import interface_adapter.profile.ProfileState;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
 import java.util.UUID;
-import java.beans.PropertyChangeSupport;
-
 
 public class ProfileResponseBox extends FeedResponseBox {
-    private final PromptDataAccessObject promptDataAccessObject;
+        JButton delete = new JButton("delete");
 
-    JButton delete = new JButton("delete");
+        public ProfileResponseBox(UUID responseId, String username, String songName, String[] songArtists,
+                                  String songAlbum, ImageIcon albumArt, LocalDate promptDate, String promptText) {
+            super(responseId, username, songName, songArtists, songAlbum, albumArt);
 
-    // private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+            JPanel topPanel = (JPanel) getComponent(0);
 
-    public ProfileResponseBox(Response response, PromptDataAccessObject promptDataAccessObject) {
-        super(response);
-        this.promptDataAccessObject = promptDataAccessObject;
+            JLabel dateLabel = new JLabel("Date: " + promptDate);
+            JLabel promptLabel = new JLabel("Prompt: " + promptText);
+            dateLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        UUID promptID = response.getPromptId();
-        Prompt prompt = promptDataAccessObject.getPromptById(promptID);
+            topPanel.add(dateLabel, BorderLayout.NORTH);
+            topPanel.add(promptLabel, BorderLayout.NORTH);
+            topPanel.remove(0);
 
-        JPanel topPanel = (JPanel) getComponent(0);
-
-        JLabel dateLabel = new JLabel("Date: " + prompt.getPromptDate());
-        JLabel promptLabel = new JLabel("Prompt: " + prompt.getPromptText());
-        dateLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        topPanel.add(dateLabel, BorderLayout.NORTH);
-        topPanel.add(promptLabel, BorderLayout.NORTH);
-        topPanel.remove(0);
-
-        delete.addActionListener(new ActionListener() {
+            delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(delete)) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogueResult = JOptionPane.showConfirmDialog(delete,
-                            "Are you sure you want to delete this response" + response.getResponseId() + "?", "Warning", dialogButton);
+                            "Are you sure you want to delete this response" + responseId + "?", "Warning", dialogButton);
                     if (dialogueResult == JOptionPane.YES_OPTION) {
-                        firePropertyChange("deleteResponse", null, response.getResponseId());
+                        firePropertyChange("deleteResponse", null, responseId);
                     }
                 }
             }
