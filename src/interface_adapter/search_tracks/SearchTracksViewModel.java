@@ -8,7 +8,7 @@ import java.beans.PropertyChangeSupport;
 public class SearchTracksViewModel extends ViewModel {
     private SearchTracksState state = new SearchTracksState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    public SearchTracksViewModel(String viewName) {
+    public SearchTracksViewModel() {
         super("search tracks");
     }
 
