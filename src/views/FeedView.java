@@ -2,6 +2,7 @@ package views;
 
 import data_access.PromptDataAccessObject;
 import interface_adapter.feed.FeedController;
+import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
 
 import javax.swing.*;
@@ -14,11 +15,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FeedView extends JPanel implements ActionListener, PropertyChangeListener {
-
+    public String viewName = "feed";
     private final FeedViewModel viewModel;
-    private final FeedController feedController;
     private final JLabel dateAndPromptLabel;
     private final JPanel responsesPanel;
+    private final FeedController feedController;
 
     public FeedView(FeedViewModel viewModel, FeedController feedController) {
         this.viewModel = viewModel;
@@ -92,10 +93,11 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        setFields();
+        FeedState state = (FeedState) evt.getNewValue();
+        setFields(state);
     }
 
-    private void setFields() {
+    private void setFields(FeedState state) {
         dateAndPromptLabel.setText("Date: " + viewModel.getState().getPromptDate() +
                 "</br> Prompt: " + viewModel.getState().getPromptText());
 
@@ -114,3 +116,5 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         responsesPanel.repaint();
     }
 }
+
+

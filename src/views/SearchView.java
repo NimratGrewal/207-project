@@ -22,8 +22,6 @@ import java.util.Map;
 
 public class SearchView extends JPanel implements PropertyChangeListener {
     private final SearchViewModel searchViewModel;
-    private final SearchTracksController searchTracksController;
-    private final SetResponseController setResponseController;
     private final SearchTracksViewModel searchTracksViewModel;
 
     private final JLabel promptText;
@@ -32,14 +30,10 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final JTextField searchBarField;
     private final JButton setResponse;
     public SearchView (SearchViewModel searchViewModel,
-                       SearchTracksController searchTracksController,
-                       SetResponseController setResponseController,
                        SearchTracksViewModel searchTracksViewModel) {
         this.searchViewModel = searchViewModel;
-        this.setResponseController = setResponseController;
         this.searchViewModel.addPropertyChangeListener(this);
 
-        this.searchTracksController = searchTracksController;
         this.searchTracksViewModel = searchTracksViewModel;
         this.searchTracksViewModel.addPropertyChangeListener(this);
 

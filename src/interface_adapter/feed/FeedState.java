@@ -6,18 +6,19 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FeedState {
-    private final LocalDate promptDate;
-    private final String promptText;
-    private final Map<UUID, Map<String, Object>> responseInfoMap;
+    private LocalDate promptData;
+    private String promptText;
+    private Map<UUID, Map<String, Object>> responseInfoMap;
 
-    public FeedState(LocalDate promptDate, String promptText, Map<UUID, Map<String, Object>> responseInfoMap) {
-        this.promptDate = promptDate;
-        this.promptText = promptText;
-        this.responseInfoMap = responseInfoMap;
+    public FeedState(FeedState copy) {
+        promptData = copy.promptData;
+        promptText = copy.promptText;
+        responseInfoMap = copy.responseInfoMap;
     }
+    public FeedState() {}
 
     public LocalDate getPromptDate() {
-        return promptDate;
+        return promptData;
     }
 
     public String getPromptText() {
@@ -26,5 +27,14 @@ public class FeedState {
 
     public Map<UUID, Map<String, Object>> getResponseInfoMap() {
         return responseInfoMap;
+    }
+    public void setPromptDate(LocalDate promptData) {
+        this.promptData = promptData;
+    }
+    public void setPromptText(String promptText) {
+        this.promptText = promptText;
+    }
+    public void setResponseInfoMap(Map<UUID, Map<String, Object>> responseInfoMap) {
+        this.responseInfoMap = responseInfoMap;
     }
 }

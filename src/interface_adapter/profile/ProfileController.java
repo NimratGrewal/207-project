@@ -6,7 +6,7 @@ import use_case.toProfile.ProfileInputData;
 import java.util.UUID;
 
 public class ProfileController {
-    private final ProfileInputBoundary profileInteractor;
+    final ProfileInputBoundary profileInteractor;
 
     public ProfileController(ProfileInputBoundary profileInteractor) {
         this.profileInteractor = profileInteractor;

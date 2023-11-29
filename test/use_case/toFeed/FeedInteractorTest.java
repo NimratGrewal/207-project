@@ -2,54 +2,85 @@ package use_case.toFeed;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import data_access.DataAccessObjectFacade;
+import data_access.FileUserDataAccessObject;
 import data_access.PromptDataAccessObject;
-import entities.CommonUser;
-import entities.Prompt;
-import entities.Response;
-import entities.Song;
+import entities.*;
+import mocks.MockDataAccessObjectFacade;
+import mocks.MockFileUserDataAccessObject;
+import mocks.MockPromptDataAccessObject;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 
 class FeedInteractorTest {
-//    void successTest() throws IOException {
-//        CommonUser hypotheticalUser = new CommonUser("JohnDoe", "password123");
-//        List<String> artist = List.of("Mitski");
-//        Image placeholderImage = createPlaceholderImage();
-//        Song hypotheticalSong = new Song("1", "My Love Mine All Mine", artist,
-//                "The Land Is Inhospitable and So Are We", placeholderImage);
-//        UUID responseId = UUID.randomUUID();
-//        UUID promptId = UUID.randomUUID();
-//        Response hypotheticalResponse = new Response(responseId, promptId, hypotheticalUser, hypotheticalSong);
-//        String promptQuestion = "Hypothetical Prompt Question";
-//        LocalDate promptDate = LocalDate.now();
-//        Prompt hypotheticalPrompt = new Prompt(promptQuestion, promptDate);
-//
-//        FeedInputData inputData = new FeedInputData(promptId);
-//
-//        // MockPromptDataAccessObject includes the hypothetical response
-//        PromptDataAccessObject mockPromptDao = new PromptDataAccessObject("mock.csv");
-//
-//        FeedOutputBoundary successPresenter = new FeedOutputBoundary() {
-//            @Override
-//            public void present(FeedOutputData outputData) {
-//                //assertions
-//            }
-//        };
-//
-//        FeedInputBoundary interactor = new FeedInteractor(mockPromptDao, successPresenter);
-//        interactor.execute(inputData);
-//    }
-//
-//    private Image createPlaceholderImage() {
-//        // Implement your logic to create a placeholder Image object
-//        // For example, you can use Toolkit.getDefaultToolkit().getImage("path/to/your/placeholder/image.jpg");
-//        return null; // Replace null with your actual implementation
-//    }
-}
+
+    //making users
+    CommonUser user1 = new CommonUser("haya.tariqq", "password1");
+    UUID user1Id = user1.getUserId();
+    CommonUser user2 = new CommonUser("newr", "password2");
+    UUID user2Id = user2.getUserId();
+
+    //making daily prompt
+    Prompt dailyPrompt = new Prompt("What is your go-to song to get ready to?", LocalDate.now());
+    UUID dailyPromptId = dailyPrompt.getPromptId();
+
+    //making songs
+    ImageIcon albumArt = new ImageIcon("placeholderAlbum");
+
+    List<String> artists1 = new ArrayList<String>() {{
+        add("Mitski");
+    }};
+    Song song1 = new Song("10", "My Love Mine All Mine", artists1,
+            "This Land is Inhospitable and So Are We", albumArt);
+
+    List<String> artists2 = new ArrayList<String>() {{
+        add("Baby Keem");
+        add("Brent Faiyaz");
+    }};
+    Song song2 = new Song("20", "lost souls (with Brent Faiyaz)", artists2,
+            "The Melodic Blue", albumArt);
+
+
+    //making responses
+    Response response1 = new Response(dailyPromptId, user1Id, song1);
+    Response response2 = new Response(dailyPromptId, user2Id, song2);
+
+    FeedInputData inputData = new FeedInputData(dailyPromptId);
+
+    Map<String, Object> responseInfo1 = new HashMap<String, Object>() {{
+        put("ResponseId", response1.getResponseId());
+        put("Username", "haya.tariqq");
+        put("Song Name", "My Love Mina All Mine");
+        put("Song Artists", artists1);
+        put("Song Album", "This Land is Inhospitable and So Are We");
+        put("Album Art", albumArt);
+    }};
+
+    Map<String, Object> responseInfo2 = new HashMap<String, Object>() {{
+        put("ResponseId", response2.getResponseId());
+        put("Username", "newr");
+        put("Song Name", "lost souls (with Brent Faiyaz)");
+        put("Song Artists", artists2);
+        put("Song Album", "The Melodic Blue");
+        put("Album Art", albumArt);
+    }};
+
+    Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>() {{
+        put(user1Id, responseInfo1);
+        put(user2Id, responseInfo2);
+    }};
+
+    FeedOutputData outputData = new FeedOutputData(LocalDate.now(),
+            "What is your go-to song to get ready to?", responseInfoMap);
+
+    @Test
+    void executeTest() {
+
+    }
+ }

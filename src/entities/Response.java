@@ -8,8 +8,8 @@ public class Response {
     private final UUID userId;
     private final Song song;
 
-    public Response(UUID responseId, UUID promptId, UUID userId, Song song) {
-        this.responseId = responseId;
+    public Response(UUID promptId, UUID userId, Song song) {
+        this.responseId = UUID.randomUUID();
         this.promptId = promptId;
         this.userId = userId;
         this.song = song;

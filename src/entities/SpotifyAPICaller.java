@@ -96,7 +96,8 @@ public class SpotifyAPICaller {
                 if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
                     URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
                   Image albumArt = new ImageIcon(ImageURL).getImage();
-                  return new Song(trackId, songName, artists, album, albumArt);
+                  ImageIcon albumArtIcon = new ImageIcon(albumArt.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                  return new Song(trackId, songName, artists, album, albumArtIcon);
                 } else {
                     // if no images available
                     throw new RuntimeException("No album cover found for the track");
@@ -150,7 +151,7 @@ public class SpotifyAPICaller {
   
                     if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
                         URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
-                        Image albumArt = new ImageIcon(ImageURL).getImage();
+                        ImageIcon albumArt = new ImageIcon(ImageURL);
                         tracks.add(new Song(songId, songName, artists, album, albumArt));
                     } else {
                     // if no images available

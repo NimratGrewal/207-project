@@ -1,30 +1,21 @@
 package interface_adapter.profile;
 
 import interface_adapter.ViewModel;
+import interface_adapter.feed.FeedViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class ProfileViewModel extends ViewModel {
-    private ProfileState state;
-
-    public final String TITLE_LABEL = "Profile View";
-
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    public ProfileViewModel(String viewName) {
+    private ProfileState state = new ProfileState();
+    public ProfileViewModel() {
         super("profile");
     }
 
     public void setState(ProfileState state) {
-        ProfileState oldState = this.state;
         this.state = state;
-        support.firePropertyChange("state", oldState, this.state);
     }
-
-    public ProfileState getState() {
-        return state;
-    }
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
@@ -32,6 +23,9 @@ public class ProfileViewModel extends ViewModel {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
+    }
+    public ProfileState getState() {
+        return state;
     }
 }
 

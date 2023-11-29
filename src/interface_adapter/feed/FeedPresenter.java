@@ -1,7 +1,9 @@
 package interface_adapter.feed;
 
+import interface_adapter.ViewManagerModel;
 import use_case.toFeed.FeedOutputBoundary;
 import use_case.toFeed.FeedOutputData;
+import views.ViewManager;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -9,18 +11,25 @@ import java.util.UUID;
 
 public class FeedPresenter implements FeedOutputBoundary {
     private final FeedViewModel feedViewModel;
+    private ViewManagerModel viewManagerModel;
 
-    public FeedPresenter(FeedViewModel feedViewModel) {
+    public FeedPresenter(ViewManagerModel viewManagerModel, FeedViewModel feedViewModel) {
+        this.viewManagerModel = viewManagerModel;
         this.feedViewModel = feedViewModel;
     }
 
     @Override
     public void present(FeedOutputData outputData) {
-        LocalDate promptDate = outputData.getPromptDate();
-        String promptText = outputData.getPromptText();
-        Map<UUID, Map<String, Object>> responseInfoMap = outputData.getResponseInfoMap();
 
-        FeedState feedState = new FeedState(promptDate, promptText, responseInfoMap);
-        feedViewModel.setState(feedState);
+        FeedState feedState = feedViewModel.getState();
+        feedState.setPromptDate(outputData.getPromptDate());
+        feedState.setPromptText(outputData.getPromptText());
+        feedState.setResponseInfoMap(outputData.getResponseInfoMap());
+
+        this.feedViewModel.setState(feedState);
+        this.feedViewModel.firePropertyChanged();;
+
+        this.viewManagerModel.setActiveView(feedViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 }

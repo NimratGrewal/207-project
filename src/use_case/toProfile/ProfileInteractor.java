@@ -1,7 +1,7 @@
 package use_case.toProfile;
 
-import data_access.DataAccessObjectFacade;
 import entities.*;
+import use_case.toFeed.FeedDataAccessInterface;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -10,18 +10,21 @@ import java.util.UUID;
 import java.util.Map;
 
 public class ProfileInteractor implements ProfileInputBoundary {
-    private final DataAccessObjectFacade dataAccessObjectFacade;
+    private final UserProfileDataAccessInterface userDataAccessObject;
+    private final FeedDataAccessInterface feedDataAccessInterface;
     private final ProfileOutputBoundary presenter;
-    public ProfileInteractor(DataAccessObjectFacade dataAccessObjectFacade,
+    public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject,
+                             FeedDataAccessInterface feedDataAccessInterface,
                              ProfileOutputBoundary presenter) {
-        this.dataAccessObjectFacade = dataAccessObjectFacade;
+        this.userDataAccessObject = userDataAccessObject;
+        this.feedDataAccessInterface = feedDataAccessInterface;
         this.presenter = presenter;
     }
 
     @Override
     public void execute(ProfileInputData inputData) {
         UUID userId = inputData.getLoggedInUserID();
-        User user = dataAccessObjectFacade.getUser(userId);
+        User user = userDataAccessObject.getUser(userId);
 
         String username = user.getUsername();
         int numberOfResponses = user.getNumberOfResponses();
@@ -30,7 +33,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
         for (Map.Entry<UUID, Response> entry : userResponses.entrySet()) {
             UUID promptId = entry.getKey();
-            Prompt prompt = dataAccessObjectFacade.getPromptById(promptId);
+            Prompt prompt = feedDataAccessInterface.getPromptById(promptId);
             String promptText = prompt.getPromptText();
             LocalDate promptDate = prompt.getPromptDate();
 

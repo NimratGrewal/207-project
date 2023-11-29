@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ProfileView extends JPanel implements PropertyChangeListener {
-
+    public final String viewName = "profile";
     private final ProfileViewModel viewModel;
     private final ProfileController profileController;
     private final DeleteController deleteController;
@@ -24,7 +24,9 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController,
+
+    public ProfileView(ProfileViewModel viewModel,
+                       ProfileController profileController,
                        DeleteController deleteController) {
         this.viewModel = viewModel;
         this.profileController = profileController;
@@ -115,7 +117,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         return new ProfileResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
     }
 
-    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         setFields();
 

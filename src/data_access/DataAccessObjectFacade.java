@@ -16,8 +16,10 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
         UserProfileDataAccessInterface, PromptDataAccessInterface, FeedDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
-    public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject) {
+    public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject,
+                                  PromptDataAccessObject promptDataAccessObject) {
         this.userDataAccessObject = userDataAccessObject;
+        this.promptDataAccessObject = promptDataAccessObject;
     }
 
     @Override

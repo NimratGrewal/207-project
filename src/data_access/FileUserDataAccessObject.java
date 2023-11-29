@@ -1,9 +1,6 @@
 package data_access;
 
 import entities.*;
-import use_case.delete.DeleteUserDataAccessInterface;
-import use_case.set_response.SetResponseDataAccessInterface;
-import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -57,7 +54,9 @@ public class FileUserDataAccessObject {
                         UUID promptID = UUID.fromString(responseData[1]);
                         String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, userId, songID);
+                        Song song = caller.getTrack(songID);
+
+                        Response response = new Response(promptID, userId, song);
                         if (!this.responses.containsKey(user)){
                             this.responses.put(user, new ArrayList<>());
                         }

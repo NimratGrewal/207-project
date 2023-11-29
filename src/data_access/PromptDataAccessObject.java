@@ -92,8 +92,8 @@ public class PromptDataAccessObject {
                     }
                 }
                 String result = all_responses.toString();
-                String line = "%s,%s,%s,%s,%s".formatted(
-                        prompt.getPromptText(), prompt.getDate(), prompt.getDate(),prompt.getCreationTime().toString(), result);
+                String line = "%s,%s,%s,%s".formatted(
+                        prompt.getPromptText(), prompt.getPromptId(), prompt.getPromptDate(), result);
                 writer.write(line);
                 writer.newLine();
             }

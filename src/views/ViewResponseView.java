@@ -15,7 +15,7 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
 
     public final ViewResponseViewModel viewResponseViewModel;
 
-    private final HomeController homeController;
+//    private final HomeController homeController;
 
     private final JLabel promptText;
     private final ImageIcon albumCover;
@@ -24,9 +24,9 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
     private final JLabel artistNames;
     final JButton reset;
 
-    public ViewResponseView(ViewResponseViewModel viewResponseViewModel, HomeController homeController) {
+    public ViewResponseView(ViewResponseViewModel viewResponseViewModel) {
         this.viewResponseViewModel = viewResponseViewModel;
-        this.homeController = homeController;
+//        this.homeController = homeController;
 
         JLabel title = new JLabel("Home Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -55,9 +55,9 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
 
         reset.addActionListener(
                 e -> {
-                    if (e.getSource().equals(reset)) {
-                        homeController.execute();
-                    }
+//                    if (e.getSource().equals(reset)) {
+//                        homeController.execute();
+//                    }
                 }
         );
 
