@@ -12,8 +12,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
@@ -30,6 +28,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final JList<Map<String, String>> searchResults;
     private final ListModel<Map<String, String>> listModel;
     private final JTextField searchBarField;
+    private final JButton searchButton;
     private final JButton setResponse;
     public SearchView (SearchViewModel searchViewModel,
                        SearchTracksController searchTracksController,
@@ -47,6 +46,12 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         promptText = new JLabel();
 
         searchBarField = new JTextField();
+        searchBarField.setPreferredSize(new Dimension(200, 18));
+        searchButton = new JButton(SearchViewModel.SEARCH_BUTTON_LABEL);
+        JPanel searchBarPanel = new JPanel();
+
+        searchBarPanel.add(searchBarField);
+        searchBarPanel.add(searchButton);
 
         searchResults = new JList<>();
 
@@ -57,18 +62,13 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         searchResults.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane listScroller = new JScrollPane(searchResults);
-        listScroller.setPreferredSize(new Dimension(300, 50));
+        listScroller.setPreferredSize(new Dimension(500, 300));
 
         setResponse = new JButton(SearchViewModel.SET_RESPONSE_LABEL);
         setResponse.setEnabled(false);
 
         searchResults.addListSelectionListener(
-                new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        setResponse.setEnabled(!searchResults.isSelectionEmpty());
-                    }
-                }
+                e -> setResponse.setEnabled(!searchResults.isSelectionEmpty())
         );
 
         searchBarField.addKeyListener(
@@ -76,7 +76,6 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                     @Override
                     public void keyTyped(KeyEvent e) {
                         searchViewModel.getState().setSearchBarText(searchBarField.getText() + e.getKeyChar());
-                        searchTracksController.execute(searchViewModel.getState().getSearchBarText());
                     }
 
                     @Override
@@ -91,13 +90,18 @@ public class SearchView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        searchButton.addActionListener(
+                e -> {
+                    if (e.getSource().equals(searchButton)) {
+                        searchTracksController.execute(searchViewModel.getState().getSearchBarText());
+                    }
+                }
+        );
+
         setResponse.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(setResponse)) {
-                            setResponseController.execute(listModel.getElementAt(searchResults.getSelectedIndex()).get("id"));
-                        }
+                e -> {
+                    if (e.getSource().equals(setResponse)) {
+                        setResponseController.execute(listModel.getElementAt(searchResults.getSelectedIndex()).get("id"));
                     }
                 }
         );
@@ -106,6 +110,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
 
         this.add(title);
         this.add(promptText);
+        this.add(searchBarPanel);
         this.add(listScroller);
         this.add(setResponse);
     }
@@ -116,7 +121,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
             promptText.setText(state.getPromptText());
         } else if (evt.getNewValue() instanceof SearchTracksState state) {
             searchResults.getSelectionModel().clearSelection();
-            ((DefaultListModel<Map<String, String>>) listModel).clear();
+            ((DefaultListModel<Map<String, String>>) listModel).removeAllElements();
             for (Map<String, String> songInfo: state.getTrackList()) {
                 ((DefaultListModel<Map<String, String>>) listModel).addElement(songInfo);
             }

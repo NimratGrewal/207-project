@@ -14,8 +14,9 @@ import java.util.UUID;
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface, UserProfileDataAccessInterface, PromptDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
-    public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject) {
+    public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject, PromptDataAccessObject promptDataAccessObject) {
         this.userDataAccessObject = userDataAccessObject;
+        this.promptDataAccessObject = promptDataAccessObject;
     }
 
     @Override
@@ -51,16 +52,6 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public User get(UUID userId) {
-        return userDataAccessObject.get(userId);
-    }
-
-    @Override
-    public List<UUID> getResponseIds(User user) {
-        return userDataAccessObject.getResponseIds(user);
-    }
-
-    @Override
     public Prompt getCurrentPrompt() {
         return promptDataAccessObject.getCurrentPrompt();
     }
@@ -68,5 +59,20 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public boolean answeredCurrentPrompt(UUID promptID) {
         return promptDataAccessObject.answeredCurrentPrompt(promptID);
+    }
+
+    @Override
+    public User getLoggedInUser(UUID userId) {
+        return userDataAccessObject.getLoggedInUser();
+    }
+
+    @Override
+    public User getUser(UUID userId) {
+        return userDataAccessObject.getUser(userId);
+    }
+
+    @Override
+    public Response getResponseById(UUID responseId) {
+        return userDataAccessObject.getResponseById(responseId);
     }
 }
