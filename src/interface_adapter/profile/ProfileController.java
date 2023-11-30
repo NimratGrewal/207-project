@@ -1,14 +1,20 @@
 package interface_adapter.profile;
 
-//import use_case.FeedToProfile.FeedToProfileInputBoundary;
-//
-//public class ProfileController implements FeedToProfileInputBoundary{
-//    private final FeedToProfileInputBoundary profileInteractor;
-//
-//    public ProfileController(FeedToProfileInputBoundary profileInteractor) {
-//        this.profileInteractor = profileInteractor;
-//    }
-//    public void profileClicked() {
-//        profileInteractor.profileClicked();
-//    }
-//}
+import use_case.toProfile.ProfileInputBoundary;
+import use_case.toProfile.ProfileInputData;
+
+import java.util.UUID;
+
+public class ProfileController {
+    private final ProfileInputBoundary profileInteractor;
+
+    public ProfileController(ProfileInputBoundary profileInteractor) {
+        this.profileInteractor = profileInteractor;
+    }
+
+    public void execute(UUID loggedInUserId) {
+        ProfileInputData inputData = new ProfileInputData(loggedInUserId);
+        profileInteractor.execute(inputData);
+    }
+}
+

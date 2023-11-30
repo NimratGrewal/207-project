@@ -9,8 +9,7 @@ public class DeleteInteractor implements DeleteInputBoundary {
 
     final DeleteUserDataAccessInterface userDataAccessInterface;
 
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface,
-                            DelteRes) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface) {
         this.deletePresenter = deletePresenter;
         this.responseDataAccessInterface = responseDataAccessInterface;
         this.userDataAccessInterface = userDataAccessInterface;
@@ -19,15 +18,12 @@ public class DeleteInteractor implements DeleteInputBoundary {
     @Override
     public void execute(DeleteInputData deleteInputData) {
         UUID responseId = deleteInputData.getResponseId();
-        if (responseDataAccessInterface.existsById(responseId) && userDataAccessInterface.responseExistsById(responseId)) {
+        if (responseDataAccessInterface.responseexistsById(responseId) && userDataAccessInterface.responseExistsById(responseId)) {
             responseDataAccessInterface.deleteResponse(responseId);
             userDataAccessInterface.deleteResponse(responseId);
 
             DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
             deletePresenter.prepareSuccessView(deleteOutputData);
-        } else {
-            deletePresenter.prepareFailView("Response does not exist");
-
         }
 
     }

@@ -7,11 +7,9 @@ import use_case.search_tracks.SearchTracksOutputData;
 public class SearchTracksPresenter implements SearchTracksOutputBoundary {
     private final SearchTracksViewModel searchTracksViewModel;
     //viewModel for confirm or cancel
-    private ViewManagerModel viewManagerModel;
 
-    public SearchTracksPresenter(SearchTracksViewModel searchTracksViewModel, ViewManagerModel viewManagerModel) {
+    public SearchTracksPresenter(SearchTracksViewModel searchTracksViewModel) {
         this.searchTracksViewModel = searchTracksViewModel;
-        this.viewManagerModel = viewManagerModel;
     }
 
     @Override

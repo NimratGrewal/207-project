@@ -1,6 +1,6 @@
 package entities;
-import java.util.UUID;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.util.*;
 
 
 public class Prompt {
@@ -8,13 +8,15 @@ public class Prompt {
     public final String promptQuestion;
 
     private boolean isActive;
+    private LocalDate promptDate;
 
-    private HashMap<UUID, UUID> responses;
-    public Prompt(String promptQuestion) {
+    private Map<UUID, UUID> responses;
+    public Prompt(String promptQuestion, LocalDate promptDate) {
         this.promptQuestion = promptQuestion;
         this.promptId = UUID.randomUUID();
         this.isActive = false;
         this.responses = new HashMap<>();
+        this.promptDate = promptDate;
     }
 
     public UUID getPromptId() {
@@ -32,10 +34,13 @@ public class Prompt {
     public String getPromptText(){
         return promptQuestion;
     }
-    public HashMap<UUID, UUID> viewPromptResponse(){
+    public LocalDate getPromptDate() {
+        return promptDate;
+    }
+    public Map<UUID, UUID> getPromptResponse(){
         return responses;
     }
-    public void setResponses(UUID userID, UUID responseId){
+    public void setResponse(UUID userID, UUID responseId){
         if (!responses.containsKey(userID)) {
             responses.put(userID, responseId);
         }

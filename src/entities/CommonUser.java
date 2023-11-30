@@ -16,15 +16,14 @@ public class CommonUser implements User {
      * Requires: password is valid.
      * @param username
      * @param password
-     * @param userId
      */
 
-    public CommonUser(String username, String password, LocalDateTime creationTime) {
+    public CommonUser(String username, String password) {
         this.username = username;
         this.password = password;
         this.userId = UUID.randomUUID();
         this.history = new HashMap<>();
-        this.creationTime = creationTime;
+        this.creationTime = LocalDateTime.now();
     }
 
     public CommonUser(UUID userId, String username, String password, LocalDateTime creationTime) {

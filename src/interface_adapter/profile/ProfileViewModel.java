@@ -1,39 +1,38 @@
 package interface_adapter.profile;
 
 import interface_adapter.ViewModel;
-import interface_adapter.feed.FeedState;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class ProfileViewModel extends ViewModel {
-    public final String TITLE_LABEL = "Profile page";
+    private ProfileState state;
 
-    public static final String HOME_BUTTON_LABEL = "Home";
-    public static final String FEED_BUTTON_LABEL = "Feed";
+    public final String TITLE_LABEL = "Profile View";
 
-    private ProfileState state = new ProfileState();
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public ProfileViewModel() {
+    public ProfileViewModel(String viewName) {
         super("profile");
     }
 
     public void setState(ProfileState state) {
+        ProfileState oldState = this.state;
         this.state = state;
-    }
-
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    public void firePropertyChanged() {
-        support.firePropertyChange("state", null, this.state);
-    }
-
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
+        support.firePropertyChange("state", oldState, this.state);
     }
 
     public ProfileState getState() {
         return state;
     }
+
+    public void firePropertyChanged() {
+        support.firePropertyChange("state", null, this.state);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
 }
+
+

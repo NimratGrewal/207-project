@@ -1,12 +1,34 @@
 package views;
 
+import data_access.PromptDataAccessObject;
+import interface_adapter.feed.FeedController;
+import interface_adapter.feed.FeedViewModel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Map;
+import java.util.UUID;
 
-public class FeedView extends JPanel {
+public class FeedView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public FeedView() {
+    private final FeedViewModel viewModel;
+    private final FeedController feedController;
+    private final JLabel dateAndPromptLabel;
+    private final JPanel responsesPanel;
+
+    public FeedView(FeedViewModel viewModel, FeedController feedController) {
+        this.viewModel = viewModel;
+        this.feedController = feedController;
+
+        viewModel.addPropertyChangeListener(this);
+
         setLayout(new BorderLayout());
+
+        dateAndPromptLabel = new JLabel();
 
         // overall content panel
         JPanel contentPanel = new JPanel();
@@ -14,8 +36,10 @@ public class FeedView extends JPanel {
 
         // header panel
         JPanel headerPanel = new JPanel(new BorderLayout());
-        JLabel dateAndPromptLabel = new JLabel("<html>Month Day, Year<br/>" +
-                "What is your favorite song to sing in the shower?</html>");
+
+        dateAndPromptLabel.setText("Date: " + viewModel.getState().getPromptDate() +
+                "<br/> Prompt: " + viewModel.getState().getPromptText());
+
         headerPanel.add(dateAndPromptLabel, BorderLayout.NORTH);
 
         // spacing around text in header panel
@@ -24,22 +48,25 @@ public class FeedView extends JPanel {
         // add header panel to content panel
         contentPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // answers panel
-        JPanel answersPanel = new JPanel();
-        answersPanel.setLayout(new BoxLayout(answersPanel, BoxLayout.Y_AXIS));
+        // feed responses panel
+        responsesPanel = new JPanel();
+        responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
-        // sample answers
-        for (int i = 1; i <= 20; i++) {
-            answersPanel.add(createAnswerPanel("Answer " + i));
-            answersPanel.add(Box.createVerticalStrut(10)); // Add vertical space between answers
+        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+            UUID userId = entry.getKey();
+            Map<String, Object> responseInfo = entry.getValue();
+
+            JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
         }
 
         // scroll pane for answers
-        JScrollPane scrollPane = new JScrollPane(answersPanel);
+        JScrollPane scrollPane = new JScrollPane(responsesPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         // space around answer boxes in scroll panel
-        answersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        responsesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -48,15 +75,42 @@ public class FeedView extends JPanel {
 
         add(contentPanel, BorderLayout.CENTER);
     }
-    private JPanel createAnswerPanel(String answerText) {
-        JPanel answerPanel = new JPanel();
-        answerPanel.setBackground(Color.lightGray);
+    private JPanel createFeedResponseBox(Map<String, Object> responseInfo) {
+        UUID responseId = (UUID) responseInfo.get("Response ID");
+        String username = (String) responseInfo.get("Username");
+        String songName = (String) responseInfo.get("Song Name");
+        String[] songArtists = ((String[]) responseInfo.get("Song Artists"));
+        String songAlbum = (String) responseInfo.get("Song Album");
+        ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
-        answerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        return new FeedResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt);
+    }
 
-        JLabel answerLabel = new JLabel(answerText);
-        answerPanel.add(answerLabel);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    }
 
-        return answerPanel;
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        setFields();
+    }
+
+    private void setFields() {
+        dateAndPromptLabel.setText("Date: " + viewModel.getState().getPromptDate() +
+                "</br> Prompt: " + viewModel.getState().getPromptText());
+
+        responsesPanel.removeAll();
+
+        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+            UUID userId = entry.getKey();
+            Map<String, Object> responseInfo = entry.getValue();
+
+            JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
+            responsesPanel.add(responseBoxPanel);
+            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+        }
+
+        responsesPanel.revalidate();
+        responsesPanel.repaint();
     }
 }

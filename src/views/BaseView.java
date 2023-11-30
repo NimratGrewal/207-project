@@ -1,31 +1,30 @@
 package views;
 
+import interface_adapter.feed.FeedController;
+import interface_adapter.profile.ProfileController;
+
 import javax.swing.*;
+import java.util.UUID;
 
 public class BaseView extends JTabbedPane {
-    public BaseView(FeedView feedPage, ProfileView profilePage) {
+    private ProfileController profileController;
+    private FeedController feedController;
+    public BaseView(SearchView searchView, ResponseView responseView,
+                    FeedView feedPage, ProfileView profilePage, UUID dailyPromptId, UUID loggedInUserId) {
         addTab("Home", null);
         addTab("Feed", null, feedPage);
         addTab("Profile", null, profilePage);
-    }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            FeedView pageOne = new FeedView();
-            ProfileView pageTwo = new ProfileView();
-
-            BaseView tabbedPage = new BaseView(pageOne, pageTwo);
-
-            // Set up the main JFrame
-            JFrame frame = new JFrame();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 300);
-            frame.setLocationRelativeTo(null);
-
-            // Add the tabbedPane to the JFrame
-            frame.add(tabbedPage);
-
-            frame.setVisible(true);
+        addChangeListener(e -> {
+            int selectedIndex = getSelectedIndex();
+            switch (selectedIndex) {
+                case 0:
+                    break;
+                case 1:
+                    feedController.execute(dailyPromptId);
+                case 2:
+                    profileController.execute(loggedInUserId);
+            }
         });
     }
 
