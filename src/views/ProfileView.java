@@ -150,12 +150,9 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         responsesPanel.repaint();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 
-}
+
 
 
 
