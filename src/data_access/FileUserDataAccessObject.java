@@ -169,8 +169,10 @@ public class FileUserDataAccessObject {
         save();
     }
 
-    public UUID getLoggedInUserId() {
-        return loggedInUser.getUserId();
+    public UUID getLoggedInUserId() {return loggedInUser.getUserId(); }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
     }
 
     public void setLoggedInUser(User loggedInUser) {

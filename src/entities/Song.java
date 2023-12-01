@@ -10,7 +10,7 @@ public class Song {
     private final List<String> artists;
     private final String album;
 
-    private final ImageIcon albumArt;
+    private final Image albumArt;
 
     /**
      * Creates an instance of Song
@@ -21,7 +21,7 @@ public class Song {
      * @param album   the album on which the song appears
      * @param albumArt the
      */
-    public Song(String songId, String name, List<String> artists, String album, ImageIcon albumArt) {
+    public Song(String songId, String name, List<String> artists, String album, Image albumArt) {
         this.songId = songId;
         this.name = name;
         this.artists = artists;
@@ -67,6 +67,6 @@ public class Song {
      * @return ImageIcon object of album art for this song scaled to size X size pixels
      */
     public ImageIcon getAlbumArt(int size) {
-        return albumArt;
+        return new ImageIcon(albumArt.getScaledInstance(size, size, Image.SCALE_SMOOTH));
     }
 }

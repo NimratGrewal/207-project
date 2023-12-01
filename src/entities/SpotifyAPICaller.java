@@ -92,12 +92,11 @@ public class SpotifyAPICaller {
                     artists.add(artistObject.getString("name"));
                 }
                 String album = responseBody.getJSONObject("album").getString("name");
-              
+
                 if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
                     URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
-                  Image albumArt = new ImageIcon(ImageURL).getImage();
-                  ImageIcon albumArtIcon = new ImageIcon(albumArt.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                  return new Song(trackId, songName, artists, album, albumArtIcon);
+                    Image albumArt = new ImageIcon(ImageURL).getImage();
+                    return new Song(trackId, songName, artists, album, albumArt);
                 } else {
                     // if no images available
                     throw new RuntimeException("No album cover found for the track");
@@ -148,14 +147,14 @@ public class SpotifyAPICaller {
                         JSONObject artistObject = (JSONObject) artist;
                         artists.add(artistObject.getString("name"));
                     }
-  
+
                     if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
                         URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
-                        ImageIcon albumArt = new ImageIcon(ImageURL);
+                        Image albumArt = new ImageIcon(ImageURL).getImage();
                         tracks.add(new Song(songId, songName, artists, album, albumArt));
                     } else {
-                    // if no images available
-                    throw new RuntimeException("No album cover found for the track");
+                        // if no images available
+                        throw new RuntimeException("No album cover found for the track");
                     }
                 }
                 return tracks;
@@ -165,3 +164,4 @@ public class SpotifyAPICaller {
         }
     }
 }
+
