@@ -25,47 +25,42 @@ public class FeedInteractor implements FeedInputBoundary {
         this.presenter = presenter;
     }
 
-    public void execute(FeedInputData inputData) {
-        UUID dailyPromptId = inputData.getDailyPromptID();
-
+    public void execute() {
         Prompt currentPrompt = feedDataAccessInterface.getCurrentPrompt();
+        UUID dailyPromptId = currentPrompt.getPromptId();
 
-        if (currentPrompt != null) {
-            String promptText = currentPrompt.getPromptText();
-            LocalDate promptDate = currentPrompt.getPromptDate();
+        String promptText = currentPrompt.getPromptText();
+        LocalDate promptDate = currentPrompt.getPromptDate();
 
-            Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
+        Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
 
-            // Iterate through all users
-            for (User user : userProfileDataAccessInterface.getAllUsers()) {
-                UUID userId = user.getUserId();
+        // Iterate through all users
+        for (User user : userProfileDataAccessInterface.getAllUsers()) {
+            UUID userId = user.getUserId();
 
-                // Check if the user has a response for the given daily prompt
-                if (user.hasResponseForDailyPrompt(dailyPromptId)) {
-                    Response response = user.getResponseForDailyPrompt(dailyPromptId);
+            // Check if the user has a response for the given daily prompt
+            if (user.hasResponseForDailyPrompt(dailyPromptId)) {
+                Response response = user.getResponseForDailyPrompt(dailyPromptId);
 
-                    String username = user.getUsername();
+                String username = user.getUsername();
 
-                    Song song = response.getSong();
-                    ImageIcon albumArt = song.getAlbumArt(100);
+                Song song = response.getSong();
+                ImageIcon albumArt = song.getAlbumArt(100);
 
-                    Map<String, Object> responseInfo = new HashMap<>();
-                    responseInfo.put("Response ID", response.getResponseId());
-                    responseInfo.put("Username", username);
-                    responseInfo.put("Song Name", song.getName());
-                    responseInfo.put("Song Artists", song.getArtists());
-                    responseInfo.put("Song Album", song.getAlbum());
-                    responseInfo.put("Album Art", albumArt);
+                Map<String, Object> responseInfo = new HashMap<>();
+                responseInfo.put("Response ID", response.getResponseId());
+                responseInfo.put("Username", username);
+                responseInfo.put("Song Name", song.getName());
+                responseInfo.put("Song Artists", song.getArtists());
+                responseInfo.put("Song Album", song.getAlbum());
+                responseInfo.put("Album Art", albumArt);
 
-                    responseInfoMap.put(userId, responseInfo);
-                }
+                responseInfoMap.put(userId, responseInfo);
             }
-
-            FeedOutputData outputData = new FeedOutputData(promptDate, promptText, responseInfoMap);
-            presenter.present(outputData);
-        } else {
-            System.out.println("Error: getCurrentPrompt() returned null");
         }
+
+        FeedOutputData outputData = new FeedOutputData(promptDate, promptText, responseInfoMap);
+        presenter.present(outputData);
     }
 }
 

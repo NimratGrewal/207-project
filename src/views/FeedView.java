@@ -1,6 +1,5 @@
 package views;
 
-import data_access.PromptDataAccessObject;
 import interface_adapter.feed.FeedController;
 import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
@@ -75,9 +74,9 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         setFields(viewModel.getState());
     }
 
-    public void executeFeedController(UUID dailyPromptId) {
+    public void executeFeedController() {
         setFields(viewModel.getState());
-        feedController.execute(dailyPromptId);
+        feedController.execute();
 
     }
 

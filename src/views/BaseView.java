@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class BaseView extends JTabbedPane {
 
-    public BaseView(FeedView feedPage, ProfileView profilePage, UUID dailyPromptId, UUID loggedInUserId) {
+    public BaseView(FeedView feedPage, ProfileView profilePage) {
 
         addTab("Feed", null, feedPage);
         addTab("Profile", null, profilePage);
@@ -14,10 +14,10 @@ public class BaseView extends JTabbedPane {
             int selectedIndex = getSelectedIndex();
             switch (selectedIndex) {
                 case 0:
-                    feedPage.executeFeedController(dailyPromptId);
+                    feedPage.executeFeedController();
                     break;
                 case 1:
-                    profilePage.executeProfileController(loggedInUserId);
+                    profilePage.executeProfileController();
                     break;
             }
         });

@@ -23,9 +23,8 @@ public class ProfileInteractor implements ProfileInputBoundary {
     }
 
     @Override
-    public void execute(ProfileInputData inputData) {
-        UUID loggedInUserID = inputData.getLoggedInUserID();
-        User loggedInUser = userDataAccessObject.getUser(loggedInUserID);
+    public void execute() {
+        User loggedInUser = userDataAccessObject.getLoggedInUser();
 
         if (loggedInUser != null) {
             String username = loggedInUser.getUsername();

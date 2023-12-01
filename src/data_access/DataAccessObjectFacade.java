@@ -55,6 +55,9 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
+    public User getLoggedInUser() { return userDataAccessObject.getLoggedInUser(); }
+
+    @Override
     public Response getResponseById(UUID responseId) {
         return null;
     }

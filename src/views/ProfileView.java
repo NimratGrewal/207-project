@@ -8,7 +8,6 @@ import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.delete.DeleteController;
 
-import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
@@ -96,8 +95,8 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         setFields(viewModel.getState());
     }
 
-    public void executeProfileController(UUID loggedInUserId) {
-        profileController.execute(loggedInUserId);
+    public void executeProfileController() {
+        profileController.execute();
     }
 
     private void setFields(ProfileState state) {
