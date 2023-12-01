@@ -50,7 +50,8 @@ public class LoginUseCaseFactory {
             LoginUserDataInterface loginUserDataInterface,
             PromptDataAccessInterface promptDataAccessInterface) throws IOException {
 
-        LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, searchViewModel, viewResponseViewModel, viewManagerModel);
+        LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, searchViewModel,
+                viewResponseViewModel, viewManagerModel);
 
         UserFactory userFactory = new CommonUserFactory();
 

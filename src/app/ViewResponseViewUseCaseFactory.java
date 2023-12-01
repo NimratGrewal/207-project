@@ -31,7 +31,7 @@ public class ViewResponseViewUseCaseFactory {
         return null;
     }
 
-        public static HomeController createResetUseCase (
+        public static HomeController createResetUseCase(
                 ViewManagerModel viewManagerModel, SearchViewModel searchViewModel) throws IOException {
 
             HomeOutputBoundary homeOutputBoundary = new HomePresenter(searchViewModel, viewManagerModel);
