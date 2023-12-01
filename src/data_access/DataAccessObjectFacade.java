@@ -5,13 +5,14 @@ import entities.Response;
 import entities.User;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.login.PromptDataAccessInterface;
+import use_case.search_users.SearchUsersDataAccessInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.util.List;
 import java.util.UUID;
 
-public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface, UserProfileDataAccessInterface, PromptDataAccessInterface {
+public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface, UserProfileDataAccessInterface, PromptDataAccessInterface, SearchUsersDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
     public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject, PromptDataAccessObject promptDataAccessObject) {
@@ -74,5 +75,20 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public Response getResponseById(UUID responseId) {
         return userDataAccessObject.getResponseById(responseId);
+    }
+
+    @Override
+    public boolean usernameExists(String username) {
+        return userDataAccessObject.usernameExists(username);
+    }
+
+    @Override
+    public User getUsername(String username) {
+        UUID uuid = userDataAccessObject.getUsername(username);
+        return userDataAccessObject.getUser(uuid);
+    }
+
+    public Prompt getPromptById(UUID promptId){
+        return promptDataAccessObject.getPromptByID(promptId);
     }
 }

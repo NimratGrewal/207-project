@@ -1,6 +1,7 @@
 package data_access;
 
 import entities.*;
+import jdk.internal.access.JavaSecurityAccess;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
@@ -15,10 +16,11 @@ public class FileUserDataAccessObject {
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
+
+    private final Map<String, UUID> usernames = new LinkedHashMap<>();
     private UserFactory userFactory;
     private User loggedInUser;
 
-    private User loggedInUser;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
@@ -51,7 +53,7 @@ public class FileUserDataAccessObject {
 
                     User user = this.userFactory.create(userId, username, password, ldt);
                     accounts.put(userId, user);
-
+                    usernames.put(username, userId);
                     String[] responseInfo = responsesText.split(";");
                     for (String responseStr : responseInfo) {
                         String[] responseData = responseStr.split(":");
@@ -191,5 +193,13 @@ public class FileUserDataAccessObject {
     @Override
     public User getLoggedInUser() {
         return loggedInUser;
+    }
+
+    public boolean usernameExists(String username){
+        return usernames.containsKey(username);
+    }
+
+    public UUID getUsername(String username){
+        return usernames.get(username);
     }
 }

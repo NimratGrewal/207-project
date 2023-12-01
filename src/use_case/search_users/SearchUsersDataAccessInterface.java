@@ -6,8 +6,8 @@ import java.util.UUID;
 
 public interface SearchUsersDataAccessInterface {
 
-    public boolean UserExists(UUID uuid);
+    public boolean usernameExists(String username);
 
-    public User getUser(UUID uuid);
+    public User getUsername(String username);
 
 }

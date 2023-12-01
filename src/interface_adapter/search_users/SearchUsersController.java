@@ -16,4 +16,4 @@ public class SearchUsersController {
         searchUsersInteractor.execute(searchTracksInputData);
     }
 }
-}
+

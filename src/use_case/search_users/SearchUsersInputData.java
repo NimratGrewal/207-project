@@ -7,4 +7,8 @@ public class SearchUsersInputData {
 
         this.username = username;
     }
+
+    public String getUsername(){
+        return username;
+    }
 }
