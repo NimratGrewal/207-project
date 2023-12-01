@@ -9,28 +9,29 @@ import java.time.LocalDate;
 import java.util.UUID;
 import java.util.List;
 
-public class ProfileResponseBox extends FeedResponseBox {
-        JButton delete = new JButton("delete");
+public class ProfileResponseBox extends ResponseBox {
+    JButton delete = new JButton("delete");
 
-        public ProfileResponseBox(UUID responseId, String username, String songName, List<String> songArtists,
-                                  String songAlbum, ImageIcon albumArt, LocalDate promptDate, String promptText) {
-            super(responseId, username, songName, songArtists, songAlbum, albumArt);
+    public ProfileResponseBox(UUID responseId, String songName, List<String> songArtists,
+                              String songAlbum, ImageIcon albumArt, LocalDate promptDate, String promptText) {
+        super(responseId, songName, songArtists, songAlbum, albumArt);
 
-            JPanel topPanel = (JPanel) getComponent(0);
-            topPanel.removeAll();
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.GRAY);
 
-            JLabel dateLabel = new JLabel("Date: " + promptDate);
-            JLabel promptLabel = new JLabel("Prompt: " + promptText);
-            dateLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JLabel dateLabel = new JLabel("Date: " + promptDate);
+        JLabel promptLabel = new JLabel("Prompt: " + promptText);
 
-            topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
-            topPanel.add(dateLabel, BorderLayout.NORTH);
-            topPanel.add(promptLabel, BorderLayout.NORTH);
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
+        topPanel.add(dateLabel);
+        topPanel.add(promptLabel);
 
-            JPanel deletePanel = new JPanel(new BorderLayout());
-            deletePanel.add(delete, BorderLayout.CENTER);
+        setTopPanel(topPanel);
 
-            add(deletePanel, BorderLayout.EAST);
+        JPanel deletePanel = new JPanel(new BorderLayout());
+        deletePanel.add(delete, BorderLayout.CENTER);
+
+        add(deletePanel, BorderLayout.EAST);
 
             delete.addActionListener(new ActionListener() {
             @Override

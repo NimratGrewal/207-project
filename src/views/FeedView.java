@@ -118,7 +118,7 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         String songAlbum = (String) responseInfo.get("Song Album");
         ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
-        return new FeedResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt);
+        return new FeedResponseBox(responseId, songName, songArtists, songAlbum, albumArt, username);
     }
 
     @Override

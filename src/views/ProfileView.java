@@ -142,7 +142,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         String songAlbum = (String) responseInfo.get("Song Album");
         ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
-        return new ProfileResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
+        return new ProfileResponseBox(responseId, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
