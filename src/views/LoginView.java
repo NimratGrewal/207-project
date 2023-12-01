@@ -20,7 +20,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton signUp;
     private final JButton cancel;
 
-    LoginView(LoginController loginController, LoginView loginView){
+    public LoginView(LoginController loginController, LoginView loginView){
         this.loginController = loginController;
         this.loginView = loginView;
         JPanel loginPanel = new JPanel();

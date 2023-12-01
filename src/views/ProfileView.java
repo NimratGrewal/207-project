@@ -116,13 +116,14 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        setFields();
 
         if ("deleteResponse".equals(evt.getPropertyName())) {
             UUID responseId = (UUID) evt.getNewValue();
             // Pass responseId to delete controller
             deleteController.execute(responseId);
         }
+
+        setFields();
     }
 
     private void setFields() {
@@ -149,12 +150,9 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         responsesPanel.repaint();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 
-}
+
 
 
 
