@@ -38,4 +38,16 @@ public class SearchUsersPresenter implements SearchUsersOutputBoundary {
         searchUsersSearchBoxViewModel.firePropertyChanged();
 
     }
+
+    // change from profile to search view
+    public void prepareSearchView(){
+        SearchUsersSearchBoxState searchUsersSearchBoxState = searchUsersSearchBoxViewModel.getState();
+        // reset the search view model to no username
+        searchUsersSearchBoxState.setUsername("");
+        searchUsersSearchBoxViewModel.firePropertyChanged();
+
+        // change the view
+        this.viewManagerModel.setActiveView(searchUsersViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+    }
 }

@@ -4,6 +4,7 @@ package interface_adapter.search_users;
 public class SearchUsersSearchBoxState {
     private String username = "";
     private String usernameError = null;
+    public final String RETURN_LABEL = "RETURN";
 
     public SearchUsersSearchBoxState(SearchUsersSearchBoxState copy) {
         username = copy.username;

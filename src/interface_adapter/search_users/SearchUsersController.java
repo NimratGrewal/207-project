@@ -15,5 +15,8 @@ public class SearchUsersController {
         SearchUsersInputData searchTracksInputData = new SearchUsersInputData(username);
         searchUsersInteractor.execute(searchTracksInputData);
     }
+    public void profile_to_search(){
+        searchUsersInteractor.profile_to_search();
+    }
 }
 

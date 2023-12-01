@@ -13,7 +13,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class SearchUserView extends JPanel implements PropertyChangeListener {
-    private final SearchUsersViewModel searchUsersViewModel;
     private final SearchUsersController searchUsersController;
     private final SearchUsersPresenter searchUsersPresenter;
 
@@ -22,7 +21,6 @@ public class SearchUserView extends JPanel implements PropertyChangeListener {
     private final JTextField searchUserBar;
     private final JButton searchUserButton;
 
-    private final JButton cancel;
     public SearchUserView(SearchUsersController searchUsersController, SearchUsersPresenter searchUsersPresenter, SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel) {
         this.searchUsersController = searchUsersController;
         this.searchUsersPresenter = searchUsersPresenter;
@@ -31,7 +29,6 @@ public class SearchUserView extends JPanel implements PropertyChangeListener {
 
         searchUserBar = new JTextField();
         searchUserButton = new JButton(searchUsersSearchBoxViewModel.BUTTON_LABEL);
-        cancel = new JButton(searchUsersSearchBoxViewModel.RETURN_LABEL);
 
         searchUserButton.addActionListener(new ActionListener() {
             @Override
@@ -62,7 +59,6 @@ public class SearchUserView extends JPanel implements PropertyChangeListener {
         });
         this.add(searchUserBar);
         this.add(searchUserButton);
-        this.add(cancel);
     }
 
     @Override

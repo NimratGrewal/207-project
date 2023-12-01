@@ -65,4 +65,11 @@ public class SearchUsersInteractor implements SearchUsersInputBoundary {
         }
         searchUsersPresenter.prepareFailView("User not found!");
     }
+
+    @Override
+    public void profile_to_search() {
+        searchUsersPresenter.prepareSearchView();
+    }
+
+
 }
