@@ -39,10 +39,8 @@ public class LoginUseCaseFactory {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
         }
-
         return null;
     }
-
 
     private static LoginController createLoginUseCase(
             LoginViewModel loginViewModel,
