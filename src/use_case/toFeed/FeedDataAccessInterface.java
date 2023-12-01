@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface FeedDataAccessInterface {
     Prompt getPromptById(UUID promptId);
 
-    Prompt getCurrentPromptById(UUID promptId);
+    Prompt getCurrentPrompt();
 
     User getUser(UUID userId);
 

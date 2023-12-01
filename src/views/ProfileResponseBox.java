@@ -7,23 +7,25 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.List;
 
 public class ProfileResponseBox extends FeedResponseBox {
         JButton delete = new JButton("delete");
 
-        public ProfileResponseBox(UUID responseId, String username, String songName, String[] songArtists,
+        public ProfileResponseBox(UUID responseId, String username, String songName, List<String> songArtists,
                                   String songAlbum, ImageIcon albumArt, LocalDate promptDate, String promptText) {
             super(responseId, username, songName, songArtists, songAlbum, albumArt);
 
             JPanel topPanel = (JPanel) getComponent(0);
+            topPanel.removeAll();
 
             JLabel dateLabel = new JLabel("Date: " + promptDate);
             JLabel promptLabel = new JLabel("Prompt: " + promptText);
             dateLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
+            topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
             topPanel.add(dateLabel, BorderLayout.NORTH);
             topPanel.add(promptLabel, BorderLayout.NORTH);
-            topPanel.remove(0);
 
             JPanel deletePanel = new JPanel(new BorderLayout());
             deletePanel.add(delete, BorderLayout.CENTER);

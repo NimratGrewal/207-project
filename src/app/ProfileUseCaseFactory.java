@@ -37,7 +37,7 @@ public class ProfileUseCaseFactory {
 
             return new ProfileView(profileViewModel, profileController, deleteController);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Could not open data file");
+            JOptionPane.showMessageDialog(null, "Could not open ProfileView!");
         }
 
         return null;

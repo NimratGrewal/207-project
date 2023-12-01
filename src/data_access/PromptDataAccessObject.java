@@ -10,6 +10,7 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,20 +47,21 @@ public class PromptDataAccessObject {
                     String dates = String.valueOf(col[headers.get("date")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
 
-                    Prompt prompt  = new Prompt(prompts_string, dates);
+                    // converting string dates to LocalDate dates
+                    LocalDate date = LocalDate.parse(dates);
+
+                    Prompt prompt = new Prompt(prompts_string, date);
                     prompts.put(dates, prompt);
                     String[] responseInfo = responsesText.split(";");
-                    for(String uuid_string:responseInfo){
+                    for (String uuid_string : responseInfo) {
                         UUID uuid = UUID.fromString(uuid_string);
-                        if (!responses.containsKey(prompt.getPromptId())){
+                        if (!responses.containsKey(prompt.getPromptId())) {
                             responses.put(prompt.getPromptId(), new ArrayList<>());
                         }
                         // for each prompt, add each response uuid as a value.
                         responses.get(prompt.getPromptId()).add(uuid);
                     }
                 }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
             }
         }
     }

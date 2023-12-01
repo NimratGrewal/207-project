@@ -33,7 +33,7 @@ public class FeedUseCaseFactory {
 
             return new FeedView(feedViewModel, feedController);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Could not open data file");
+            JOptionPane.showMessageDialog(null, "Could not create FeedView!");
         }
 
         return null;

@@ -1,24 +1,38 @@
 package interface_adapter.feed;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class FeedState {
-    private LocalDate promptData;
+    private LocalDate promptDate;
     private String promptText;
     private Map<UUID, Map<String, Object>> responseInfoMap;
 
     public FeedState(FeedState copy) {
-        promptData = copy.promptData;
-        promptText = copy.promptText;
-        responseInfoMap = copy.responseInfoMap;
+        this.promptDate = copy.promptDate;
+        this.promptText = copy.promptText;
+        this.responseInfoMap = new HashMap<>();
+
+        if (!copy.responseInfoMap.isEmpty()) {
+            for (Map.Entry<UUID, Map<String, Object>> entry : copy.responseInfoMap.entrySet()) {
+                UUID userId = entry.getKey();
+                Map<String, Object> responseInfo = new HashMap<>(entry.getValue());
+                this.responseInfoMap.put(userId, responseInfo);
+            }
+        }
     }
-    public FeedState() {}
+
+    public FeedState() {
+        this.promptDate = LocalDate.now();
+        this.promptText = "Default Prompt";
+        this.responseInfoMap = new HashMap<>();
+    }
 
     public LocalDate getPromptDate() {
-        return promptData;
+        return promptDate;
     }
 
     public String getPromptText() {
@@ -28,12 +42,15 @@ public class FeedState {
     public Map<UUID, Map<String, Object>> getResponseInfoMap() {
         return responseInfoMap;
     }
-    public void setPromptDate(LocalDate promptData) {
-        this.promptData = promptData;
+
+    public void setPromptDate(LocalDate promptDate) {
+        this.promptDate = promptDate;
     }
+
     public void setPromptText(String promptText) {
         this.promptText = promptText;
     }
+
     public void setResponseInfoMap(Map<UUID, Map<String, Object>> responseInfoMap) {
         this.responseInfoMap = responseInfoMap;
     }

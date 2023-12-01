@@ -83,6 +83,9 @@ public class FileUserDataAccessObject {
         return accounts.get(userId);
     }
 
+    public List<User> getAllUsers() {
+        return new ArrayList<>(accounts.values());
+    }
 
     public List<UUID> getResponseIds(User user) {
         List<UUID> responseIds = new ArrayList<>();
@@ -138,16 +141,14 @@ public class FileUserDataAccessObject {
     }
 
     public Response getResponseById(UUID userId, UUID responseId) {
-        User user = accounts.get(userId);
-        if (user != null && responses.containsKey(user)) {
-            List<Response> userResponses = responses.get(user);
-            for (Response response : userResponses) {
-                if (response.getResponseId().equals(responseId)) {
+        for (List<Response> responseList : responses.values()) {
+            for (Response response : responseList) {
+                if (responseId.equals(response.getResponseId())) {
                     return response;
                 }
             }
         }
-        return null; // Response not found
+        return null;  // response not found
     }
 
     public boolean responseExistsById(UUID responseId) {
