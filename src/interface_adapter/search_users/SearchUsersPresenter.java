@@ -1,26 +1,41 @@
 package interface_adapter.search_users;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.search_tracks.SearchTracksViewModel;
 import interface_adapter.view_response.ViewResponseState;
 import use_case.search_users.SearchUsersOutputBoundary;
 import use_case.search_users.SearchUsersOutputData;
 
 public class SearchUsersPresenter implements SearchUsersOutputBoundary {
-    private SearchUsersViewModel searchUsersViewModel;
-
+    private final SearchUsersViewModel searchUsersViewModel;
     private SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel;
 
-    public SearchUsersPresenter(SearchUsersViewModel searchUsersViewModel) {
+    private ViewManagerModel viewManagerModel;
+
+    public SearchUsersPresenter(SearchUsersViewModel searchUsersViewModel, SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel,
+                                ViewManagerModel viewManagerModel) {
         this.searchUsersViewModel = searchUsersViewModel;
+        this.searchUsersSearchBoxViewModel = searchUsersSearchBoxViewModel;
+        this.viewManagerModel = viewManagerModel;
     }
     @Override
     public void prepareUserView(SearchUsersOutputData usersOutputData) {
+        SearchUsersState searchUsersState = searchUsersViewModel.getState();
+        searchUsersState.setUsername(usersOutputData.getUsername());
+        searchUsersState.setNumberOfResponses(usersOutputData.getNumberOfResponses());
+        searchUsersState.setResponseInfoMap(usersOutputData.getResponseInfoMap());
+        this.searchUsersViewModel.setState(searchUsersState);
+        this.searchUsersViewModel.firePropertyChanged();
 
+        this.viewManagerModel.setActiveView(searchUsersViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-
+        SearchUsersSearchBoxState searchUsersSearchBoxState = searchUsersSearchBoxViewModel.getState();
+        searchUsersSearchBoxState.setUsernameError(error);
+        searchUsersSearchBoxViewModel.firePropertyChanged();
 
     }
 }

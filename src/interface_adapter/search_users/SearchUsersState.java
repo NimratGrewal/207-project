@@ -27,5 +27,16 @@ public class SearchUsersState {
         return responseInfoMap;
     }
 
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public void setNumberOfResponses(Integer numberOfResponses){
+        this.numberOfResponses = numberOfResponses;
+    }
+
+    public void setResponseInfoMap(Map<UUID, Map<String, Object>> responseInfoMap){
+        this.responseInfoMap = responseInfoMap;
+    }
 
 }
