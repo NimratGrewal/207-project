@@ -7,6 +7,7 @@ import java.beans.PropertyChangeSupport;
 
 public class SearchUsersViewModel extends ViewModel {
     public SearchUsersState state = new SearchUsersState();
+    public final String RETURN_LABEL = "RETURN";
 
     public SearchUsersViewModel() {
         super("Search Users");
