@@ -1,5 +1,6 @@
 package interface_adapter.profile;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,7 +15,9 @@ public class ProfileState {
         responseInfoMap = copy.responseInfoMap;
     }
 
-    public ProfileState() {}
+    public ProfileState() {
+        this.responseInfoMap = new HashMap<>();
+    }
 
     public String getUsername() {
         return username;
@@ -34,4 +37,5 @@ public class ProfileState {
     public void setResponseInfoMap(Map<UUID, Map<String, Object>> responseInfoMap) {
         this.responseInfoMap = responseInfoMap;
     }
+
 }

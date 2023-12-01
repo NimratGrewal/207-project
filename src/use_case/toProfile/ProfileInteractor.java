@@ -1,7 +1,6 @@
 package use_case.toProfile;
 
 import entities.*;
-import use_case.toFeed.FeedDataAccessInterface;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -11,14 +10,11 @@ import java.util.Map;
 
 public class ProfileInteractor implements ProfileInputBoundary {
     private final UserProfileDataAccessInterface userDataAccessObject;
-    private final FeedDataAccessInterface feedDataAccessInterface;
     private final ProfileOutputBoundary presenter;
 
     public ProfileInteractor(UserProfileDataAccessInterface userDataAccessObject,
-                             FeedDataAccessInterface feedDataAccessInterface,
                              ProfileOutputBoundary presenter) {
         this.userDataAccessObject = userDataAccessObject;
-        this.feedDataAccessInterface = feedDataAccessInterface;
         this.presenter = presenter;
     }
 
@@ -34,7 +30,7 @@ public class ProfileInteractor implements ProfileInputBoundary {
             Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
             for (Map.Entry<UUID, Response> entry : userResponses.entrySet()) {
                 UUID promptId = entry.getKey();
-                Prompt prompt = feedDataAccessInterface.getPromptById(promptId);
+                Prompt prompt = userDataAccessObject.getPromptById(promptId);
                 String promptText = prompt.getPromptText();
                 LocalDate promptDate = prompt.getPromptDate();
 

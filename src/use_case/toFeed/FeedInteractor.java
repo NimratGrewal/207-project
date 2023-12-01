@@ -1,6 +1,5 @@
 package use_case.toFeed;
 
-import data_access.DataAccessObjectFacade;
 import entities.Prompt;
 import entities.Response;
 import entities.Song;
@@ -13,20 +12,17 @@ import java.util.*;
 
 
 public class FeedInteractor implements FeedInputBoundary {
-    private final UserProfileDataAccessInterface userProfileDataAccessInterface;
-    private final FeedDataAccessInterface feedDataAccessInterface;
+    private final FeedDataAccessInterface feedDataAccessObject;
     private final FeedOutputBoundary presenter;
 
-    public FeedInteractor(UserProfileDataAccessInterface userProfileDataAccessInterface,
-                          FeedDataAccessInterface feedDataAccessInterface,
+    public FeedInteractor(FeedDataAccessInterface feedDataAccessObject,
                           FeedOutputBoundary presenter) {
-        this.userProfileDataAccessInterface = userProfileDataAccessInterface;
-        this.feedDataAccessInterface = feedDataAccessInterface;
+        this.feedDataAccessObject = feedDataAccessObject;
         this.presenter = presenter;
     }
 
     public void execute() {
-        Prompt currentPrompt = feedDataAccessInterface.getCurrentPrompt();
+        Prompt currentPrompt = feedDataAccessObject.getCurrentPrompt();
         UUID dailyPromptId = currentPrompt.getPromptId();
 
         String promptText = currentPrompt.getPromptText();
@@ -35,7 +31,7 @@ public class FeedInteractor implements FeedInputBoundary {
         Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
 
         // Iterate through all users
-        for (User user : userProfileDataAccessInterface.getAllUsers()) {
+        for (User user : feedDataAccessObject.getAllUsers()) {
             UUID userId = user.getUserId();
 
             // Check if the user has a response for the given daily prompt

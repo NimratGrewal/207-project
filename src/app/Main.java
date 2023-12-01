@@ -2,6 +2,7 @@ package app;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.feed.FeedViewModel;
+import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_tracks.SearchTracksViewModel;
@@ -47,7 +48,7 @@ public class Main {
 //        SearchView searchView = new SearchView(searchViewModel, searchTracksViewModel);
 //        ViewResponseView viewResponseView = new ViewResponseView(viewResponseViewModel);
 //        FeedView feedView = new FeedView(feedViewModel);
-//        ProfileView profileView = new ProfileView(profileViewModel);
+//        ProfileView profileView = new ProfileView();
 //
 //        BaseView baseView = new BaseView(searchView, viewResponseView, feedView, profileView,
 //                UUID.randomUUID(), UUID.randomUUID());

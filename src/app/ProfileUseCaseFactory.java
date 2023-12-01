@@ -5,7 +5,6 @@ import interface_adapter.delete.DeleteController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
-import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.ProfileInputBoundary;
 import use_case.toProfile.ProfileInteractor;
 import use_case.toProfile.ProfileOutputBoundary;
@@ -21,15 +20,13 @@ public class ProfileUseCaseFactory {
     public static ProfileView create(
             ViewManagerModel viewManagerModel,
             ProfileViewModel profileViewModel,
-            UserProfileDataAccessInterface userDataAccessObject,
-            FeedDataAccessInterface feedDataAccessObject) {
+            UserProfileDataAccessInterface userDataAccessObject) {
 
         try {
             ProfileController profileController = createProfileController(
                     viewManagerModel,
                     profileViewModel,
-                    userDataAccessObject,
-                    feedDataAccessObject
+                    userDataAccessObject
             );
 
             // delete controller
@@ -46,12 +43,10 @@ public class ProfileUseCaseFactory {
     private static ProfileController createProfileController(
             ViewManagerModel viewManagerModel,
             ProfileViewModel profileViewModel,
-            UserProfileDataAccessInterface userDataAccessObject,
-            FeedDataAccessInterface feedDataAccessObject) throws IOException {
+            UserProfileDataAccessInterface userDataAccessObject) throws IOException {
 
         ProfileOutputBoundary profilePresenter = new ProfilePresenter(viewManagerModel, profileViewModel);
-        ProfileInputBoundary profileInteractor = new ProfileInteractor( userDataAccessObject,
-                feedDataAccessObject, profilePresenter);
+        ProfileInputBoundary profileInteractor = new ProfileInteractor( userDataAccessObject, profilePresenter);
 
         return new ProfileController(profileInteractor);
     }

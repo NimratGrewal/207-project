@@ -8,7 +8,6 @@ import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toFeed.FeedInputBoundary;
 import use_case.toFeed.FeedInteractor;
 import use_case.toFeed.FeedOutputBoundary;
-import use_case.toProfile.UserProfileDataAccessInterface;
 import views.FeedView;
 
 import javax.swing.*;
@@ -20,14 +19,12 @@ public class FeedUseCaseFactory {
     public static FeedView create(
             ViewManagerModel viewManagerModel,
             FeedViewModel feedViewModel,
-            UserProfileDataAccessInterface userDataAccessObject,
             FeedDataAccessInterface feedDataAccessObject) {
 
         try {
             FeedController feedController = createFeedController(
                     viewManagerModel,
                     feedViewModel,
-                    userDataAccessObject,
                     feedDataAccessObject
             );
 
@@ -42,12 +39,10 @@ public class FeedUseCaseFactory {
     private static FeedController createFeedController(
             ViewManagerModel viewManagerModel,
             FeedViewModel feedViewModel,
-            UserProfileDataAccessInterface userDataAccessObject,
             FeedDataAccessInterface feedDataAccessObject) throws IOException {
 
         FeedOutputBoundary feedPresenter = new FeedPresenter(viewManagerModel, feedViewModel);
-        FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject,
-                feedDataAccessObject, feedPresenter);
+        FeedInputBoundary feedInteractor = new FeedInteractor(feedDataAccessObject, feedPresenter);
 
         return new FeedController(feedInteractor);
     }
