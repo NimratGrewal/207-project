@@ -46,10 +46,11 @@ public class FeedUseCaseFactory {
             FeedDataAccessInterface feedDataAccessObject) throws IOException {
 
         FeedOutputBoundary feedPresenter = new FeedPresenter(viewManagerModel, feedViewModel);
-        FeedInputBoundary feedInteractor = new FeedInteractor( userDataAccessObject,
+        FeedInputBoundary feedInteractor = new FeedInteractor(userDataAccessObject,
                 feedDataAccessObject, feedPresenter);
 
         return new FeedController(feedInteractor);
     }
 
 }
+
