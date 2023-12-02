@@ -124,7 +124,7 @@ public class FileUserDataAccessObject {
                 String responseString = String.join(";", responses);
                 String line = "%s,%s,%s,%s".formatted(
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
-                writer.write(line);2
+                writer.write(line);
                 writer.newLine();
             }
             writer.close();

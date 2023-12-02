@@ -42,7 +42,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void preparePromptView(LoginOutputData user, Prompt prompt) {
         SearchState searchState = searchViewModel.getState();
         searchState.setPromptText(prompt.getPromptText());
-        this.searchViewModel.setState(promptState);
+        this.searchViewModel.setState(searchState);
         this.searchViewModel.firePropertyChanged();
 
         this.viewManagerModel.setActiveView(searchViewModel.getName());

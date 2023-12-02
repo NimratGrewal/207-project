@@ -120,7 +120,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         if ("deleteResponse".equals(evt.getPropertyName())) {
             UUID responseId = (UUID) evt.getNewValue();
             // Pass responseId to delete controller
-            deleteController.execute(responseId, );
+            deleteController.execute(responseId);
         }
 
         setFields();

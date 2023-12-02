@@ -80,8 +80,4 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
         return userDataAccessObject.getUser(userId);
     }
 
-    @Override
-    public Response getResponseById(UUID responseId) {
-        return userDataAccessObject.getResponseById(responseId);
-    }
 }
