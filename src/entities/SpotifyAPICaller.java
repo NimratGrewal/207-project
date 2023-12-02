@@ -116,7 +116,7 @@ public class SpotifyAPICaller {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(String.format("https://api.spotify.com/v1/search?q=%s&type=track&limit=10", query))
+                .url(String.format("https://api.spotify.com/v1/search?q=%s&type=track&limit=5", query))
                 .get()
                 .addHeader("Authorization", String.format("Bearer %s", accessToken))
                 .build();
@@ -147,9 +147,10 @@ public class SpotifyAPICaller {
                         JSONObject artistObject = (JSONObject) artist;
                         artists.add(artistObject.getString("name"));
                     }
+  
+                    if (!trackObject.getJSONObject("album").getJSONArray("images").isEmpty()) {
+                        URL ImageURL = new URL(trackObject.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
 
-                    if (!responseBody.getJSONObject("album").getJSONArray("images").isEmpty()) {
-                        URL ImageURL = new URL(responseBody.getJSONObject("album").getJSONArray("images").getJSONObject(0).getString("url"));
                         Image albumArt = new ImageIcon(ImageURL).getImage();
                         tracks.add(new Song(songId, songName, artists, album, albumArt));
                     } else {

@@ -46,6 +46,5 @@ public class FeedUseCaseFactory {
 
         return new FeedController(feedInteractor);
     }
-
 }
 

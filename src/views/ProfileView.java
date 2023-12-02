@@ -98,6 +98,8 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     public void executeProfileController() {
         profileController.execute();
     }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
 
     private void setFields(ProfileState state) {
         if (state == null) {
@@ -133,7 +135,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         responsesPanel.repaint();
     }
 
-
     private JPanel createProfileResponseBox(UUID responseId, Map<String, Object> responseInfo,
                                             LocalDate promptDate, String promptText) {
         String username = (String) responseInfo.get("Username");
@@ -154,9 +155,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
             // Pass responseId to delete controller
             deleteController.execute(responseId);
         }
+
     }
 
-}
+
 
 
 

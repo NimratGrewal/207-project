@@ -16,8 +16,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
         UserProfileDataAccessInterface, PromptDataAccessInterface, FeedDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
-    public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject,
-                                  PromptDataAccessObject promptDataAccessObject) {
+
+    public DataAccessObjectFacade(FileUserDataAccessObject userDataAccessObject, PromptDataAccessObject promptDataAccessObject) {
         this.userDataAccessObject = userDataAccessObject;
         this.promptDataAccessObject = promptDataAccessObject;
     }
@@ -55,21 +55,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public User getLoggedInUser() { return userDataAccessObject.getLoggedInUser(); }
-
-    @Override
-    public Response getResponseById(UUID responseId) {
-        return null;
-    }
-
-    @Override
     public Prompt getPromptById(UUID promptId) {
         return null;
-    }
-
-    @Override
-    public User getUser(UUID userId) {
-        return userDataAccessObject.getUser(userId);
     }
 
     @Override
@@ -79,9 +66,6 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
 
     public List<UUID> getResponseIds(User user) {
         return userDataAccessObject.getResponseIds(user);
-    }
-
-    @Override
     public Prompt getCurrentPrompt() {
         return promptDataAccessObject.getCurrentPrompt();
     }
@@ -89,5 +73,21 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public boolean answeredCurrentPrompt(UUID promptID) {
         return promptDataAccessObject.answeredCurrentPrompt(promptID);
+
+    }
+
+    @Override
+    public User getLoggedInUser(UUID userId) {
+        return userDataAccessObject.getLoggedInUser();
+    }
+
+    @Override
+    public User getUser(UUID userId) {
+        return userDataAccessObject.getUser(userId);
+    }
+
+    @Override
+    public Response getResponseById(UUID responseId) {
+        return userDataAccessObject.getResponseById(responseId);
     }
 }

@@ -11,9 +11,9 @@ public class Prompt {
     private LocalDate promptDate;
 
     private Map<UUID, UUID> responses;
-    public Prompt(String promptQuestion, LocalDate promptDate) {
+    public Prompt(String promptQuestion, LocalDate promptDate, UUID promptId) {
         this.promptQuestion = promptQuestion;
-        this.promptId = UUID.randomUUID();
+        this.promptId = promptId;
         this.isActive = false;
         this.responses = new HashMap<>();
         this.promptDate = promptDate;

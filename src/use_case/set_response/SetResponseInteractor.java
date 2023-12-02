@@ -25,7 +25,7 @@ public class SetResponseInteractor implements SetResponseInputBoundary {
 
         Response response = new Response(
                 dataAccessObject.getActivePromptId(),
-                dataAccessObject.getLoggedInUserId(),
+                dataAccessObject.getLoggedInUser().getUserId(),
                 song);
         dataAccessObject.setResponse(response);
 

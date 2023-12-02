@@ -11,7 +11,7 @@ import java.beans.PropertyChangeListener;
 
 public class ViewResponseView extends JPanel implements PropertyChangeListener {
 
-    public final String viewName = "view response view";
+    public final String viewName = "view response";
 
     public final ViewResponseViewModel viewResponseViewModel;
 
@@ -31,21 +31,21 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
         JLabel title = new JLabel("Home Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        promptText = new JLabel();
+        promptText = new JLabel(viewResponseViewModel.getState().getPromptText());
         promptText.setHorizontalAlignment(JLabel.CENTER);
         JLabel albumCoverContainer = new JLabel();
 
-        albumCover = new ImageIcon();
+        albumCover = new ImageIcon(viewResponseViewModel.getState().getAlbumCover().getImage());
         albumCoverContainer.setIcon(albumCover);
         albumCoverContainer.setHorizontalAlignment(JLabel.CENTER);
 
-        songTitle = new JLabel();
+        songTitle = new JLabel(viewResponseViewModel.getState().getSongName());
         songTitle.setHorizontalAlignment(JLabel.CENTER);
 
-        albumName = new JLabel();
+        albumName = new JLabel(viewResponseViewModel.getState().getAlbumName());
         albumName.setHorizontalAlignment(JLabel.CENTER);
 
-        artistNames = new JLabel();
+        artistNames = new JLabel(viewResponseViewModel.getState().getArtistNames());
         artistNames.setHorizontalAlignment(JLabel.CENTER);
 
         JPanel buttons = new JPanel();
