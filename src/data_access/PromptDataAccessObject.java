@@ -5,6 +5,7 @@ import entities.Response;
 
 import java.io.*;
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class PromptDataAccessObject {
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
 
-    private final Map<String, Prompt> prompts = new LinkedHashMap<>();
+    private final Map<LocalDate, Prompt> prompts = new LinkedHashMap<>();
 
     private final Map<UUID, List<UUID>> responses = new LinkedHashMap<>();
 
@@ -42,8 +43,10 @@ public class PromptDataAccessObject {
                     String dates = String.valueOf(col[headers.get("date")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
 
-                    Prompt prompt  = new Prompt(prompts_string, dates);
-                    prompts.put(dates, prompt);
+                    LocalDate date = LocalDate.parse(dates);
+
+                    Prompt prompt  = new Prompt(prompts_string, date, promptID);
+                    prompts.put(date, prompt);
                     String[] responseInfo = responsesText.split(";");
                     for(String uuid_string:responseInfo){
                         UUID uuid = UUID.fromString(uuid_string);
@@ -54,8 +57,6 @@ public class PromptDataAccessObject {
                         responses.get(prompt.getPromptId()).add(uuid);
                     }
                 }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -79,17 +80,20 @@ public class PromptDataAccessObject {
                 List<UUID> prompt_responses = responses.get(promptID);
                 StringBuilder all_responses = new StringBuilder();
                 int size = prompt_responses.size();
+                // loop through each element of list(of UUIDs), convert
+                // each element to a String, append and if the counter
+                // is < size, then append delimiter ';'
                 for (int i = 0; i < size; i++) {
                     UUID ID = prompt_responses.get(i);
                     all_responses.append(ID.toString());
-                    // should deal with the case where last UUID has a semicolon
+                    // if i == size, don't append as it is the last value in list
                     if (i < size - 1) {
                         all_responses.append(";");
                     }
                 }
                 String result = all_responses.toString();
                 String line = "%s,%s,%s,%s,%s".formatted(
-                        prompt.getPromptText(), prompt.getDate(), prompt.getDate(),prompt.getCreationTime().toString(), result);
+                        prompt.getPromptText(), prompt.getPromptId(), prompt.getPromptDate(), result);
                 writer.write(line);
                 writer.newLine();
             }
@@ -132,7 +136,7 @@ public class PromptDataAccessObject {
                 responseList.remove(responseID);
                 break;
             }
-            this.save();
+            save();
         }
     }
 
