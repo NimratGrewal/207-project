@@ -30,10 +30,13 @@ public class DeleteInteractor implements DeleteInputBoundary {
         Response response = userDataAccessInterface.getResponseById(loggedInUserId, responseId);
 
         // pass in response object into the data access object to find the prompt id -> delete both
+        UUID promptId = response.getPromptId();
 
-        if (responseDataAccessInterface.responseexistsById(responseId) && userDataAccessInterface.responseExistsById(responseId)) {
+        if (responseDataAccessInterface.responseexistsById(responseId) &&
+                userDataAccessInterface.responseExistsById(responseId)) {
+
+            userDataAccessInterface.deleteResponse(responseId, promptId);
             responseDataAccessInterface.deleteResponse(responseId);
-            userDataAccessInterface.deleteResponse(responseId);
 
             DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
             deletePresenter.prepareSuccessView(deleteOutputData);

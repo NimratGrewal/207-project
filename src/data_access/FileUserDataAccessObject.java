@@ -124,7 +124,7 @@ public class FileUserDataAccessObject {
                 String responseString = String.join(";", responses);
                 String line = "%s,%s,%s,%s".formatted(
                         user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
-                writer.write(line);
+                writer.write(line);2
                 writer.newLine();
             }
             writer.close();
@@ -167,11 +167,19 @@ public class FileUserDataAccessObject {
         return false;
     }
 
-    public void deleteResponse(UUID responseId) {
+    public void deleteResponse(UUID responseId, UUID promptId) {
+
         for (List<Response> responseList: responses.values()){
             responseList.removeIf(response -> responseId.equals(response.getResponseId()));
         }
-        save();
+        // Loop through users to find the response's prompt in user history and delete it
+        for (User user : accounts.values()) {
+            if (user.getHistory().containsKey(promptId)) {
+                user.deleteResponse(promptId); // Call CommonUser's deleteResponse method
+            }
+        }
+
+        this.save();
     }
 
     public User getLoggedInUser() {

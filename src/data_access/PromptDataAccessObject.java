@@ -2,9 +2,6 @@ package data_access;
 
 import entities.Prompt;
 import entities.Response;
-import entities.User;
-import entities.UserFactory;
-import use_case.login.PromptDataAccessInterface;
 
 import java.io.*;
 import java.text.DateFormat;

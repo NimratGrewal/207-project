@@ -8,7 +8,6 @@ import use_case.login.PromptDataAccessInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
 
-import java.util.List;
 import java.util.UUID;
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface, UserProfileDataAccessInterface, PromptDataAccessInterface {
@@ -25,8 +24,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public void deleteResponse(UUID responseId) {
-        userDataAccessObject.deleteResponse(responseId);
+    public void deleteResponse(UUID responseId, UUID promptId) {
+        userDataAccessObject.deleteResponse(responseId, promptId);
         promptDataAccessObject.deleteResponse(responseId);
     }
 
