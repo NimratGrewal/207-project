@@ -31,6 +31,16 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
+    public User getLoggedinUser() {
+        return userDataAccessObject.getLoggedInUser();
+    }
+
+    @Override
+    public Response getResponseById(UUID userId, UUID responseId) {
+        return userDataAccessObject.getResponseById(userId, responseId);
+    }
+
+    @Override
     public void setResponse(Response response) {
         userDataAccessObject.setResponse(response);
         promptDataAccessObject.setResponse(userDataAccessObject.getLoggedInUser().getUserId(), response);

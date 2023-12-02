@@ -83,8 +83,7 @@ public class FileUserDataAccessObject {
     }
 
     @Override
-    public User getLoggedInUser(UUID userId) {
-        return null;
+    public User getLoggedInUser(UUID userId) { return null;
     }
 
     public User getUser(UUID userId) {
@@ -134,7 +133,6 @@ public class FileUserDataAccessObject {
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * Sets the current logged in user's response to response

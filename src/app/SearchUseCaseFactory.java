@@ -60,8 +60,7 @@ public class SearchUseCaseFactory {
             ViewManagerModel viewManagerModel,
             SpotifyAPICaller apiCaller) throws IOException {
 
-        SearchTracksOutputBoundary searchTracksPresenter = new SearchTracksPresenter(searchTracksViewModel,
-                viewManagerModel);
+        SearchTracksOutputBoundary searchTracksPresenter = new SearchTracksPresenter(searchTracksViewModel);
 
         SearchTracksInputBoundary searchTracksInteractor = new SearchTracksInteractor(searchTracksPresenter, apiCaller);
 

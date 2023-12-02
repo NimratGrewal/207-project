@@ -11,7 +11,6 @@ public class CommonUser implements User {
     private final HashMap<UUID, Response> history;
     private final LocalDateTime creationTime;
 
-
     /**
      * Requires: password is valid.
      * @param username

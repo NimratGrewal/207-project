@@ -24,7 +24,6 @@ public class PromptDataAccessObject {
 
     public PromptDataAccessObject(String csvPath) throws IOException {
 
-
         csvFile = new File(csvPath);
         headers.put("prompt_question", 0);
         headers.put("prompt_ID", 1);
@@ -136,6 +135,7 @@ public class PromptDataAccessObject {
                 responseList.remove(responseID);
                 break;
             }
+            this.save();
         }
     }
 

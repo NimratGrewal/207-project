@@ -9,7 +9,6 @@ import interface_adapter.view_response.ViewResponseState;
 import interface_adapter.view_response.ViewResponseViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
-import views.HomeView;
 
 public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel loginViewModel;
