@@ -1,14 +1,14 @@
 package interface_adapter.set_response;
 
+import use_case.set_response.SetResponseInputBoundary;
 import use_case.set_response.SetResponseInputData;
-import use_case.set_response.SetResponseInteractor;
 
 import java.util.UUID;
 
 public class SetResponseController {
-    private final SetResponseInteractor setResponseInteractor;
+    private final SetResponseInputBoundary setResponseInteractor;
 
-    public SetResponseController(SetResponseInteractor setResponseInteractor) {
+    public SetResponseController(SetResponseInputBoundary setResponseInteractor) {
         this.setResponseInteractor = setResponseInteractor;
     }
 
