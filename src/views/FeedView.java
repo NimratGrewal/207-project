@@ -3,6 +3,7 @@ package views;
 import interface_adapter.feed.FeedController;
 import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
+import views.components.FeedResponseBox;
 
 import javax.swing.*;
 import java.awt.*;
