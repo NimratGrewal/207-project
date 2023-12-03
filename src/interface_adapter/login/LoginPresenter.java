@@ -9,7 +9,6 @@ import interface_adapter.view_response.ViewResponseState;
 import interface_adapter.view_response.ViewResponseViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
-import views.HomeView;
 
 public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel loginViewModel;
@@ -43,7 +42,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void preparePromptView(LoginOutputData user, Prompt prompt) {
         SearchState searchState = searchViewModel.getState();
         searchState.setPromptText(prompt.getPromptText());
-        this.searchViewModel.setState(promptState);
+        this.searchViewModel.setState(searchState);
         this.searchViewModel.firePropertyChanged();
 
         this.viewManagerModel.setActiveView(searchViewModel.getName());
