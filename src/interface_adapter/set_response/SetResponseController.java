@@ -2,7 +2,6 @@ package interface_adapter.set_response;
 
 import use_case.set_response.SetResponseInputBoundary;
 import use_case.set_response.SetResponseInputData;
-import use_case.set_response.SetResponseInteractor;
 
 import java.util.UUID;
 

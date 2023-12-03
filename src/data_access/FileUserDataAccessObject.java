@@ -18,8 +18,6 @@ public class FileUserDataAccessObject {
     private UserFactory userFactory;
     private User loggedInUser;
 
-    private User loggedInUser;
-
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
 
@@ -52,19 +50,21 @@ public class FileUserDataAccessObject {
                     User user = this.userFactory.create(userId, username, password, ldt);
                     accounts.put(userId, user);
 
-                    String[] responseInfo = responsesText.split(";");
-                    for (String responseStr : responseInfo) {
-                        String[] responseData = responseStr.split(":");
-                        UUID responseID = UUID.fromString(responseData[0]);
-                        UUID promptID = UUID.fromString(responseData[1]);
-                        String songID = responseData[2];
+                    if (!Objects.equals(responsesText, "null")) {
+                        String[] responseInfo = responsesText.split(";");
+                        for (String responseStr : responseInfo) {
+                            String[] responseData = responseStr.split(":");
+                            UUID responseID = UUID.fromString(responseData[0]);
+                            UUID promptID = UUID.fromString(responseData[1]);
+                            String songID = responseData[2];
 
-                        Response response = new Response(responseID, promptID, userId, songID);
-                        if (!this.responses.containsKey(user)){
-                            this.responses.put(user, new ArrayList<>());
+                            Response response = new Response(responseID, promptID, userId, caller.getTrack(songID));
+                            if (!this.responses.containsKey(user)){
+                                this.responses.put(user, new ArrayList<>());
+                            }
+                            this.responses.get(user).add(response);
+                            user.setResponse(promptID, response);
                         }
-                        this.responses.get(user).add(response);
-                        user.setResponse(promptID, response);
                     }
                 }
             }
@@ -76,14 +76,109 @@ public class FileUserDataAccessObject {
      *
      * @param user The user to be saved
      */
-    //TODO: add save method to UserSignUpDataAccessInterface
     public void save(User user) {
         accounts.put(user.getUserId(), user);
+        responses.put(user, new ArrayList<>(user.getHistory().values()));
         this.save();
     }
 
-    @Override
-    public User getLoggedInUser(UUID userId) { return null;
+    /**
+     * Save the current state of this DataAccessObject in the data file
+     */
+    private void save() {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(csvFile));
+            writer.write(String.join(",", headers.keySet()));
+            writer.newLine();
+
+            for (User user : accounts.values()) {
+                List<String> responses = new ArrayList<>();
+                String responseString;
+                if (user.getHistory().values().isEmpty()) {
+                    responseString = "null";
+                } else {
+                    for (Response response : user.getHistory().values()) {
+                        String responseText = "%s:%s:%s".formatted(
+                                response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
+                        responses.add(responseText);
+                    }
+                    responseString = String.join(";", responses);
+                }
+                String line = "%s,%s,%s,%s,%s".formatted(
+                        user.getUserId().toString(), user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
+                writer.write(line);
+                writer.newLine();
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Sets the current logged in user's response to response
+     * @param response The response for the user with the prompt ID from response.getPromptId()
+     */
+    public void setResponse(Response response) {
+        accounts.get(response.getUserId()).setResponse(response.getPromptId(), response);
+        responses.get(loggedInUser).add(response);
+    }
+
+    public Response getResponseById(UUID userId, UUID responseId) {
+        User user = accounts.get(userId);
+        if (user != null && responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                if (response.getResponseId().equals(responseId)) {
+                    return response;
+                }
+            }
+        }
+        return null; // Response not found
+    }
+
+    public Response getResponseById(UUID responseId) {
+        for (List<Response> responseList: this.responses.values())
+            for (Response response : responseList) {
+                if (response.getResponseId().equals(responseId)) {
+                    return response;
+                }
+            }
+        return null; // Response not found
+    }
+
+    public boolean responseExistsById(UUID responseId) {
+        for (List<Response> responseList: responses.values()){
+            for (Response response: responseList) {
+                if (responseId.equals(response.getResponseId())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void deleteResponse(UUID responseId) {
+        for (List<Response> responseList: responses.values()){
+            for (Response r: responseList) {
+                if (responseId.equals(r.getResponseId())) {
+                    responseList.remove(r);
+                    accounts.get(r.getUserId()).deleteResponse(r.getPromptId());
+                }
+            }
+        }
+        save();
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 
     public User getUser(UUID userId) {
@@ -102,100 +197,5 @@ public class FileUserDataAccessObject {
         }
 
         return responseIds;
-    }
-
-    /**
-     * Save the current state of this DataAccessObject in the data file
-     */
-    private void save() {
-        BufferedWriter writer;
-        try {
-            writer = new BufferedWriter(new FileWriter(csvFile));
-            writer.write(String.join(",", headers.keySet()));
-            writer.newLine();
-
-            for (User user : accounts.values()) {
-                List<String> responses = new ArrayList<>();
-                for (Response response : user.getHistory().values()) {
-                    String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSongId());
-                    responses.add(responseText);
-                }
-                String responseString = String.join(";", responses);
-                String line = "%s,%s,%s,%s".formatted(
-                        user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
-                writer.write(line);
-                writer.newLine();
-            }
-            writer.close();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Sets the current logged in user's response to response
-     * @param response The response for the current user
-     */
-    public void setResponse(Response response) {
-        loggedInUser.setResponse(response.getPromptId(), response);
-        responses.get(loggedInUser).add(response);
-    }
-
-    public Response getResponseById(UUID userId, UUID responseId) {
-        User user = accounts.get(userId);
-        if (user != null && responses.containsKey(user)) {
-            List<Response> userResponses = responses.get(user);
-            for (Response response : userResponses) {
-                if (response.getResponseId().equals(responseId)) {
-                    return response;
-                }
-            }
-        }
-        return null; // Response not found
-    }
-
-    public boolean responseExistsById(UUID responseId) {
-        for (List<Response> responseList: responses.values()){
-            for (Response response: responseList) {
-                if (responseId.equals(response.getResponseId())){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public void deleteResponse(UUID responseId, UUID promptId) {
-
-        for (List<Response> responseList: responses.values()){
-            responseList.removeIf(response -> responseId.equals(response.getResponseId()));
-        }
-        // Loop through users to find the response's prompt in user history and delete it
-        for (User user : accounts.values()) {
-            if (user.getHistory().containsKey(promptId)) {
-                user.deleteResponse(promptId); // Call CommonUser's deleteResponse method
-            }
-        }
-
-        this.save();
-    }
-
-    public User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
-
-    public void setLoggedInUser(User user) {
-        this.loggedInUser = user;
-    }
-
-    @Override
-    public User getLoggedInUser() {
-        return loggedInUser;
     }
 }
