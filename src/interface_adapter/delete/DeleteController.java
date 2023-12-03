@@ -17,3 +17,5 @@ public class DeleteController {
 
         deleteInteractor.execute(deleteInputData);}
 }
+
+// get response object form the response id -> then find the prompt it too -> then delete both of them.

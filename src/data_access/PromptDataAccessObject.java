@@ -2,6 +2,7 @@ package data_access;
 
 import entities.Prompt;
 import entities.Response;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -20,7 +21,6 @@ public class PromptDataAccessObject {
     private final Map<UUID, List<UUID>> responses = new LinkedHashMap<>();
 
     public PromptDataAccessObject(String csvPath) throws IOException {
-
 
         csvFile = new File(csvPath);
         headers.put("prompt_question", 0);
