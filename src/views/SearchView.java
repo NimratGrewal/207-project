@@ -9,8 +9,6 @@ import interface_adapter.set_response.SetResponseController;
 import views.components.SearchResultsListCellRenderer;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -21,6 +19,8 @@ import java.util.Map;
 public class SearchView extends JPanel implements PropertyChangeListener {
     private final SearchViewModel searchViewModel;
     private final SearchTracksViewModel searchTracksViewModel;
+    private final SearchTracksController searchTracksController;
+    private final SetResponseController setResponseController;
 
     private final JLabel promptText;
     private final JList<Map<String, String>> searchResults;
@@ -29,8 +29,10 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     private final JButton searchButton;
     private final JButton setResponse;
     public SearchView (SearchViewModel searchViewModel,
-                       SearchTracksViewModel searchTracksViewModel) {
+                       SearchTracksViewModel searchTracksViewModel, SearchTracksController searchTracksController, SetResponseController setResponseController) {
         this.searchViewModel = searchViewModel;
+        this.searchTracksController = searchTracksController;
+        this.setResponseController = setResponseController;
         this.searchViewModel.addPropertyChangeListener(this);
 
         this.searchTracksViewModel = searchTracksViewModel;
@@ -87,7 +89,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         searchButton.addActionListener(
                 e -> {
                     if (e.getSource().equals(searchButton)) {
-                        searchTracksController.execute(searchViewModel.getState().getSearchBarText());
+                        this.searchTracksController.execute(searchViewModel.getState().getSearchBarText());
                     }
                 }
         );
@@ -95,7 +97,7 @@ public class SearchView extends JPanel implements PropertyChangeListener {
         setResponse.addActionListener(
                 e -> {
                     if (e.getSource().equals(setResponse)) {
-                        setResponseController.execute(listModel.getElementAt(searchResults.getSelectedIndex()).get("id"));
+                        this.setResponseController.execute(listModel.getElementAt(searchResults.getSelectedIndex()).get("id"));
                     }
                 }
         );

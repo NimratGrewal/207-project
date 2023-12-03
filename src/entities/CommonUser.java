@@ -11,7 +11,6 @@ public class CommonUser implements User {
     private final HashMap<UUID, Response> history;
     private final LocalDateTime creationTime;
 
-
     /**
      * Requires: password is valid.
      * @param username
@@ -58,8 +57,14 @@ public class CommonUser implements User {
 
     @Override
     public Response getResponse(UUID promptId) {
-        return history.get(promptId);
+        if (history.containsKey(promptId)) {
+            return history.get(promptId);
+        } else {
+            System.out.println("prompt does not exist");
+        }
+        return null;
     }
+
 
     public int getNumberOfResponses() {
         if (history != null) {

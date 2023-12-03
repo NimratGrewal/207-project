@@ -2,6 +2,7 @@ package data_access;
 
 import entities.Prompt;
 import entities.Response;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -22,7 +23,6 @@ public class PromptDataAccessObject {
 
     public PromptDataAccessObject(String csvPath) throws IOException {
 
-
         csvFile = new File(csvPath);
         headers.put("prompt_question", 0);
         headers.put("prompt_ID", 1);
@@ -34,7 +34,7 @@ public class PromptDataAccessObject {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
-                assert header.equals("prompt_question,prompt_ID,date, responses");
+                assert header.equals("prompt_question,prompt_ID,date,responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
@@ -47,8 +47,8 @@ public class PromptDataAccessObject {
                     // converting string dates to LocalDate dates
                     LocalDate date = LocalDate.parse(dates);
 
-                    Prompt prompt = new Prompt(prompts_string, date);
-                    prompts.put(dates, prompt);
+                    Prompt prompt = new Prompt(prompts_string, date, UUID.randomUUID());
+                    prompts.put(LocalDate.parse(dates), prompt);
                   
                     String[] responseInfo = responsesText.split(";");
                     for (String uuid_string : responseInfo) {

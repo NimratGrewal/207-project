@@ -13,5 +13,5 @@ public interface SetResponseDataAccessInterface {
 
     public UUID getActivePromptId();
 
-    public UUID getLoggedInUserId();
+    User getLoggedInUser();
 }

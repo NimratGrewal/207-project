@@ -34,6 +34,16 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
+    public User getLoggedinUser() {
+        return userDataAccessObject.getLoggedInUser();
+    }
+
+    @Override
+    public Response getResponseById(UUID userId, UUID responseId) {
+        return userDataAccessObject.getResponseById(userId, responseId);
+    }
+
+    @Override
     public void setResponse(Response response) {
         userDataAccessObject.setResponse(response);
         promptDataAccessObject.setResponse(userDataAccessObject.getLoggedInUserId(), response);
@@ -66,6 +76,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
 
     public List<UUID> getResponseIds(User user) {
         return userDataAccessObject.getResponseIds(user);
+    }
+    @Override
     public Prompt getCurrentPrompt() {
         return promptDataAccessObject.getCurrentPrompt();
     }
@@ -73,21 +85,15 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public boolean answeredCurrentPrompt(UUID promptID) {
         return promptDataAccessObject.answeredCurrentPrompt(promptID);
-
     }
 
     @Override
-    public User getLoggedInUser(UUID userId) {
+    public User getLoggedInUser() {
         return userDataAccessObject.getLoggedInUser();
     }
 
     @Override
     public User getUser(UUID userId) {
         return userDataAccessObject.getUser(userId);
-    }
-
-    @Override
-    public Response getResponseById(UUID responseId) {
-        return userDataAccessObject.getResponseById(responseId);
     }
 }

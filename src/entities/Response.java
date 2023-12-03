@@ -15,6 +15,13 @@ public class Response {
         this.song = song;
     }
 
+    public Response(UUID responseId, UUID promptId, UUID userId, Song song) {
+        this.responseId = responseId;
+        this.promptId = promptId;
+        this.userId = userId;
+        this.song = song;
+    }
+
     public UUID getResponseId() {
         return responseId;
     }

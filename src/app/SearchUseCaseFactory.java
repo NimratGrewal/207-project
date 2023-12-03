@@ -38,14 +38,13 @@ public class SearchUseCaseFactory {
             ViewResponseViewModel viewResponseViewModel) {
 
         try {
-            SearchTracksController searchTracksController = createSearchUseCase(searchTracksViewModel,
-                    viewManagerModel, apiCaller);
+            SearchTracksController searchTracksController = createSearchUseCase(searchTracksViewModel, apiCaller);
 
             SetResponseController setResponseController = createSetResponseUseCase(viewResponseViewModel,
                     searchViewModel, viewManagerModel, apiCaller, setResponseDataAccessInterface);
 
-            return new SearchView(searchViewModel, searchTracksController, setResponseController,
-                    searchTracksViewModel);
+            return new SearchView(searchViewModel, searchTracksViewModel, searchTracksController, setResponseController
+                    );
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
@@ -57,11 +56,9 @@ public class SearchUseCaseFactory {
 
     private static SearchTracksController createSearchUseCase(
             SearchTracksViewModel searchTracksViewModel,
-            ViewManagerModel viewManagerModel,
             SpotifyAPICaller apiCaller) throws IOException {
 
-        SearchTracksOutputBoundary searchTracksPresenter = new SearchTracksPresenter(searchTracksViewModel,
-                viewManagerModel);
+        SearchTracksOutputBoundary searchTracksPresenter = new SearchTracksPresenter(searchTracksViewModel);
 
         SearchTracksInputBoundary searchTracksInteractor = new SearchTracksInteractor(searchTracksPresenter, apiCaller);
 
@@ -78,7 +75,6 @@ public class SearchUseCaseFactory {
 
         SetResponseOutputBoundary setResponsePresenter = new SetResponsePresenter(viewResponseViewModel, viewManagerModel);
 
-        // interactor supposed to implement input boundary - typo in setResponseController
         SetResponseInputBoundary setResponseInteractor = new SetResponseInteractor(setResponseDataAccessInterface,
                 setResponsePresenter, apiCaller);
 
