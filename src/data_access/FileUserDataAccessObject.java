@@ -18,7 +18,6 @@ public class FileUserDataAccessObject {
     private UserFactory userFactory;
     private User loggedInUser;
 
-    private User loggedInUser;
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
@@ -174,14 +173,6 @@ public class FileUserDataAccessObject {
             responseList.removeIf(response -> responseId.equals(response.getResponseId()));
         }
         save();
-    }
-
-    public User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
     }
 
     public void setLoggedInUser(User user) {

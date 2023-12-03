@@ -1,6 +1,7 @@
 package interface_adapter.login;
 
 import entities.Prompt;
+import entities.Song;
 import entities.User;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.search.SearchState;
@@ -9,7 +10,6 @@ import interface_adapter.view_response.ViewResponseState;
 import interface_adapter.view_response.ViewResponseViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
-import views.HomeView;
 
 public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel loginViewModel;
@@ -28,9 +28,17 @@ public class LoginPresenter implements LoginOutputBoundary {
 
 
     @Override
-    public void prepareLoggedInView(LoginOutputData user) {
+    public void prepareLoggedInView(LoginOutputData user, Song song) {
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
-        this.viewManagerModel.setActiveView(viewResponseViewModel.getName());
+        viewResponseState.setSongName(song.getName());
+        viewResponseState.setAlbumCover(song.getAlbumArt(10));
+        String artists = String.join(",", song.getArtists());
+        viewResponseState.setArtistNames(artists);
+        viewResponseState.setAlbumName(song.getAlbum());
+        this.viewResponseViewModel.setState(viewResponseState);
+        this.viewResponseViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setActiveView(viewResponseViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
     }
@@ -43,10 +51,10 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void preparePromptView(LoginOutputData user, Prompt prompt) {
         SearchState searchState = searchViewModel.getState();
         searchState.setPromptText(prompt.getPromptText());
-        this.searchViewModel.setState(promptState);
+        this.searchViewModel.setState(searchState);
         this.searchViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setActiveView(searchViewModel.getName());
+        this.viewManagerModel.setActiveView(searchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
     }

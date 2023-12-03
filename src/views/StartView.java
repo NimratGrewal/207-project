@@ -14,7 +14,6 @@ import java.beans.PropertyChangeListener;
 
 public class StartView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "Start View";
-    public final String viewName = "Home view";
 
     private final LoginViewModel loginViewModel;
 

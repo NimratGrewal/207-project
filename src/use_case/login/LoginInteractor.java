@@ -1,6 +1,7 @@
 package use_case.login;
 
 import data_access.FileUserDataAccessObject;
+import entities.Song;
 import entities.User;
 import entities.Prompt;
 
@@ -43,7 +44,8 @@ public class LoginInteractor implements LoginInputBoundary {
                 }
                 else{
                     LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), true);
-                    loginPresenter.prepareLoggedInView(loginOutputData);
+                    Song song = user.getResponse(prompt.getPromptId()).getSong();
+                    loginPresenter.prepareLoggedInView(loginOutputData, song);
                 }
             }
         }
