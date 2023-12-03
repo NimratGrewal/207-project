@@ -11,6 +11,4 @@ public interface UserProfileDataAccessInterface {
     User getLoggedInUser();
     Prompt getPromptById(UUID promptId);
     User getUser(UUID userId);
-
-    Response getResponseById(UUID responseId);
 }

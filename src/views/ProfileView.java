@@ -98,8 +98,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     public void executeProfileController() {
         profileController.execute();
     }
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
 
     private void setFields(ProfileState state) {
         if (state == null) {
@@ -157,6 +155,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         }
 
     }
+}
 
 
 

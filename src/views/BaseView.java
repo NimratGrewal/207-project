@@ -9,6 +9,7 @@ public class BaseView extends JTabbedPane {
         addTab("Home", null);
         addTab("Feed", null, feedPage);
         addTab("Profile", null, profilePage);
+        addTab("Search User", null);
 
         addChangeListener(e -> {
             int selectedIndex = getSelectedIndex();
@@ -21,6 +22,9 @@ public class BaseView extends JTabbedPane {
                 case 2:
                     profilePage.executeProfileController();
                     break;
+                case 3:
+                    break;
+
             }
         });
     }
