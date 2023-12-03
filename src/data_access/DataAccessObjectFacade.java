@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface,
-        UserProfileDataAccessInterface, PromptDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface {
+        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
 
@@ -72,7 +72,6 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
         return promptDataAccessObject.getCurrentPrompt();
     }
 
-    @Override
     public boolean answeredCurrentPrompt(UUID promptID) {
         return promptDataAccessObject.answeredCurrentPrompt(promptID);
 
