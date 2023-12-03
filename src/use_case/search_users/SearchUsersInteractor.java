@@ -21,10 +21,10 @@ public class SearchUsersInteractor implements SearchUsersInputBoundary {
 
     private final SearchUsersPresenter searchUsersPresenter;
 
-    private final DataAccessObjectFacade dataAccessObject;
-    public SearchUsersInteractor(DataAccessObjectFacade dataAccessObjectFacade, SearchUsersPresenter searchUsersPresenter) {
+    private final SearchUsersDataAccessInterface dataAccessObject;
+    public SearchUsersInteractor(SearchUsersDataAccessInterface dataAccessObject, SearchUsersPresenter searchUsersPresenter) {
         this.searchUsersPresenter = searchUsersPresenter;
-        this.dataAccessObject = dataAccessObjectFacade;
+        this.dataAccessObject = dataAccessObject;
 
     }
 
