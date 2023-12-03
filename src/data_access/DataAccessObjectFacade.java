@@ -5,7 +5,7 @@ import entities.Response;
 import entities.User;
 import use_case.delete.DeleteResponseDataAccessInterface;
 import use_case.login.LoginUserDataInterface;
-import use_case.search_users.SearchUsersDataAccessInterface
+import use_case.search_users.SearchUsersDataAccessInterface;
 
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toFeed.FeedDataAccessInterface;
