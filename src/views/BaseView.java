@@ -1,20 +1,16 @@
 package views;
 
-import interface_adapter.feed.FeedController;
-import interface_adapter.profile.ProfileController;
-
 import javax.swing.*;
 import java.util.UUID;
 
 public class BaseView extends JTabbedPane {
-    private ProfileController profileController;
-    private FeedController feedController;
-    public BaseView(SearchView searchView, ResponseView responseView, SearchUserView searchUserView,
-                    FeedView feedPage, ProfileView profilePage, UUID dailyPromptId, UUID loggedInUserId) {
+  
+    public BaseView(SearchView searchView, ViewResponseView responseView, FeedView feedPage, ProfileView profilePage) {
         addTab("Home", null);
         addTab("Feed", null, feedPage);
         addTab("Search Users", null, searchUserView);
         addTab("Profile", null, profilePage);
+        addTab("Search User", null);
 
         addChangeListener(e -> {
             int selectedIndex = getSelectedIndex();
@@ -22,11 +18,15 @@ public class BaseView extends JTabbedPane {
                 case 0:
                     break;
                 case 1:
-                    feedController.execute(dailyPromptId);
+                    feedPage.executeFeedController();
+                    break;
                 case 2:
-                    profileController.execute(loggedInUserId);
+                    profilePage.executeProfileController();
+                    break;
+                case 3:
+                    break;
+
             }
         });
     }
-
 }

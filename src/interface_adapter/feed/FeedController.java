@@ -12,9 +12,8 @@ public class FeedController {
         this.feedInteractor = feedInteractor;
     }
 
-    public void execute(UUID dailyPromptId) {
-        FeedInputData inputData = new FeedInputData(dailyPromptId);
-        feedInteractor.execute(inputData);
+    public void execute() {
+        feedInteractor.execute();
     }
 
 }

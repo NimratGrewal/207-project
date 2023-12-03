@@ -4,19 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 
 import interface_adapter.profile.ProfileController;
+import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.delete.DeleteController;
+import views.components.ProfileResponseBox;
 
-import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.List;
 
 public class ProfileView extends JPanel implements PropertyChangeListener {
-
+    public final String viewName = "profile";
     private final ProfileViewModel viewModel;
     private final ProfileController profileController;
     private final DeleteController deleteController;
@@ -24,7 +26,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     private final JLabel responsesLabel;
     private final JPanel responsesPanel;
 
-    public ProfileView(ProfileViewModel viewModel, ProfileController profileController, DeleteController deleteController) {
+
+    public ProfileView(ProfileViewModel viewModel,
+                       ProfileController profileController,
+                       DeleteController deleteController) {
         this.viewModel = viewModel;
         this.profileController = profileController;
         this.deleteController = deleteController;
@@ -47,14 +52,15 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
         profilePanel.setBackground(Color.WHITE);
 
-        usernameLabel.setText("Username: " + viewModel.getState().getUsername());
-        responsesLabel.setText("Responses: " + viewModel.getState().getNumberOfResponses());
-
         JLabel profilePictureLabel = new JLabel();
 
-        ImageIcon profilePictureIcon = new ImageIcon(
-                (Objects.requireNonNull(getClass().getResource("/views/assets/Portrait_placeholder.png"))));
-        profilePictureLabel.setIcon(profilePictureIcon);
+        URL resourceUrl = getClass().getResource("/images/Portrait_placeholder.png");
+        if (resourceUrl != null) {
+            ImageIcon profilePictureIcon = new ImageIcon(resourceUrl);
+            profilePictureLabel.setIcon(profilePictureIcon);
+        } else {
+            System.err.println("Portrait Placeholder Image Not Found!");
+        }
 
         JButton logout = new JButton("Log out");
 
@@ -70,23 +76,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
 
-        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
-            UUID responseId = entry.getKey();
-            Map<String, Object> responseInfo = entry.getValue();
-
-            LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
-            String promptText = (String) responseInfo.get("Prompt Text");
-
-            JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
-
-            if (responseBoxPanel instanceof ProfileResponseBox) {
-                ((ProfileResponseBox) responseBoxPanel).addDeleteButtonListener(this);
-            }
-
-        }
-
         // scroll pane for answers
         JScrollPane scrollPane = new JScrollPane(responsesPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 10));
@@ -101,60 +90,75 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         add(contentPanel, BorderLayout.CENTER);
 
+        ProfileState currentState = viewModel.getState();
+        viewModel.setState(currentState);
+
+        setFields(viewModel.getState());
     }
 
-    private JPanel createProfileResponseBox(UUID responseId, Map<String, Object> responseInfo,
-                                            LocalDate promptDate, String promptText) {
-        String username = (String) responseInfo.get("Username");
-        String songName = (String) responseInfo.get("Song Name");
-        String[] songArtists = ((String[]) responseInfo.get("Song Artists"));
-        String songAlbum = (String) responseInfo.get("Song Album");
-        ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
-
-        return new ProfileResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
+    public void executeProfileController() {
+        profileController.execute();
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        setFields();
-
-        if ("deleteResponse".equals(evt.getPropertyName())) {
-            UUID responseId = (UUID) evt.getNewValue();
-            // Pass responseId to delete controller
-            deleteController.execute(responseId);
+    private void setFields(ProfileState state) {
+        if (state == null) {
+            System.out.println("state is null!");
+            return;
         }
-    }
 
-    private void setFields() {
-        usernameLabel.setText("Username: " + viewModel.getState().getUsername());
-        responsesLabel.setText("Responses: " + viewModel.getState().getNumberOfResponses());
+        usernameLabel.setText(viewModel.USERNAME_LABEL);
+        responsesLabel.setText(viewModel.RESPONSES_LABEL);
 
         responsesPanel.removeAll();
 
-        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
-            UUID responseId = entry.getKey();
-            Map<String, Object> responseInfo = entry.getValue();
+        Map<UUID, Map<String, Object>> responseInfoMap = viewModel.getState().getResponseInfoMap();
+        if (!responseInfoMap.isEmpty()) {
+            for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
+                UUID responseId = entry.getKey();
+                Map<String, Object> responseInfo = entry.getValue();
 
-            // Retrieve additional information needed for ProfileResponseBox
-            LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
-            String promptText = (String) responseInfo.get("Prompt Text");
+                LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
+                String promptText = (String) responseInfo.get("Prompt Text");
 
-            // Create ProfileResponseBox with the additional information
-            JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+                JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
+
+                responsesPanel.add(responseBoxPanel);
+                responsesPanel.add(Box.createVerticalStrut(10));
+            }
+        } else {
+            JLabel no_responses = new JLabel("No Responses Yet!");
+            responsesPanel.add(no_responses, BorderLayout.NORTH);
         }
 
         responsesPanel.revalidate();
         responsesPanel.repaint();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    private JPanel createProfileResponseBox(UUID responseId, Map<String, Object> responseInfo,
+                                            LocalDate promptDate, String promptText) {
+        String username = (String) responseInfo.get("Username");
+        String songName = (String) responseInfo.get("Song Name");
+        List<String> songArtists = (List<String>) responseInfo.get("Song Artists");
+        String songAlbum = (String) responseInfo.get("Song Album");
+        ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
+        return new ProfileResponseBox(responseId, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
     }
 
+    public void propertyChange(PropertyChangeEvent evt) {
+        ProfileState state = (ProfileState) evt.getNewValue();
+        setFields(state);
+
+        if ("deleteResponse".equals(evt.getPropertyName())) {
+            UUID responseId = (UUID) evt.getNewValue();
+            // Pass responseId to delete controller
+            deleteController.execute(responseId);
+        }
+
+    }
 }
+
+
 
 
 
