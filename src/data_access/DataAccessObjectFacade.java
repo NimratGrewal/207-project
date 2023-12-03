@@ -8,6 +8,7 @@ import use_case.login.LoginUserDataInterface;
 import use_case.search_users.SearchUsersDataAccessInterface;
 
 import use_case.set_response.SetResponseDataAccessInterface;
+import use_case.signup.SignupUserDataInterface;
 import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteResponseDataAccessInterface,
-        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface, SearchUsersDataAccessInterface {
+        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface, SearchUsersDataAccessInterface, SignupUserDataInterface {
 
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
@@ -96,6 +97,11 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public boolean existsByName(String identifier) {
         return userDataAccessObject.existsByName(identifier);
+    }
+
+    @Override
+    public void save(User user) {
+        userDataAccessObject.save(user);
     }
 
     @Override
