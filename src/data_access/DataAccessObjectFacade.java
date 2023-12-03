@@ -74,7 +74,6 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
 
     public boolean answeredCurrentPrompt(UUID promptID) {
         return promptDataAccessObject.answeredCurrentPrompt(promptID);
-
     }
 
     public User getLoggedInUser(UUID userId) {

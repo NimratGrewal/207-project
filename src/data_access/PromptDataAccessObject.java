@@ -47,8 +47,8 @@ public class PromptDataAccessObject {
                     // converting string dates to LocalDate dates
                     LocalDate date = LocalDate.parse(dates);
 
-                    Prompt prompt = new Prompt(prompts_string, date);
-                    prompts.put(dates, prompt);
+                    Prompt prompt = new Prompt(prompts_string, date, promptID);
+                    prompts.put(date, prompt);
                   
                     String[] responseInfo = responsesText.split(";");
                     for (String uuid_string : responseInfo) {
