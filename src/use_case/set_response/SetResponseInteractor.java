@@ -4,6 +4,8 @@ import entities.Response;
 import entities.Song;
 import entities.SpotifyAPICaller;
 
+import java.util.UUID;
+
 public class SetResponseInteractor implements SetResponseInputBoundary {
     private final SetResponseDataAccessInterface dataAccessObject;
     private final SetResponseOutputBoundary setResponsePresenter;
@@ -22,6 +24,7 @@ public class SetResponseInteractor implements SetResponseInputBoundary {
         Song song = caller.getTrack(setResponseInputData.getSongId());
 
         Response response = new Response(
+                UUID.randomUUID(),
                 dataAccessObject.getActivePromptId(),
                 dataAccessObject.getLoggedInUser().getUserId(),
                 song);

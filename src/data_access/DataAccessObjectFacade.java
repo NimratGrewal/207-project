@@ -24,8 +24,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public void deleteResponse(UUID responseId, UUID promptId) {
-        userDataAccessObject.deleteResponse(responseId, promptId);
+    public void deleteResponse(UUID responseId) {
+        userDataAccessObject.deleteResponse(responseId);
         promptDataAccessObject.deleteResponse(responseId);
     }
 
@@ -78,6 +78,11 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     @Override
     public User getUser(UUID userId) {
         return userDataAccessObject.getUser(userId);
+    }
+
+    @Override
+    public Response getResponseById(UUID responseId) {
+        return null;
     }
 
 }
