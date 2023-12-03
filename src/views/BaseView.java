@@ -4,10 +4,11 @@ import javax.swing.*;
 import java.util.UUID;
 
 public class BaseView extends JTabbedPane {
-
+  
     public BaseView(SearchView searchView, ViewResponseView responseView, FeedView feedPage, ProfileView profilePage) {
         addTab("Home", null);
         addTab("Feed", null, feedPage);
+        addTab("Search Users", null, searchUserView);
         addTab("Profile", null, profilePage);
         addTab("Search User", null);
 
