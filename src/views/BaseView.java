@@ -14,7 +14,9 @@ public class BaseView extends JTabbedPane {
         this.profileController = profileController;
         this.feedController = feedController;
         this.promptController = promptController;
+    }
 
+    public void changeListener() {
         addChangeListener(e -> {
             int selectedIndex = getSelectedIndex();
             switch (selectedIndex) {
@@ -26,7 +28,6 @@ public class BaseView extends JTabbedPane {
                     this.profileController.execute();
                 case 3:
                     break;
-
             }
         });
     }

@@ -45,7 +45,7 @@ public class ViewManager implements PropertyChangeListener {
                     viewsCardLayout.show(views, loggedInViews.getName());
                     loggedInViews.setSelectedIndex(loggedInViews.indexOfTab(viewModelName));
                 }
-                case "start", "login", "signup" -> {
+                case "start", "log in", "signup" -> {
                     viewsCardLayout.show(views, signUpLoginViews.getName());
                     signUpLoginCardLayout.show(signUpLoginViews, viewModelName);
                 }

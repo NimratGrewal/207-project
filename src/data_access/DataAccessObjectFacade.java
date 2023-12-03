@@ -4,16 +4,19 @@ import entities.Prompt;
 import entities.Response;
 import entities.User;
 import use_case.delete.DeleteUserDataAccessInterface;
+import use_case.home.HomeDataAccessInterface;
 import use_case.login.LoginUserDataInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
+import use_case.to_prompt.PromptDataAccessInterface;
 
 import java.util.List;
 import java.util.UUID;
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface,
-        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface {
+        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface, PromptDataAccessInterface,
+        HomeDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
 
@@ -65,6 +68,16 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
+    public Prompt getActivePrompt() {
+        return promptDataAccessObject.getCurrentPrompt();
+    }
+
+    @Override
+    public Response getLoggedInUserResponse() {
+        return userDataAccessObject.getLoggedInUser().getResponseForDailyPrompt(promptDataAccessObject.getCurrentPrompt().getPromptId());
+    }
+
+    @Override
     public Prompt getPromptById(UUID promptId) {
         return null;
     }
@@ -105,4 +118,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
         userDataAccessObject.setLoggedInUser(loggedInUser);
     }
 
+    @Override
+    public void deleteLoggedInUserResponse() {
+
+    }
 }

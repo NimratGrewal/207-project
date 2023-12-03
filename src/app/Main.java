@@ -12,9 +12,7 @@ import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_tracks.SearchTracksViewModel;
 import interface_adapter.view_response.ViewResponseViewModel;
-import views.LoginView;
-import views.ProfileView;
-import views.ViewManager;
+import views.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +26,6 @@ public class Main {
         // The main application window.
         JFrame application = new JFrame("Our App!");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
 
         // This keeps track of and manages which view is currently showing.
         ViewManagerModel viewManagerModel = new ViewManagerModel();
@@ -59,31 +56,54 @@ public class Main {
         }
         DataAccessObjectFacade dataAccessObject = new DataAccessObjectFacade(userDataAccessObject, promptDataAccessObject);
 
+        CardLayout loginSignupCardLayout = new CardLayout();
+        JPanel loginSignUpViews = new JPanel(loginSignupCardLayout);
 
-        JTabbedPane tab = new JTabbedPane();
-        tab.add(new JPanel());
+        JPanel loginView = LoginUseCaseFactory.create(loginViewModel, viewManagerModel, searchViewModel, viewResponseViewModel,
+                dataAccessObject);
+        loginView.setName("log in");
 
+        loginSignUpViews.add(loginView);
+        loginSignUpViews.setName("login signup");
 
+        BaseView loggedInViews = BaseViewUseCaseFactory.create(viewManagerModel, searchViewModel, viewResponseViewModel,
+                dataAccessObject, feedViewModel, profileViewModel, dataAccessObject, dataAccessObject);
+
+        CardLayout promptViewCardLayout = new CardLayout();
+        JPanel promptView = new JPanel(promptViewCardLayout);
+        JPanel searchView = SearchUseCaseFactory.create(searchViewModel, searchTracksViewModel, viewManagerModel,
+                dataAccessObject, caller, viewResponseViewModel);
+        JPanel viewResponseView = ViewResponseViewUseCaseFactory.create(viewManagerModel, searchViewModel, viewResponseViewModel,
+                dataAccessObject);
+        promptView.add("search", searchView);
+        promptView.add("view response", viewResponseView);
+        promptView.setName("prompt");
+
+        FeedView feedView = FeedUseCaseFactory.create(feedViewModel);
+        feedView.setName("feed");
+
+        ProfileView profileView = ProfileUseCaseFactory.create(viewManagerModel, profileViewModel, dataAccessObject);
+        profileView.setName("profile");
+
+        loggedInViews.add("prompt", promptView);
+        loggedInViews.add("feed", feedView);
+        loggedInViews.add("profile", profileView);
+        loggedInViews.setName("logged in");
+        loggedInViews.changeListener();
+
+        CardLayout viewsCardLayout = new CardLayout();
+        JPanel views = new JPanel(viewsCardLayout);
+        application.add(views);
+
+        views.add(loginSignUpViews.getName(), loginSignUpViews);
+        views.add(loggedInViews.getName(), loggedInViews);
+
+        new ViewManager(viewsCardLayout, views, loginSignUpViews, loginSignupCardLayout, loggedInViews, promptView, promptViewCardLayout, viewManagerModel);
+
+        viewManagerModel.setActiveView("profile");
         viewManagerModel.firePropertyChanged();
 
         application.pack();
         application.setVisible(true);
-
-
-        CardLayout viewsCardLayout = new CardLayout();
-
-        // The various View objects. Only one view is visible at a time.
-        JPanel views = new JPanel(viewsCardLayout);
-        application.add(views);
-
-        CardLayout signUpLoginViewsCardLayout = new CardLayout();
-        JPanel signUpLoginViews = new JPanel(signUpLoginViewsCardLayout);
-
-        JTabbedPane loggedInViews = new JTabbedPane();
-
-        CardLayout promptViewCardLayout = new CardLayout();
-        JPanel promptView = new JPanel(promptViewCardLayout);
-
-
     }
 }

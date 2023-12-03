@@ -17,34 +17,9 @@ public class FeedUseCaseFactory {
     private FeedUseCaseFactory() {}
 
     public static FeedView create(
-            ViewManagerModel viewManagerModel,
-            FeedViewModel feedViewModel,
-            FeedDataAccessInterface feedDataAccessObject) {
+            FeedViewModel feedViewModel) {
 
-        try {
-            FeedController feedController = createFeedController(
-                    viewManagerModel,
-                    feedViewModel,
-                    feedDataAccessObject
-            );
-
-            return new FeedView(feedViewModel, feedController);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Could not create FeedView!");
-        }
-
-        return null;
-    }
-
-    private static FeedController createFeedController(
-            ViewManagerModel viewManagerModel,
-            FeedViewModel feedViewModel,
-            FeedDataAccessInterface feedDataAccessObject) throws IOException {
-
-        FeedOutputBoundary feedPresenter = new FeedPresenter(viewManagerModel, feedViewModel);
-        FeedInputBoundary feedInteractor = new FeedInteractor(feedDataAccessObject, feedPresenter);
-
-        return new FeedController(feedInteractor);
+        return new FeedView(feedViewModel);
     }
 }
 

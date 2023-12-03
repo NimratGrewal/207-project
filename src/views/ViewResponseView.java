@@ -30,21 +30,21 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
         JLabel title = new JLabel("Home Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        promptText = new JLabel(viewResponseViewModel.getState().getPromptText());
+        promptText = new JLabel();
         promptText.setHorizontalAlignment(JLabel.CENTER);
         JLabel albumCoverContainer = new JLabel();
 
-        albumCover = new ImageIcon(viewResponseViewModel.getState().getAlbumCover().getImage());
+        albumCover = new ImageIcon();
         albumCoverContainer.setIcon(albumCover);
         albumCoverContainer.setHorizontalAlignment(JLabel.CENTER);
 
-        songTitle = new JLabel(viewResponseViewModel.getState().getSongName());
+        songTitle = new JLabel();
         songTitle.setHorizontalAlignment(JLabel.CENTER);
 
-        albumName = new JLabel(viewResponseViewModel.getState().getAlbumName());
+        albumName = new JLabel();
         albumName.setHorizontalAlignment(JLabel.CENTER);
 
-        artistNames = new JLabel(viewResponseViewModel.getState().getArtistNames());
+        artistNames = new JLabel();
         artistNames.setHorizontalAlignment(JLabel.CENTER);
 
         JPanel buttons = new JPanel();
