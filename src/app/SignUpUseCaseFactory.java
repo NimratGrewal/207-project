@@ -11,6 +11,7 @@ import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import use_case.signup.SignupUserDataInterface;
+import views.SignupView;
 
 import javax.swing.*;
 import java.io.IOException;
