@@ -24,8 +24,7 @@ public class LoginUseCaseFactory {
             ViewManagerModel viewManagerModel,
             SearchViewModel searchViewModel,
             ViewResponseViewModel viewResponseViewModel,
-            LoginUserDataInterface loginUserDataInterface,
-            PromptDataAccessInterface promptDataAccessInterface) {
+            LoginUserDataInterface loginUserDataInterface) {
 
         try {
             LoginController loginController = createLoginUseCase(
@@ -33,9 +32,8 @@ public class LoginUseCaseFactory {
                     viewManagerModel,
                     searchViewModel,
                     viewResponseViewModel,
-                    loginUserDataInterface,
-                    promptDataAccessInterface);
-            return new LoginView(loginController, loginViewModel);
+                    loginUserDataInterface);
+//            return new LoginView(loginController, loginViewModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
         }
@@ -47,8 +45,7 @@ public class LoginUseCaseFactory {
             ViewManagerModel viewManagerModel,
             SearchViewModel searchViewModel,
             ViewResponseViewModel viewResponseViewModel,
-            LoginUserDataInterface loginUserDataInterface,
-            PromptDataAccessInterface promptDataAccessInterface) throws IOException {
+            LoginUserDataInterface loginUserDataInterface) throws IOException {
 
         LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, searchViewModel,
                 viewResponseViewModel, viewManagerModel);
@@ -56,7 +53,7 @@ public class LoginUseCaseFactory {
         UserFactory userFactory = new CommonUserFactory();
 
         LoginInputBoundary loginInteractor = new LoginInteractor(
-                loginUserDataInterface, loginOutputBoundary, promptDataAccessInterface);
+                loginUserDataInterface, loginOutputBoundary);
 
         return new LoginController(loginInteractor);
 

@@ -1,8 +1,9 @@
 package views;
 
-import data_access.PromptDataAccessObject;
 import interface_adapter.feed.FeedController;
+import interface_adapter.feed.FeedState;
 import interface_adapter.feed.FeedViewModel;
+import views.components.FeedResponseBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,15 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class FeedView extends JPanel implements ActionListener, PropertyChangeListener {
-
+    public String viewName = "feed";
     private final FeedViewModel viewModel;
-    private final FeedController feedController;
-    private final JLabel dateAndPromptLabel;
+    private final JLabel dateLabel;
+    private final JLabel promptLabel;
     private final JPanel responsesPanel;
+    private final FeedController feedController;
 
     public FeedView(FeedViewModel viewModel, FeedController feedController) {
         this.viewModel = viewModel;
@@ -28,19 +31,19 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
         setLayout(new BorderLayout());
 
-        dateAndPromptLabel = new JLabel();
+        dateLabel = new JLabel();
+        promptLabel = new JLabel();
 
         // overall content panel
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
 
         // header panel
-        JPanel headerPanel = new JPanel(new BorderLayout());
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.PAGE_AXIS));
 
-        dateAndPromptLabel.setText("Date: " + viewModel.getState().getPromptDate() +
-                "<br/> Prompt: " + viewModel.getState().getPromptText());
-
-        headerPanel.add(dateAndPromptLabel, BorderLayout.NORTH);
+        headerPanel.add(promptLabel, BoxLayout.X_AXIS);
+        headerPanel.add(dateLabel, BoxLayout.X_AXIS);
 
         // spacing around text in header panel
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -51,15 +54,6 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         // feed responses panel
         responsesPanel = new JPanel();
         responsesPanel.setLayout(new BoxLayout(responsesPanel, BoxLayout.Y_AXIS));
-
-        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
-            UUID userId = entry.getKey();
-            Map<String, Object> responseInfo = entry.getValue();
-
-            JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
-        }
 
         // scroll pane for answers
         JScrollPane scrollPane = new JScrollPane(responsesPanel);
@@ -74,16 +68,58 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
         add(contentPanel, BorderLayout.CENTER);
+
+        FeedState currentState = viewModel.getState();
+        viewModel.setState(currentState);
+
+        setFields(viewModel.getState());
+    }
+
+    public void executeFeedController() {
+        setFields(viewModel.getState());
+        feedController.execute();
+
+    }
+
+    public void setFields(FeedState state) {
+        if (state == null) {
+            System.out.println("state is null!");
+            return;
+        }
+
+        dateLabel.setText(viewModel.PROMPT_DATE_LABEL);
+        promptLabel.setText(viewModel.PROMPT_TEXT_LABEL);
+
+        responsesPanel.removeAll();
+
+        Map<UUID, Map<String, Object>> responseInfoMap = state.getResponseInfoMap();
+        if (!responseInfoMap.isEmpty()) {
+            for (Map.Entry<UUID, Map<String, Object>> entry : responseInfoMap.entrySet()) {
+                UUID userId = entry.getKey();
+                Map<String, Object> responseInfo = entry.getValue();
+
+                JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
+
+                responsesPanel.add(responseBoxPanel);
+                responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
+            }
+        } else {
+            JLabel no_responses = new JLabel("No Responses Yet!");
+            responsesPanel.add(no_responses, BorderLayout.NORTH);
+        }
+
+        responsesPanel.revalidate();
+        responsesPanel.repaint();
     }
     private JPanel createFeedResponseBox(Map<String, Object> responseInfo) {
         UUID responseId = (UUID) responseInfo.get("Response ID");
         String username = (String) responseInfo.get("Username");
         String songName = (String) responseInfo.get("Song Name");
-        String[] songArtists = ((String[]) responseInfo.get("Song Artists"));
+        java.util.List<String> songArtists = (List<String>) responseInfo.get("Song Artists");
         String songAlbum = (String) responseInfo.get("Song Album");
         ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
-        return new FeedResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt);
+        return new FeedResponseBox(responseId, songName, songArtists, songAlbum, albumArt, username);
     }
 
     @Override
@@ -92,25 +128,9 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        setFields();
-    }
-
-    private void setFields() {
-        dateAndPromptLabel.setText("Date: " + viewModel.getState().getPromptDate() +
-                "</br> Prompt: " + viewModel.getState().getPromptText());
-
-        responsesPanel.removeAll();
-
-        for (Map.Entry<UUID, Map<String, Object>> entry : viewModel.getState().getResponseInfoMap().entrySet()) {
-            UUID userId = entry.getKey();
-            Map<String, Object> responseInfo = entry.getValue();
-
-            JPanel responseBoxPanel = createFeedResponseBox(responseInfo);
-            responsesPanel.add(responseBoxPanel);
-            responsesPanel.add(Box.createVerticalStrut(10)); // Add vertical space between response panels
-        }
-
-        responsesPanel.revalidate();
-        responsesPanel.repaint();
+        FeedState state = (FeedState) evt.getNewValue();
+        setFields(state);
     }
 }
+
+

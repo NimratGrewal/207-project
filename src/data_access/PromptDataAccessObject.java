@@ -2,11 +2,13 @@ package data_access;
 
 import entities.Prompt;
 import entities.Response;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,7 +23,6 @@ public class PromptDataAccessObject {
 
     public PromptDataAccessObject(String csvPath) throws IOException {
 
-
         csvFile = new File(csvPath);
         headers.put("prompt_question", 0);
         headers.put("prompt_ID", 1);
@@ -33,7 +34,7 @@ public class PromptDataAccessObject {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
-                assert header.equals("prompt_question,prompt_ID,date, responses");
+                assert header.equals("prompt_question,prompt_ID,date,responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
@@ -43,14 +44,16 @@ public class PromptDataAccessObject {
                     String dates = String.valueOf(col[headers.get("date")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
 
+                    // converting string dates to LocalDate dates
                     LocalDate date = LocalDate.parse(dates);
 
-                    Prompt prompt  = new Prompt(prompts_string, date, promptID);
-                    prompts.put(date, prompt);
+                    Prompt prompt = new Prompt(prompts_string, date, UUID.randomUUID());
+                    prompts.put(LocalDate.parse(dates), prompt);
+                  
                     String[] responseInfo = responsesText.split(";");
-                    for(String uuid_string:responseInfo){
+                    for (String uuid_string : responseInfo) {
                         UUID uuid = UUID.fromString(uuid_string);
-                        if (!responses.containsKey(prompt.getPromptId())){
+                        if (!responses.containsKey(prompt.getPromptId())) {
                             responses.put(prompt.getPromptId(), new ArrayList<>());
                         }
                         // for each prompt, add each response uuid as a value.
@@ -92,7 +95,8 @@ public class PromptDataAccessObject {
                     }
                 }
                 String result = all_responses.toString();
-                String line = "%s,%s,%s,%s,%s".formatted(
+
+                String line = "%s,%s,%s,%s".formatted(
                         prompt.getPromptText(), prompt.getPromptId(), prompt.getPromptDate(), result);
                 writer.write(line);
                 writer.newLine();

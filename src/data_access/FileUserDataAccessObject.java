@@ -1,9 +1,6 @@
 package data_access;
 
 import entities.*;
-import use_case.delete.DeleteUserDataAccessInterface;
-import use_case.set_response.SetResponseDataAccessInterface;
-import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -15,9 +12,10 @@ public class FileUserDataAccessObject {
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
+
+    private final Map<String, UUID> usernames = new LinkedHashMap<>();
     private UserFactory userFactory;
     private User loggedInUser;
-
 
     public FileUserDataAccessObject(String csvPath, UserFactory userFactory, SpotifyAPICaller caller) throws IOException {
         this.userFactory = userFactory;
@@ -50,20 +48,22 @@ public class FileUserDataAccessObject {
 
                     User user = this.userFactory.create(userId, username, password, ldt);
                     accounts.put(userId, user);
+                    usernames.put(username, userId);
+                    if (!Objects.equals(responsesText, "null")) {
+                        String[] responseInfo = responsesText.split(";");
+                        for (String responseStr : responseInfo) {
+                            String[] responseData = responseStr.split(":");
+                            UUID responseID = UUID.fromString(responseData[0]);
+                            UUID promptID = UUID.fromString(responseData[1]);
+                            String songID = responseData[2];
 
-                    String[] responseInfo = responsesText.split(";");
-                    for (String responseStr : responseInfo) {
-                        String[] responseData = responseStr.split(":");
-                        UUID responseID = UUID.fromString(responseData[0]);
-                        UUID promptID = UUID.fromString(responseData[1]);
-                        String songID = responseData[2];
-
-                        Response response = new Response(responseID, promptID, userId, songID);
-                        if (!this.responses.containsKey(user)){
-                            this.responses.put(user, new ArrayList<>());
+                            Response response = new Response(responseID, promptID, userId, caller.getTrack(songID));
+                            if (!this.responses.containsKey(user)){
+                                this.responses.put(user, new ArrayList<>());
+                            }
+                            this.responses.get(user).add(response);
+                            user.setResponse(promptID, response);
                         }
-                        this.responses.get(user).add(response);
-                        user.setResponse(promptID, response);
                     }
                 }
             }
@@ -75,33 +75,18 @@ public class FileUserDataAccessObject {
      *
      * @param user The user to be saved
      */
-    //TODO: add save method to UserSignUpDataAccessInterface
     public void save(User user) {
         accounts.put(user.getUserId(), user);
+        responses.put(user, new ArrayList<>(user.getHistory().values()));
         this.save();
-    }
-
-    @Override
-    public User getLoggedInUser(UUID userId) {
-        return null;
     }
 
     public User getUser(UUID userId) {
         return accounts.get(userId);
     }
 
-
-    public List<UUID> getResponseIds(User user) {
-        List<UUID> responseIds = new ArrayList<>();
-
-        if (responses.containsKey(user)) {
-            List<Response> userResponses = responses.get(user);
-            for (Response response : userResponses) {
-                responseIds.add(response.getResponseId());
-            }
-        }
-
-        return responseIds;
+    public List<User> getAllUsers() {
+        return new ArrayList<>(accounts.values());
     }
 
     /**
@@ -116,14 +101,19 @@ public class FileUserDataAccessObject {
 
             for (User user : accounts.values()) {
                 List<String> responses = new ArrayList<>();
-                for (Response response : user.getHistory().values()) {
-                    String responseText = "%s:%s:%s".formatted(
-                            response.getResponseId(), response.getPromptId(), response.getSongId());
-                    responses.add(responseText);
+                String responseString;
+                if (user.getHistory().values().isEmpty()) {
+                    responseString = "null";
+                } else {
+                    for (Response response : user.getHistory().values()) {
+                        String responseText = "%s:%s:%s".formatted(
+                                response.getResponseId(), response.getPromptId(), response.getSong().getSongId());
+                        responses.add(responseText);
+                    }
+                    responseString = String.join(";", responses);
                 }
-                String responseString = String.join(";", responses);
-                String line = "%s,%s,%s,%s".formatted(
-                        user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
+                String line = "%s,%s,%s,%s,%s".formatted(
+                        user.getUserId().toString(), user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
                 writer.write(line);
                 writer.newLine();
             }
@@ -137,10 +127,10 @@ public class FileUserDataAccessObject {
 
     /**
      * Sets the current logged in user's response to response
-     * @param response The response for the current user
+     * @param response The response for the user with the prompt ID from response.getPromptId()
      */
     public void setResponse(Response response) {
-        loggedInUser.setResponse(response.getPromptId(), response);
+        accounts.get(response.getUserId()).setResponse(response.getPromptId(), response);
         responses.get(loggedInUser).add(response);
     }
 
@@ -157,6 +147,16 @@ public class FileUserDataAccessObject {
         return null; // Response not found
     }
 
+    public Response getResponseById(UUID responseId) {
+        for (List<Response> responseList: this.responses.values())
+            for (Response response : responseList) {
+                if (response.getResponseId().equals(responseId)) {
+                    return response;
+                }
+            }
+        return null; // Response not found
+    }
+
     public boolean responseExistsById(UUID responseId) {
         for (List<Response> responseList: responses.values()){
             for (Response response: responseList) {
@@ -170,17 +170,46 @@ public class FileUserDataAccessObject {
 
     public void deleteResponse(UUID responseId) {
         for (List<Response> responseList: responses.values()){
-            responseList.removeIf(response -> responseId.equals(response.getResponseId()));
+            for (Response r: responseList) {
+                if (responseId.equals(r.getResponseId())) {
+                    responseList.remove(r);
+                    accounts.get(r.getUserId()).deleteResponse(r.getPromptId());
+                }
+            }
         }
         save();
     }
 
-    public void setLoggedInUser(User user) {
-        this.loggedInUser = user;
-    }
+    public UUID getLoggedInUserId() {return loggedInUser.getUserId(); }
 
-    @Override
     public User getLoggedInUser() {
         return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+    public boolean existsByName(String identifier) {
+        return accounts.containsKey(identifier);
+    }
+
+    public List<UUID> getResponseIds(User user) {
+        List<UUID> responseIds = new ArrayList<>();
+
+        if (responses.containsKey(user)) {
+            List<Response> userResponses = responses.get(user);
+            for (Response response : userResponses) {
+                responseIds.add(response.getResponseId());
+            }
+        }
+        return responseIds;
+    }
+
+    public boolean usernameExists(String username){
+        return usernames.containsKey(username);
+    }
+
+    public UUID getUsername(String username){
+        return usernames.get(username);
     }
 }
