@@ -1,4 +1,5 @@
 package use_case.login;
+import entities.Prompt;
 import entities.User;
 public interface LoginUserDataInterface {
     boolean existsByName(String identifier);
@@ -6,4 +7,6 @@ public interface LoginUserDataInterface {
     void save(User user);
 
     User get(String username);
+
+    Prompt getCurrentPrompt();
 }
