@@ -22,9 +22,19 @@ class FileUserDataAccessObjectTest {
     @BeforeEach
     void init() throws IOException {
         uf = new CommonUserFactory();
-        f = new File("mock-users.csv");
+        f = new File("./test/mock-users.csv");
+        try {
+            BufferedWriter w = new BufferedWriter(new FileWriter(f));
+            w.write("userId,username,password,creation_time,responses");
+            w.newLine();
+            w.write("d7323358-a716-4626-af40-c7da357b1c97,momomo,abc,2022-12-03T10:15:30,e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl;e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl");
+            w.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         c = new SpotifyAPICaller("216b6438ba554128ade0b63afa48ddd8", "56e33aff04bc4aa28dc3d9e54bb231cd");
-        fudao = new FileUserDataAccessObject("mock-users.csv", uf, c);
+        fudao = new FileUserDataAccessObject(f.getPath(), uf, c);
         u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc", LocalDateTime.parse("2007-12-03T10:15:30"));
         u2 = uf.create(UUID.fromString("8c7664fc-63d8-446d-bb04-d7e638114e21"), "haya", "123", LocalDateTime.parse("2007-12-03T10:15:30"));
     }
@@ -35,16 +45,6 @@ class FileUserDataAccessObjectTest {
             PrintWriter writer = new PrintWriter(f);
             writer.print("");
             writer.close();
-            try {
-                BufferedWriter w = new BufferedWriter(new FileWriter(f));
-                w.write("userId,username,password,creation_time,responses");
-                w.newLine();
-                w.write("d7323358-a716-4626-af40-c7da357b1c97,momomo,abc,2022-12-03T10:15:30,e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl;e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl");
-                w.close();
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         } catch (FileNotFoundException e) {
             fail("no exception should have been thrown!");
         }
