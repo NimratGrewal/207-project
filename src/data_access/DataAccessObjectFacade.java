@@ -4,7 +4,7 @@ import entities.Prompt;
 import entities.Response;
 import entities.User;
 import use_case.delete.DeleteUserDataAccessInterface;
-import use_case.login.PromptDataAccessInterface;
+import use_case.login.LoginUserDataInterface;
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface,
-        UserProfileDataAccessInterface, PromptDataAccessInterface, FeedDataAccessInterface {
+        UserProfileDataAccessInterface, PromptDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
 
@@ -50,8 +50,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public UUID getLoggedInUserId() {
-        return userDataAccessObject.getLoggedInUserId();
+    public User getLoggedInUser() {
+        return userDataAccessObject.getLoggedInUser();
     }
 
     @Override
@@ -66,6 +66,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
 
     public List<UUID> getResponseIds(User user) {
         return userDataAccessObject.getResponseIds(user);
+    }
+
     public Prompt getCurrentPrompt() {
         return promptDataAccessObject.getCurrentPrompt();
     }
@@ -76,7 +78,6 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
 
     }
 
-    @Override
     public User getLoggedInUser(UUID userId) {
         return userDataAccessObject.getLoggedInUser();
     }
@@ -86,8 +87,18 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
         return userDataAccessObject.getUser(userId);
     }
 
-    @Override
-    public Response getResponseById(UUID responseId) {
-        return userDataAccessObject.getResponseById(responseId);
+    public Response getResponseById(UUID userId, UUID responseId) {
+        return userDataAccessObject.getResponseById(userId, responseId);
     }
+
+    @Override
+    public boolean existsByName(String identifier) {
+        return userDataAccessObject.existsByName(identifier);
+    }
+
+    @Override
+    public void setLoggedInUser(User loggedInUser){
+        userDataAccessObject.setLoggedInUser(loggedInUser);
+    }
+
 }

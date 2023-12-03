@@ -178,5 +178,8 @@ public class FileUserDataAccessObject {
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
+    public boolean existsByName(String identifier) {
+        return accounts.containsKey(identifier);
+    }
 
 }
