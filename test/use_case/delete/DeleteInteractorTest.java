@@ -31,35 +31,38 @@ class DeleteInteractorTest {
 
         user.setResponse(promptId, response);
         assertEquals(response, user.getResponse(promptId));
+        assertEquals(1, user.getNumberOfResponses());
 
         DeleteResponseDataAccessInterface dataAccessInterface = new DeleteResponseDataAccessInterface() {
             @Override
             public boolean responseExistsById(UUID responseId) {
-                return false;
+                return user.getResponse(promptId) != null;
             }
 
             @Override
             public void deleteResponse(UUID responseId) {
-
+                if (user.getHistory().containsKey(promptId)) {
+                    user.deleteResponse(promptId);
+                }
             }
 
             @Override
             public User getLoggedinUser() {
-                return null;
+                return user;
             }
 
             @Override
             public Response getResponseById(UUID userId, UUID responseId) {
-                return null;
+                return response;
             }};
 
 
         DeleteOutputBoundary successPresenter = new DeleteOutputBoundary() {
             @Override
             public void prepareSuccessView(DeleteOutputData deleteOutputData) {
-                // check if the responseId has been removed from both of the DAO's and the user's history
+                // check if the responseId has been removed from the user's history
                 assertEquals(0, user.getNumberOfResponses());
-                assertEquals("prompt does not exist", user.getResponse(promptId));
+                assertEquals(null, user.getResponse(promptId));
 
                 assertFalse(dataAccessInterface.responseExistsById(responseId));
 
@@ -71,7 +74,6 @@ class DeleteInteractorTest {
         DeleteInputBoundary deleteInteractor = new DeleteInteractor(successPresenter, dataAccessInterface);
 
         deleteInteractor.execute(deleteInputData);
-
 
     }
 }
