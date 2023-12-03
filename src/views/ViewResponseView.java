@@ -14,7 +14,6 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
     public final String viewName = "view response";
 
     public final ViewResponseViewModel viewResponseViewModel;
-
     private final HomeController homeController;
 
     private final JLabel promptText;

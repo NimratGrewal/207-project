@@ -89,4 +89,12 @@ public class CommonUser implements User {
         history.remove(promptId);
     }
 
+    public boolean hasResponseForDailyPrompt(UUID promptId) {
+        return getHistory().containsKey(promptId);
+    }
+
+    public Response getResponseForDailyPrompt(UUID promptId) {
+        return getHistory().get(promptId);
+    }
+
 }

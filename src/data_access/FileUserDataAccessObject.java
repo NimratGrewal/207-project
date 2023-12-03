@@ -1,9 +1,6 @@
 package data_access;
 
 import entities.*;
-import use_case.delete.DeleteUserDataAccessInterface;
-import use_case.set_response.SetResponseDataAccessInterface;
-import use_case.toProfile.UserProfileDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -80,6 +77,14 @@ public class FileUserDataAccessObject {
         accounts.put(user.getUserId(), user);
         responses.put(user, new ArrayList<>(user.getHistory().values()));
         this.save();
+    }
+
+    public User getUser(UUID userId) {
+        return accounts.get(userId);
+    }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(accounts.values());
     }
 
     /**
@@ -173,6 +178,8 @@ public class FileUserDataAccessObject {
         save();
     }
 
+    public UUID getLoggedInUserId() {return loggedInUser.getUserId(); }
+
     public User getLoggedInUser() {
         return loggedInUser;
     }
@@ -180,11 +187,9 @@ public class FileUserDataAccessObject {
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
-
-    public User getUser(UUID userId) {
-        return accounts.get(userId);
+    public boolean existsByName(String identifier) {
+        return accounts.containsKey(identifier);
     }
-
 
     public List<UUID> getResponseIds(User user) {
         List<UUID> responseIds = new ArrayList<>();
@@ -195,7 +200,6 @@ public class FileUserDataAccessObject {
                 responseIds.add(response.getResponseId());
             }
         }
-
         return responseIds;
     }
 }

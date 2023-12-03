@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface DeleteUserDataAccessInterface {
     boolean responseExistsById(UUID responseId);
 
-    void deleteResponse(UUID responseId, UUID promptId);
+    void deleteResponse(UUID responseId);
 
     User getLoggedinUser();
 
