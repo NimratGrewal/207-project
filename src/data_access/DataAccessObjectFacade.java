@@ -3,9 +3,12 @@ package data_access;
 import entities.Prompt;
 import entities.Response;
 import entities.User;
+import use_case.delete.DeleteResponseDataAccessInterface;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.home.HomeDataAccessInterface;
 import use_case.login.LoginUserDataInterface;
+import use_case.search_users.SearchUsersDataAccessInterface
+
 import use_case.set_response.SetResponseDataAccessInterface;
 import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
@@ -13,6 +16,7 @@ import use_case.to_prompt.PromptDataAccessInterface;
 
 import java.util.List;
 import java.util.UUID;
+
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteUserDataAccessInterface,
         UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface, PromptDataAccessInterface,
@@ -114,6 +118,19 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
+    public boolean usernameExists(String username) {
+        return userDataAccessObject.usernameExists(username);
+    }
+
+    @Override
+    public User getUsername(String username) {
+        UUID uuid = userDataAccessObject.getUsername(username);
+        return userDataAccessObject.getUser(uuid);
+    }
+
+    public Prompt getPromptById(UUID promptId){
+        return promptDataAccessObject.getPromptByID(promptId);
+    }
     public void setLoggedInUser(User loggedInUser){
         userDataAccessObject.setLoggedInUser(loggedInUser);
     }

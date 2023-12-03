@@ -11,33 +11,34 @@ public class DeleteInteractor implements DeleteInputBoundary {
 
     final DeleteResponseDataAccessInterface responseDataAccessInterface;
 
-    final DeleteUserDataAccessInterface userDataAccessInterface;
 
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface, DeleteUserDataAccessInterface userDataAccessInterface) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter, DeleteResponseDataAccessInterface responseDataAccessInterface) {
         this.deletePresenter = deletePresenter;
         this.responseDataAccessInterface = responseDataAccessInterface;
-        this.userDataAccessInterface = userDataAccessInterface;
     }
 
     @Override
     public void execute(DeleteInputData deleteInputData) {
         UUID responseId = deleteInputData.getResponseId();
         // find response object from the response id:
-        User user = userDataAccessInterface.getLoggedinUser();
+        User user = responseDataAccessInterface.getLoggedinUser();
         UUID loggedInUserId = user.getUserId();
 
         // call the response method in the user data access interface -> get response object
-        Response response = userDataAccessInterface.getResponseById(loggedInUserId, responseId);
+        Response response = responseDataAccessInterface.getResponseById(loggedInUserId, responseId);
 
-        if (responseDataAccessInterface.responseexistsById(responseId) &&
-                userDataAccessInterface.responseExistsById(responseId)) {
+        // pass in response object into the data access object to find the prompt id -> delete both
+        UUID promptId = response.getPromptId();
 
-            userDataAccessInterface.deleteResponse(responseId);
-            responseDataAccessInterface.deleteResponse(responseId);
+        if (responseDataAccessInterface.responseExistsById(responseId)) {
+            if (responseDataAccessInterface.responseExistsById(responseId)) {
 
-            DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
-            deletePresenter.prepareSuccessView(deleteOutputData);
+                responseDataAccessInterface.deleteResponse(responseId);
+
+                DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
+                deletePresenter.prepareSuccessView(deleteOutputData);
+            }
+
         }
-
     }
 }

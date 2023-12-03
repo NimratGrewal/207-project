@@ -20,6 +20,7 @@ class SearchTracksInteractorTest {
     }
 
     @Test
-    void execute() {
+    void successPresenter() {
+
     }
 }

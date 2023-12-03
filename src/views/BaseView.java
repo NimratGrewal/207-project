@@ -10,6 +10,7 @@ public class BaseView extends JTabbedPane {
     private ProfileController profileController;
     private FeedController feedController;
     private PromptController promptController;
+
     public BaseView(ProfileController profileController, FeedController feedController, PromptController promptController) {
         this.profileController = profileController;
         this.feedController = feedController;

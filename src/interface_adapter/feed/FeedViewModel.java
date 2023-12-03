@@ -7,23 +7,14 @@ import java.beans.PropertyChangeSupport;
 import java.time.LocalDate;
 
 public class FeedViewModel extends ViewModel {
-    private final LocalDate promptDate;
-    private final String promptText;
     private FeedState state = new FeedState();
     public String PROMPT_DATE_LABEL = "Date: ";
     public String PROMPT_TEXT_LABEL = "Prompt: ";
-    public FeedViewModel(LocalDate promptDate, String promptText) {
+    public FeedViewModel() {
         super("feed");
-        this.promptDate = promptDate;
-        this.promptText = promptText;
-        initializeState();
         setLabels();
     }
 
-    private void initializeState() {
-        state.setPromptDate(promptDate);
-        state.setPromptText(promptText);
-    }
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public void setState(FeedState state) {
