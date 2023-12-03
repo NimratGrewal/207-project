@@ -1,46 +1,98 @@
 package views;
 import interface_adapter.login.LoginController;
-import interface_adapter.signup.SignupViewModel;
+import interface_adapter.login.LoginState;
+import interface_adapter.login.LoginViewModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.*;
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private JTextField login = new JTextField();
+    public final String viewName = "log in";
+    private LoginViewModel loginViewModel;
 
-    private JTextField password = new JPasswordField();
-    private JTextField signup = new JTextField();
+    private LoginController loginController;
+    final JTextField usernameInputField = new JTextField(15);
+    private final JLabel usernameErrorField = new JLabel();
 
-    private final LoginController loginController;
-    private final LoginView loginView;
-    private final JButton signUp;
-    private final JButton cancel;
+    final JPasswordField passwordInputField = new JPasswordField(15);
+    private final JLabel passwordErrorField = new JLabel();
 
-    public LoginView(LoginController loginController, LoginView loginView){
+    final JButton login;
+    final JButton cancel;
+
+    public LoginView(LoginController loginController, LoginViewModel loginViewModel){
         this.loginController = loginController;
-        this.loginView = loginView;
+        this.loginViewModel = loginViewModel;
+        this.loginViewModel.addPropertyChangeListener(this);
         JPanel loginPanel = new JPanel();
         this.setSize(1500, 1000);
-        loginPanel.add(login);
-        loginPanel.add(password);
-        loginPanel.add(signup);
+        JLabel title = new JLabel("Login Screen");
+
+        JTextField usernameInputField = new JTextField();
+        JPasswordField passwordInputField = new JPasswordField();
+
         JPanel buttons = new JPanel();
-        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
-        buttons.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
+        loginPanel.add(buttons);
+        login = new JButton(loginViewModel.LOGIN_BUTTON_LABEL);
+        buttons.add(login);
+        cancel = new JButton(loginViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancel);
-    }
 
-    public String getUsername(){
-        return login.getText();
-    }
+        login.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginState loginState = loginViewModel.getState();
 
-    public String getPassword(){
-        return password.getText();
+                loginController.execute(
+                        loginState.getUsername(),
+                        loginState.getPassword()
+                );
+            }
+        });
+
+        usernameInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                LoginState loginState = loginViewModel.getState();
+                loginState.setUsername(usernameInputField.getText() + e.getKeyChar());
+                loginViewModel.setState(loginState);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+
+        passwordInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                LoginState loginState = loginViewModel.getState();
+                loginState.setPassword(passwordInputField.getText() + e.getKeyChar());
+                loginViewModel.setState(loginState);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
     }
 
     @Override
