@@ -12,7 +12,7 @@ public class ProfileViewModel extends ViewModel {
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public ProfileViewModel(String viewName) {
+    public ProfileViewModel() {
         super("profile");
     }
 

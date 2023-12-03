@@ -59,13 +59,11 @@ public class Main {
         }
         DataAccessObjectFacade dataAccessObject = new DataAccessObjectFacade(userDataAccessObject, promptDataAccessObject);
 
-        LoginView loginView = LoginUseCaseFactory.create(loginViewModel, viewManagerModel, searchViewModel, viewResponseViewModel, dataAccessObject);
 
         JTabbedPane tab = new JTabbedPane();
         tab.add(new JPanel());
 
 
-        viewManagerModel.setActiveView(signupView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.pack();
@@ -86,9 +84,6 @@ public class Main {
         CardLayout promptViewCardLayout = new CardLayout();
         JPanel promptView = new JPanel(promptViewCardLayout);
 
-        new ViewManager();
-
-        views.add(loginView, loginView.viewName);
 
     }
 }

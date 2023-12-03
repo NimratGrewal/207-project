@@ -1,5 +1,6 @@
 package views;
 import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupViewModel;
 
 import java.awt.event.ActionEvent;
@@ -16,11 +17,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private JTextField signup = new JTextField();
 
     private final LoginController loginController;
-    private final LoginView loginView;
+    private final LoginViewModel loginView;
     private final JButton signUp;
     private final JButton cancel;
 
-    public LoginView(LoginController loginController, LoginView loginView){
+    public LoginView(LoginController loginController, LoginViewModel loginView){
         this.loginController = loginController;
         this.loginView = loginView;
         JPanel loginPanel = new JPanel();

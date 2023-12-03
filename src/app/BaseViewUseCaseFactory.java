@@ -28,7 +28,7 @@ public class BaseViewUseCaseFactory {
             FeedViewModel feedViewModel
     ) {
         PromptController promptController = createPromptUseCase(viewResponseViewModel, searchViewModel, viewManagerModel, promptDataAccessInterface);
-
+        return null;
     }
 
     public static PromptController createPromptUseCase(ViewResponseViewModel viewResponseViewModel,
@@ -38,9 +38,5 @@ public class BaseViewUseCaseFactory {
         PromptOutputBoundary promptPresenter = new PromptPresenter(viewResponseViewModel, searchViewModel, viewManagerModel);
         PromptInputBoundary promptInteractor = new PromptInteractor(promptDataAccessInterface, promptPresenter);
         return new PromptController(promptInteractor);
-    }
-
-    public static FeedController createFeedUseCase(FeedViewModel feedViewModel) {
-        FeedOutputBoundary feedPresenter = new FeedPresenter(feedViewModel);
     }
 }
