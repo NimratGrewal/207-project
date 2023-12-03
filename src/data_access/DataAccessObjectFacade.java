@@ -4,6 +4,7 @@ import entities.Prompt;
 import entities.Response;
 import entities.User;
 import use_case.delete.DeleteResponseDataAccessInterface;
+import use_case.home.HomeDataAccessInterface;
 import use_case.login.LoginUserDataInterface;
 import use_case.search_users.SearchUsersDataAccessInterface;
 
@@ -16,7 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteResponseDataAccessInterface,
-        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface, SearchUsersDataAccessInterface, SignupUserDataInterface {
+        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface,
+        SearchUsersDataAccessInterface, SignupUserDataInterface, HomeDataAccessInterface {
 
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
