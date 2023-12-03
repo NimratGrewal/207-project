@@ -43,8 +43,8 @@ public class SearchUseCaseFactory {
             SetResponseController setResponseController = createSetResponseUseCase(viewResponseViewModel,
                     searchViewModel, viewManagerModel, apiCaller, setResponseDataAccessInterface);
 
-            return new SearchView(searchViewModel, searchTracksController, setResponseController,
-                    searchTracksViewModel);
+            return new SearchView(searchViewModel, searchTracksViewModel, searchTracksController, setResponseController
+                    );
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
@@ -75,7 +75,6 @@ public class SearchUseCaseFactory {
 
         SetResponseOutputBoundary setResponsePresenter = new SetResponsePresenter(viewResponseViewModel, viewManagerModel);
 
-        // interactor supposed to implement input boundary - typo in setResponseController
         SetResponseInputBoundary setResponseInteractor = new SetResponseInteractor(setResponseDataAccessInterface,
                 setResponsePresenter, apiCaller);
 

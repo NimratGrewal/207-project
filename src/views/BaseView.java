@@ -21,11 +21,13 @@ public class BaseView extends JTabbedPane {
                 case 0:
                     this.promptController.execute();
                 case 1:
-                    this.feedController.execute(null);
+                    this.feedController.execute();
                 case 2:
-                    this.profileController.execute(null);
+                    this.profileController.execute();
+                case 3:
+                    break;
+
             }
         });
     }
-
 }

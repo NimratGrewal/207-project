@@ -23,4 +23,6 @@ public interface User {
 
     void deleteResponse(UUID promptId);
 
+    boolean hasResponseForDailyPrompt(UUID dailyPromptId);
+    Response getResponseForDailyPrompt(UUID promptId);
 }
