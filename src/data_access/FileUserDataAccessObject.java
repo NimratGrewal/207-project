@@ -187,6 +187,9 @@ public class FileUserDataAccessObject {
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
+    public boolean existsByName(String identifier) {
+        return accounts.containsKey(identifier);
+    }
 
     public List<UUID> getResponseIds(User user) {
         List<UUID> responseIds = new ArrayList<>();
