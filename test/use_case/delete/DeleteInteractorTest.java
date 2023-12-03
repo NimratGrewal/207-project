@@ -55,7 +55,6 @@ class DeleteInteractorTest {
                 }
             }
         }
-
             ;
             DeleteUserDataAccessInterface userDAO = new DeleteUserDataAccessInterface() {
                 private final Map<UUID, User> users = new HashMap<>();
