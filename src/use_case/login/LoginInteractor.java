@@ -35,6 +35,7 @@ public class LoginInteractor implements LoginInputBoundary {
                 ((FileUserDataAccessObject) userDataAccessObject).setLoggedInUser(user);
 
                 Prompt prompt = userDataAccessObject.getCurrentPrompt();
+                userDataAccessObject.setLoggedInUser(user);
                 if(user.getHistory().containsKey(prompt.getPromptId())){
                     LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);
                     loginPresenter.preparePromptView(promptOutputData, prompt);
