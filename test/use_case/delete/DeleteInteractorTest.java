@@ -1,16 +1,21 @@
 package use_case.delete;
 
-import data_access.FileUserDataAccessObject;
+import data_access.DataAccessObjectFacade;
 import entities.*;
-import interface_adapter.delete.DeletePresenter;
-import use_case.delete.DeleteUserDataAccessInterface;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class DeleteInteractorTest {
+
+    @Test
     void execute() {
+
         CommonUser user = new CommonUser("Nimrat", "password");
 
         UUID promptId = UUID.randomUUID();
@@ -27,91 +32,45 @@ class DeleteInteractorTest {
         user.setResponse(promptId, response);
         assertEquals(response, user.getResponse(promptId));
 
-        DeleteResponseDataAccessInterface responseDAO = new DeleteResponseDataAccessInterface() {
-            private final Map<UUID, List<UUID>> responses = new LinkedHashMap<>();
-
+        DeleteResponseDataAccessInterface dataAccessInterface = new DeleteResponseDataAccessInterface() {
             @Override
-            public boolean responseexistsById(UUID responseId) {
-                for (List<UUID> responseList : responses.values()) {
-                    for (UUID response : responseList) {
-                        if (responseId.equals(response)) {
-                            return true;
-                        }
-                    }
-                }
+            public boolean responseExistsById(UUID responseId) {
                 return false;
             }
 
-
             @Override
             public void deleteResponse(UUID responseId) {
-                for (Map.Entry<UUID, List<UUID>> entry : responses.entrySet()) {
-                    List<UUID> responseList = entry.getValue();
-                    if (responseList.contains(responseId)) {
-                        responseList.remove(responseId);
-                        break;
-                    }
 
-                }
             }
-        }
-            ;
-            DeleteUserDataAccessInterface userDAO = new DeleteUserDataAccessInterface() {
-                private final Map<UUID, User> users = new HashMap<>();
 
-                // add the user info here- > add response for user.
+            @Override
+            public User getLoggedinUser() {
+                return null;
+            }
 
-                @Override
-                public boolean responseExistsById(UUID responseId) {
-                    for (User user : users.values()) {
-                        if (user.getHistory().containsKey(responseId)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public void deleteResponse(UUID responseId, UUID promptId) {
-                    for (User user : users.values()) {
-                        if (user.getHistory().containsKey(promptId)) {
-                            user.deleteResponse(promptId);
-                        }
-                    }
-
-                }
-
-                @Override
-                public User getLoggedinUser() {
-                    return user;
-                }
-
-                @Override
-                public Response getResponseById(UUID userId, UUID responseId) {
-                    return response;
-                }
-            };
+            @Override
+            public Response getResponseById(UUID userId, UUID responseId) {
+                return null;
+            }};
 
 
-            DeleteOutputBoundary successPresenter = new DeleteOutputBoundary() {
-                @Override
-                public void prepareSuccessView(DeleteOutputData deleteOutputData) {
-                    // check if the responseId has been removed from both of the DAO's and the user's history
-                    assertEquals(0, user.getNumberOfResponses());
-                    assertEquals("prompt does not exist", user.getResponse(promptId));
+        DeleteOutputBoundary successPresenter = new DeleteOutputBoundary() {
+            @Override
+            public void prepareSuccessView(DeleteOutputData deleteOutputData) {
+                // check if the responseId has been removed from both of the DAO's and the user's history
+                assertEquals(0, user.getNumberOfResponses());
+                assertEquals("prompt does not exist", user.getResponse(promptId));
 
-                    assertFalse(responseDAO.responseexistsById(responseId));
-                    assertFalse(userDAO.responseExistsById(responseId));
+                assertFalse(dataAccessInterface.responseExistsById(responseId));
 
-                }
-            };
+            }
+        };
 
-            DeleteInputData deleteInputData = new DeleteInputData(responseId);
+        DeleteInputData deleteInputData = new DeleteInputData(responseId);
 
-            DeleteInputBoundary deleteInteractor = new DeleteInteractor(successPresenter, responseDAO,
-                    userDAO);
+        DeleteInputBoundary deleteInteractor = new DeleteInteractor(successPresenter, dataAccessInterface);
 
-            deleteInteractor.execute(deleteInputData);
+        deleteInteractor.execute(deleteInputData);
 
 
     }

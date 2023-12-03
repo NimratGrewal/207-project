@@ -20,22 +20,22 @@ public class SignUpUseCaseFactory {
     // sign up use case factory
     private SignUpUseCaseFactory() {}
 
-    public static SignupView create(
-            ViewManagerModel viewManagerModel, LoginViewModel loginViewModel,
-            SignupViewModel signupViewModel, SignupUserDataInterface userDataAccessObject) {
-
-        try {
-
-            SignupController signupController = createSignUpUseCase(viewManagerModel, signupViewModel,
-                    loginViewModel, userDataAccessObject);
-            return new SignupView(signupController, signupViewModel);
-
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Could not open user data file.");
-        }
-
-        return null;
-    }
+//    public static SignupView create(
+//            ViewManagerModel viewManagerModel, LoginViewModel loginViewModel,
+//            SignupViewModel signupViewModel, SignupUserDataInterface userDataAccessObject) {
+//
+//        try {
+//
+//            SignupController signupController = createSignUpUseCase(viewManagerModel, signupViewModel,
+//                    loginViewModel, userDataAccessObject);
+//            return new SignupView(signupController, signupViewModel);
+//
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(null, "Could not open user data file.");
+//        }
+//
+//        return null;
+//    }
 
     private static SignupController createSignUpUseCase(
 
