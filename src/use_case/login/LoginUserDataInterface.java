@@ -6,10 +6,7 @@ import java.util.UUID;
 
 public interface LoginUserDataInterface {
     boolean existsByName(String identifier);
-
-    void save(User user);
-
-    User get(String username);
+    User getUsername(String username);
 
     User getUser(UUID userid);
     Prompt getCurrentPrompt();
