@@ -29,7 +29,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     @Override
     public void prepareLoggedInView(LoginOutputData user) {
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
-        this.viewManagerModel.setActiveView(viewResponseViewModel.getName());
+        this.viewManagerModel.setActiveView(viewResponseViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
     }
@@ -45,7 +45,7 @@ public class LoginPresenter implements LoginOutputBoundary {
         this.searchViewModel.setState(searchState);
         this.searchViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setActiveView(searchViewModel.getName());
+        this.viewManagerModel.setActiveView(searchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
     }

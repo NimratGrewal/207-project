@@ -1,14 +1,16 @@
 package use_case.toFeed;
 
 import entities.Prompt;
+import entities.Response;
 import entities.User;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface FeedDataAccessInterface {
-    Prompt getPrompt(UUID promptId);
 
-    Prompt getCurrentPrompt(UUID promptId);
+    Prompt getCurrentPrompt();
 
-    User getUser(UUID userId);
+    List<User> getAllUsers();
+
 }
