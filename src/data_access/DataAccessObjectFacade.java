@@ -117,6 +117,7 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     public Prompt getPromptById(UUID promptId){
         return promptDataAccessObject.getPromptByID(promptId);
     }
+
     public void setLoggedInUser(User loggedInUser){
         userDataAccessObject.setLoggedInUser(loggedInUser);
     }
