@@ -43,7 +43,6 @@ public class ViewManager implements PropertyChangeListener {
             String viewModelName = (String) evt.getNewValue();
             switch (viewModelName) {
                 case "search", "view response" -> {
-                    System.out.println("you're on search or view response!");
                     viewsCardLayout.show(views, loggedInViews.getName());
                     loggedInViews.setSelectedIndex(loggedInViews.indexOfTab(promptView.getName()));
                     promptViewsCardLayout.show(promptView, viewModelName);

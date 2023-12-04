@@ -113,7 +113,8 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
                 LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
                 String promptText = (String) responseInfo.get("Prompt Text");
 
-                JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
+                ProfileResponseBox responseBoxPanel = (ProfileResponseBox) createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
+                responseBoxPanel.addDeleteButtonListener(this);
 
                 responsesPanel.add(responseBoxPanel);
                 responsesPanel.add(Box.createVerticalStrut(10));
@@ -142,6 +143,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         if (evt.getNewValue() instanceof ProfileState) {
             ProfileState state = (ProfileState) evt.getNewValue();
             setFields(state);
+            responsesLabel.setText("Number of Responses: " + viewModel.getState().getNumberOfResponses());
         }
 
         if ("deleteResponse".equals(evt.getPropertyName())) {

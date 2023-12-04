@@ -32,7 +32,7 @@ public class LoginPresenter implements LoginOutputBoundary {
         System.out.println("you already answered this one!");
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
         viewResponseState.setSongName(song.getName());
-        viewResponseState.setAlbumCover(song.getAlbumArt(10));
+        viewResponseState.setAlbumCover(song.getAlbumArt(100));
         String artists = String.join(",", song.getArtists());
         viewResponseState.setArtistNames(artists);
         viewResponseState.setAlbumName(song.getAlbum());

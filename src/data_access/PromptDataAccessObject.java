@@ -47,7 +47,7 @@ public class PromptDataAccessObject {
                     // converting string dates to LocalDate dates
                     LocalDate date = LocalDate.parse(dates);
 
-                    Prompt prompt = new Prompt(prompts_string, date, UUID.randomUUID());
+                    Prompt prompt = new Prompt(prompts_string, date, promptID);
                     prompts.put(LocalDate.parse(dates), prompt);
                   
                     String[] responseInfo = responsesText.split(";");
@@ -154,7 +154,7 @@ public class PromptDataAccessObject {
     public Prompt getPromptByID(UUID promptID){
         Collection <Prompt> prompts_list = prompts.values();
         for(Prompt prompt:prompts_list){
-            if (prompt.getPromptId() == promptID){
+            if (prompt.getPromptId().equals(promptID)){
                 return prompt;
             }
         }

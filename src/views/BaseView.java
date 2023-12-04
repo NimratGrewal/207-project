@@ -21,13 +21,11 @@ public class BaseView extends JTabbedPane {
         this.promptController = promptController;
         this.searchUsersController = searchUsersController;
 
-        System.out.println("change listener added");
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getSource() instanceof BaseView b) {
                     int selectedIndex = b.getSelectedIndex();
-                    System.out.println(selectedIndex + "clicked!");
                     switch (selectedIndex) {
                         case 0:
                             promptController.execute();

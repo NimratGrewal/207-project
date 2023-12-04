@@ -65,6 +65,9 @@ public class FileUserDataAccessObject {
                             user.setResponse(promptID, response);
                         }
                     }
+                    if (!this.responses.containsKey(user)){
+                        this.responses.put(user, new ArrayList<>());
+                    }
                 }
             }
         }
@@ -131,8 +134,9 @@ public class FileUserDataAccessObject {
      * @param response The response for the user with the prompt ID from response.getPromptId()
      */
     public void setResponse(Response response) {
+        System.out.println(accounts.get(response.getUserId()).getUsername());
         accounts.get(response.getUserId()).setResponse(response.getPromptId(), response);
-        responses.get(loggedInUser).add(response);
+        responses.get(accounts.get(response.getUserId())).add(response);
         save();
     }
 
@@ -176,6 +180,7 @@ public class FileUserDataAccessObject {
                 if (responseId.equals(r.getResponseId())) {
                     responseList.remove(r);
                     accounts.get(r.getUserId()).deleteResponse(r.getPromptId());
+                    break;
                 }
             }
         }
@@ -213,5 +218,9 @@ public class FileUserDataAccessObject {
 
     public UUID getUsername(String username){
         return usernames.get(username);
+    }
+
+    public Response getLoggedInUserResponse(UUID promptId) {
+        return loggedInUser.getResponse(promptId);
     }
 }

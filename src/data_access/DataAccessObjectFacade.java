@@ -104,7 +104,7 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     //prompt
     @Override
     public Response getLoggedInUserResponse() {
-        return null;
+        return userDataAccessObject.getLoggedInUserResponse(promptDataAccessObject.getCurrentPrompt().getPromptId());
     }
     //end prompt
 

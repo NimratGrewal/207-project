@@ -66,13 +66,6 @@ public class Main {
         }
         DataAccessObjectFacade dataAccessObject = new DataAccessObjectFacade(userDataAccessObject, promptDataAccessObject);
 
-        UserFactory uf = new CommonUserFactory();
-        User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc", LocalDateTime.parse("2007-12-03T10:15:30"));
-        User u2 = uf.create(UUID.fromString("8c7664fc-63d8-446d-bb04-d7e638114e21"), "haya", "123", LocalDateTime.parse("2007-12-03T10:15:30"));
-        userDataAccessObject.save(u1);
-        userDataAccessObject.save(u2);
-        userDataAccessObject.setLoggedInUser(u1);
-
         CardLayout loginSignupCardLayout = new CardLayout();
         JPanel loginSignUpViews = new JPanel(loginSignupCardLayout);
 

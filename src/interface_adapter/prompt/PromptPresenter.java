@@ -25,7 +25,6 @@ public class PromptPresenter implements PromptOutputBoundary {
         searchState.setPromptText(promptText);
         searchState.setSearchBarText("");
         searchViewModel.setState(searchState);
-        System.out.println("you should be on search");
 
         viewManagerModel.setActiveView(searchViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
@@ -41,7 +40,6 @@ public class PromptPresenter implements PromptOutputBoundary {
         viewResponseState.setPromptText(promptOutputData.getPromptText());
         viewResponseViewModel.setState(viewResponseState);
         viewResponseViewModel.firePropertyChanged();
-        System.out.println("you should be on view response");
 
         viewManagerModel.setActiveView(viewResponseViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
