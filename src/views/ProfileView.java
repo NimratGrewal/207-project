@@ -59,15 +59,12 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
             System.err.println("Portrait Placeholder Image Not Found!");
         }
 
-        JButton logout = new JButton("Log out");
-
         profilePanel.add(profilePictureLabel);
         profilePanel.add(Box.createVerticalStrut(20));
         profilePanel.add(usernameLabel);
         profilePanel.add(Box.createVerticalStrut(5));
         profilePanel.add(responsesLabel);
         profilePanel.add(Box.createVerticalGlue());
-        profilePanel.add(logout);
 
         // responses panel
         responsesPanel = new JPanel();

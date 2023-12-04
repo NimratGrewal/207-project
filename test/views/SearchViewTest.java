@@ -1,5 +1,6 @@
 package views;
 
+import interface_adapter.search_tracks.SearchTracksController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

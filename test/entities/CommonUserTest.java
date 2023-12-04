@@ -17,7 +17,6 @@ class CommonUserTest {
     private CommonUser newUser;
     private CommonUser existingUser;
     private final UUID existingUUID = UUID.randomUUID();
-    private final LocalDateTime date = LocalDateTime.now();
     private UUID promptId;
     private Response response;
 
