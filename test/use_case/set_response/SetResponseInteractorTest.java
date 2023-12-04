@@ -26,7 +26,7 @@ class SetResponseInteractorTest {
         UserFactory uf = new CommonUserFactory();
         SpotifyAPICaller c = new SpotifyAPICaller("216b6438ba554128ade0b63afa48ddd8", "56e33aff04bc4aa28dc3d9e54bb231cd");
 
-        User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc", LocalDateTime.parse("2007-12-03T10:15:30"));
+        User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc");
         SetResponseDataAccessInterface dao = new SetResponseDataAccessInterface(){
             @Override
             public void setResponse(Response response) {

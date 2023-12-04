@@ -35,7 +35,7 @@ class PromptInteractorTest {
         PromptDataAccessInterface promptDataAccessInterface = new PromptDataAccessInterface() {
             final UserFactory uf = new CommonUserFactory();
             final SpotifyAPICaller c = new SpotifyAPICaller("216b6438ba554128ade0b63afa48ddd8", "56e33aff04bc4aa28dc3d9e54bb231cd");
-            User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc", LocalDateTime.parse("2007-12-03T10:15:30"));
+            User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc");
             Prompt p1 = new Prompt("What?", LocalDate.now(), UUID.randomUUID());
             Response r1 = new Response(p1.getPromptId(), u1.getUserId(), c.getTrack("11dFghVXANMlKmJXsNCbNl"));
 
@@ -67,7 +67,7 @@ class PromptInteractorTest {
         PromptDataAccessInterface promptDataAccessInterface = new PromptDataAccessInterface() {
             final UserFactory uf = new CommonUserFactory();
             final SpotifyAPICaller c = new SpotifyAPICaller("216b6438ba554128ade0b63afa48ddd8", "56e33aff04bc4aa28dc3d9e54bb231cd");
-            User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc", LocalDateTime.parse("2007-12-03T10:15:30"));
+            User u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc");
             Prompt p1 = new Prompt("What?", LocalDate.now(), UUID.randomUUID());
 
             @Override

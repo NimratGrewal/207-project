@@ -25,9 +25,9 @@ class FileUserDataAccessObjectTest {
         f = new File("./test/mock-users.csv");
         try {
             BufferedWriter w = new BufferedWriter(new FileWriter(f));
-            w.write("userId,username,password,creation_time,responses");
+            w.write("userId,username,password,responses");
             w.newLine();
-            w.write("d7323358-a716-4626-af40-c7da357b1c97,momomo,abc,2022-12-03T10:15:30,e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl;e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl");
+            w.write("d7323358-a716-4626-af40-c7da357b1c97,momomo,abc,e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl;e0fb67a3-f40b-40d9-97f7-9347ece87055:2c83780a-6c01-4989-b503-7397fe881bf6:11dFghVXANMlKmJXsNCbNl");
             w.close();
 
         } catch (IOException e) {
@@ -35,8 +35,8 @@ class FileUserDataAccessObjectTest {
         }
         c = new SpotifyAPICaller("216b6438ba554128ade0b63afa48ddd8", "56e33aff04bc4aa28dc3d9e54bb231cd");
         fudao = new FileUserDataAccessObject(f.getPath(), uf, c);
-        u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc", LocalDateTime.parse("2007-12-03T10:15:30"));
-        u2 = uf.create(UUID.fromString("8c7664fc-63d8-446d-bb04-d7e638114e21"), "haya", "123", LocalDateTime.parse("2007-12-03T10:15:30"));
+        u1 = uf.create(UUID.fromString("78920e42-5a5b-45ad-93fe-4f4a93d61311"), "momo", "abc");
+        u2 = uf.create(UUID.fromString("8c7664fc-63d8-446d-bb04-d7e638114e21"), "haya", "123");
     }
 
     @AfterEach
@@ -71,9 +71,9 @@ class FileUserDataAccessObjectTest {
         fudao.save(u1);
         try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
             String header = reader.readLine();
-            assert header.equals("userId,username,password,creation_time,responses");
+            assert header.equals("userId,username,password,responses");
             reader.readLine();
-            assertEquals("78920e42-5a5b-45ad-93fe-4f4a93d61311,momo,abc,2007-12-03T10:15:30,null", reader.readLine());
+            assertEquals("78920e42-5a5b-45ad-93fe-4f4a93d61311,momo,abc,null", reader.readLine());
         } catch (IOException e) {
             fail("No exception expected!");
         }
@@ -81,7 +81,7 @@ class FileUserDataAccessObjectTest {
 
     @Test
     void getLoggedInUser() {
-        User u3 = uf.create(UUID.fromString("d7323358-a716-4626-af40-c7da357b1c97"), "jawad", "non", LocalDateTime.now());
+        User u3 = uf.create(UUID.fromString("d7323358-a716-4626-af40-c7da357b1c97"), "jawad", "non");
         fudao.setLoggedInUser(u3);
         assertEquals(u3.getUserId(), fudao.getLoggedInUser().getUserId());
         assertEquals(u3.getUsername(), fudao.getLoggedInUser().getUsername());
