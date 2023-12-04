@@ -16,7 +16,6 @@ public class HomeInteractor implements HomeInputBoundary{
     }
 
     public void execute() {
-        // reset basically delete the response from the user and prompt so it can not show up in search page
 
         User user = homeDataAccessInterface.getLoggedInUser();
         Prompt currPrompt = homeDataAccessInterface.getCurrentPrompt();

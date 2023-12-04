@@ -3,6 +3,7 @@ package views;
 
 import interface_adapter.search_users.SearchUsersController;
 import interface_adapter.search_users.SearchUsersViewModel;
+import views.components.ProfileResponseBox;
 
 import javax.swing.*;
 import java.awt.*;
