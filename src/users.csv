@@ -1,4 +1,3 @@
-userId,username,password,creation_time,responses
-78920e42-5a5b-45ad-93fe-4f4a93d61311,momo,abc,2007-12-03T10:15:30,null
-8c7664fc-63d8-446d-bb04-d7e638114e21,haya,123,2007-12-03T10:15:30,null
-ab9a1ecd-0c27-4d4d-ab4b-70abec5ba53f,sara,123,2023-12-03T21:43:03.349541,null
+userId,username,password,responses
+78920e42-5a5b-45ad-93fe-4f4a93d61311,frienduser,abcdef,225ac995-8e64-466e-b456-e5a0cab875d8:ef9ed67f-603f-4e1a-912e-e4bdc379a68c:2nMeu6UenVvwUktBCpLMK9;049c1d37-fd99-494c-a0ab-63def2e7e8c9:a4564881-f790-4ed4-b0ca-c1aa2315ac6b:6uTPdRrEDeH8Fyg5L5qmeU;0fa6e593-b5bb-4abd-bfcd-888200a50538:5f70adc6-d735-4acd-898c-060e2e4cefa4:29kMmvimeOyKb60VEX7aj5
+8c7664fc-63d8-446d-bb04-d7e638114e21,testuser,123456,76ea00e4-b393-4ee4-8e2a-a49f4586df17:ef9ed67f-603f-4e1a-912e-e4bdc379a68c:3qGHAKgjQruzj6doKkyEb5;7d748acd-195f-47a4-b75a-d520b3689276:a4564881-f790-4ed4-b0ca-c1aa2315ac6b:3MjUtNVVq3C8Fn0MP3zhXa

@@ -9,7 +9,6 @@ public class CommonUser implements User {
     private final UUID userId;
     private final String password;
     private final HashMap<UUID, Response> history;
-    private final LocalDateTime creationTime;
 
     /**
      * Requires: password is valid.
@@ -22,7 +21,6 @@ public class CommonUser implements User {
         this.password = password;
         this.userId = UUID.randomUUID();
         this.history = new HashMap<>();
-        this.creationTime = LocalDateTime.now();
     }
 
     public CommonUser(UUID userId, String username, String password) {

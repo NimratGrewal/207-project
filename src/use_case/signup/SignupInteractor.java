@@ -3,6 +3,8 @@ package use_case.signup;
 import entities.User;
 import entities.UserFactory;
 
+import java.util.UUID;
+
 public class SignupInteractor implements SignupInputBoundary {
     final SignupUserDataInterface userDataAccessObject;
     final SignupOutputBoundary userPresenter;
@@ -47,7 +49,7 @@ public class SignupInteractor implements SignupInputBoundary {
         }
         else {
 
-            User user = userFactory.create(signupInputData.getsignupInputData.getUsername(), signupInputData.getPassword());
+            User user = userFactory.create(UUID.randomUUID(), signupInputData.getUsername(), signupInputData.getPassword());
             userDataAccessObject.save(user);
 
             SignupOutputData signupOutputData = new SignupOutputData(user.getUsername());
