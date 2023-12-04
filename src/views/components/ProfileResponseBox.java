@@ -39,7 +39,8 @@ public class ProfileResponseBox extends ResponseBox {
                 if (e.getSource().equals(delete)) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogueResult = JOptionPane.showConfirmDialog(delete,
-                            "Are you sure you want to delete this response" + responseId + "?", "Warning", dialogButton);
+                            "Are you sure you want to delete this response" + responseId + "?", "Warning",
+                            dialogButton);
                     if (dialogueResult == JOptionPane.YES_OPTION) {
                         firePropertyChange("deleteResponse", null, responseId);
                     }
