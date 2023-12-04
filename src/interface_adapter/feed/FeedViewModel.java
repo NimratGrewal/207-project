@@ -12,7 +12,6 @@ public class FeedViewModel extends ViewModel {
     public String PROMPT_TEXT_LABEL = "Prompt: ";
     public FeedViewModel() {
         super("feed");
-        setLabels();
     }
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);

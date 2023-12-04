@@ -28,7 +28,7 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
         this.homeController = homeController;
 
         JLabel title = new JLabel("Home Screen");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setHorizontalAlignment(JLabel.CENTER);
 
         promptText = new JLabel();
         promptText.setHorizontalAlignment(JLabel.CENTER);
@@ -68,12 +68,21 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
         this.add(albumName);
         this.add(artistNames);
         this.add(buttons);
+
+        viewResponseViewModel.addPropertyChangeListener(this);
     }
 
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getNewValue() instanceof ViewResponseState state) {
+            System.out.println(state);
+
+            System.out.println(state.getSongName());
+
+            System.out.println(state.getArtistNames());
+
+            System.out.println(state.getSongName());
             promptText.setText(state.getPromptText());
             albumCover.setImage(state.getAlbumCover().getImage());
             songTitle.setText(state.getSongName());

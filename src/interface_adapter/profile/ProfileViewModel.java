@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class ProfileViewModel extends ViewModel {
-    private ProfileState state;
+    private ProfileState state = new ProfileState();
 
     public final String TITLE_LABEL = "Profile View";
 
@@ -17,9 +17,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void setState(ProfileState state) {
-        ProfileState oldState = this.state;
         this.state = state;
-        support.firePropertyChange("state", oldState, this.state);
     }
 
     public ProfileState getState() {

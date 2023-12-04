@@ -1,7 +1,6 @@
 package app;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.delete.DeleteController;
 import interface_adapter.feed.FeedController;
 import interface_adapter.feed.FeedPresenter;
 import interface_adapter.feed.FeedViewModel;
@@ -11,7 +10,15 @@ import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.prompt.PromptController;
 import interface_adapter.prompt.PromptPresenter;
 import interface_adapter.search.SearchViewModel;
+import interface_adapter.search_users.SearchUsersController;
+import interface_adapter.search_users.SearchUsersPresenter;
+import interface_adapter.search_users.SearchUsersSearchBoxViewModel;
+import interface_adapter.search_users.SearchUsersViewModel;
 import interface_adapter.view_response.ViewResponseViewModel;
+import use_case.search_users.SearchUsersDataAccessInterface;
+import use_case.search_users.SearchUsersInputBoundary;
+import use_case.search_users.SearchUsersInteractor;
+import use_case.search_users.SearchUsersOutputBoundary;
 import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toFeed.FeedInputBoundary;
 import use_case.toFeed.FeedInteractor;
@@ -25,8 +32,6 @@ import use_case.to_prompt.PromptInputBoundary;
 import use_case.to_prompt.PromptInteractor;
 import use_case.to_prompt.PromptOutputBoundary;
 import views.BaseView;
-import views.FeedView;
-import views.ProfileView;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -42,7 +47,10 @@ public class BaseViewUseCaseFactory {
             FeedViewModel feedViewModel,
             ProfileViewModel profileViewModel,
             UserProfileDataAccessInterface profileDataAccessInterface,
-            FeedDataAccessInterface feedDataAccessInterface
+            FeedDataAccessInterface feedDataAccessInterface,
+            SearchUsersDataAccessInterface searchUsersDataAccessInterface,
+            SearchUsersViewModel searchUsersViewModel,
+            SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel
     ) {
         PromptController promptController = createPromptUseCase(viewResponseViewModel, searchViewModel, viewManagerModel, promptDataAccessInterface);
 
@@ -69,7 +77,9 @@ public class BaseViewUseCaseFactory {
             JOptionPane.showMessageDialog(null, "Could not create FeedView!");
         }
 
-        return new BaseView(profileController, feedController, promptController);
+        SearchUsersController searchUsersController = createSearchUsersController(searchUsersDataAccessInterface, searchUsersViewModel, searchUsersSearchBoxViewModel, viewManagerModel);
+
+        return new BaseView(profileController, feedController, promptController, searchUsersController);
     }
 
     private static PromptController createPromptUseCase(ViewResponseViewModel viewResponseViewModel,
@@ -100,5 +110,16 @@ public class BaseViewUseCaseFactory {
         FeedInputBoundary feedInteractor = new FeedInteractor(feedDataAccessObject, feedPresenter);
 
         return new FeedController(feedInteractor);
+    }
+
+    private static SearchUsersController createSearchUsersController(
+            SearchUsersDataAccessInterface searchUsersDataAccessInterface,
+            SearchUsersViewModel searchUsersViewModel,
+            SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel,
+            ViewManagerModel viewManagerModel
+    ) {
+        SearchUsersOutputBoundary searchUsersPresenter = new SearchUsersPresenter(searchUsersViewModel, searchUsersSearchBoxViewModel, viewManagerModel);
+        SearchUsersInputBoundary searchUsersInteractor = new SearchUsersInteractor(searchUsersDataAccessInterface, searchUsersPresenter);
+        return new SearchUsersController(searchUsersInteractor);
     }
 }

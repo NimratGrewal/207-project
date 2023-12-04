@@ -17,20 +17,19 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SearchUsersInteractor implements SearchUsersInputBoundary {
+    private final SearchUsersOutputBoundary searchUsersPresenter;
 
-
-    private final SearchUsersPresenter searchUsersPresenter;
-
-    private final DataAccessObjectFacade dataAccessObject;
-    public SearchUsersInteractor(DataAccessObjectFacade dataAccessObjectFacade, SearchUsersPresenter searchUsersPresenter) {
+    private final SearchUsersDataAccessInterface dataAccessObject;
+    public SearchUsersInteractor(SearchUsersDataAccessInterface dataAccessObject, SearchUsersOutputBoundary searchUsersPresenter) {
         this.searchUsersPresenter = searchUsersPresenter;
-        this.dataAccessObject = dataAccessObjectFacade;
+        this.dataAccessObject = dataAccessObject;
 
     }
 
     @Override
     public void execute(SearchUsersInputData searchUsersInputData) {
         String username = searchUsersInputData.getUsername();
+
         if (dataAccessObject.usernameExists(username)){
             User user = dataAccessObject.getUsername(username);
             int numberOfResponses = user.getNumberOfResponses();
@@ -67,7 +66,7 @@ public class SearchUsersInteractor implements SearchUsersInputBoundary {
     }
 
     @Override
-    public void profile_to_search() {
+    public void profileToSearch() {
         searchUsersPresenter.prepareSearchView();
     }
 

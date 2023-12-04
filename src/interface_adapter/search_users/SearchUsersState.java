@@ -1,13 +1,14 @@
 package interface_adapter.search_users;
 
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class SearchUsersState {
-    private String username;
-    private int numberOfResponses;
-    private Map<UUID, Map<String, Object>> responseInfoMap;
+    private String username = "";
+    private int numberOfResponses = 0;
+    private Map<UUID, Map<String, Object>> responseInfoMap = new HashMap<>();
 
     public SearchUsersState(SearchUsersState copy) {
         username = copy.username;

@@ -95,12 +95,12 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
     private void setFields(ProfileState state) {
         if (state == null) {
-            System.out.println("state is null!");
+            System.out.println("profile state is null!");
             return;
         }
 
-        //usernameLabel.setText(viewModel.USERNAME_LABEL);
-        //responsesLabel.setText(viewModel.RESPONSES_LABEL);
+        usernameLabel.setText("Username: " + viewModel.getState().getUsername());
+        responsesLabel.setText("Number of Responses: " + viewModel.getState().getNumberOfResponses());
 
         responsesPanel.removeAll();
 
@@ -139,8 +139,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        ProfileState state = (ProfileState) evt.getNewValue();
-        setFields(state);
+        if (evt.getNewValue() instanceof ProfileState) {
+            ProfileState state = (ProfileState) evt.getNewValue();
+            setFields(state);
+        }
 
         if ("deleteResponse".equals(evt.getPropertyName())) {
             UUID responseId = (UUID) evt.getNewValue();

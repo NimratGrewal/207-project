@@ -55,6 +55,9 @@ public class StartView extends JPanel implements ActionListener, PropertyChangeL
                     }
                 }
         );
+
+        this.add(signUp);
+        this.add(login);
     }
 
     @Override

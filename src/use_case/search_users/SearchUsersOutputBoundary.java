@@ -5,4 +5,6 @@ public interface SearchUsersOutputBoundary {
     void prepareUserView(SearchUsersOutputData usersOutputData);
 
     void prepareFailView(String error);
+
+    void prepareSearchView();
 }

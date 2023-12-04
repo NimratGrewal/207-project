@@ -9,7 +9,7 @@ public class SearchViewModel extends ViewModel {
     public static final String TITLE_LABEL = "search";
     public static final String SET_RESPONSE_LABEL = "set response";
     public static final String SEARCH_BUTTON_LABEL = "search";
-    private SearchState state;
+    private SearchState state = new SearchState();
     public SearchViewModel() { super("search"); }
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 

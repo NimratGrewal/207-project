@@ -75,7 +75,7 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     public void setFields(FeedState state) {
         if (state == null) {
-            System.out.println("state is null!");
+            System.out.println("feed state is null!");
             return;
         }
 
@@ -120,8 +120,10 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        FeedState state = (FeedState) evt.getNewValue();
-        setFields(state);
+        if (evt.getNewValue() instanceof FeedState state) {
+            state = (FeedState) evt.getNewValue();
+            setFields(state);
+        }
     }
 }
 

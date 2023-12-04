@@ -5,6 +5,7 @@ package views;
 import interface_adapter.search_users.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,20 +15,19 @@ import java.beans.PropertyChangeListener;
 
 public class SearchUserView extends JPanel implements PropertyChangeListener {
     private final SearchUsersController searchUsersController;
-    private final SearchUsersPresenter searchUsersPresenter;
 
     private final SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel;
 
     private final JTextField searchUserBar;
     private final JButton searchUserButton;
 
-    public SearchUserView(SearchUsersController searchUsersController, SearchUsersPresenter searchUsersPresenter, SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel) {
+    public SearchUserView(SearchUsersController searchUsersController, SearchUsersSearchBoxViewModel searchUsersSearchBoxViewModel) {
         this.searchUsersController = searchUsersController;
-        this.searchUsersPresenter = searchUsersPresenter;
         this.searchUsersSearchBoxViewModel = searchUsersSearchBoxViewModel;
         this.searchUsersSearchBoxViewModel.addPropertyChangeListener(this);
 
         searchUserBar = new JTextField();
+        searchUserBar.setPreferredSize(new Dimension(100, 30));
         searchUserButton = new JButton(searchUsersSearchBoxViewModel.BUTTON_LABEL);
 
         searchUserButton.addActionListener(new ActionListener() {

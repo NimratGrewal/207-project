@@ -132,6 +132,7 @@ public class FileUserDataAccessObject {
     public void setResponse(Response response) {
         accounts.get(response.getUserId()).setResponse(response.getPromptId(), response);
         responses.get(loggedInUser).add(response);
+        save();
     }
 
     public Response getResponseById(UUID userId, UUID responseId) {

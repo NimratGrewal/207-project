@@ -111,10 +111,9 @@ public class PromptDataAccessObject {
 
     public Prompt getCurrentPrompt() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        LocalDateTime date = LocalDateTime.now();
-        String currentDate = dateFormat.format(date);
+        LocalDate date = LocalDate.now();
         try{
-            return(prompts.get(currentDate));
+            return(prompts.get(date));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,7 @@ package views;
 
 import interface_adapter.search_users.SearchUsersController;
 import interface_adapter.search_users.SearchUsersViewModel;
+import views.components.ProfileResponseBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -59,7 +61,7 @@ public class SearchUserProfileView extends JPanel implements ActionListener, Pro
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                searchUsersController.profile_to_search();
+                searchUsersController.profileToSearch();
             }
         });
 
@@ -104,7 +106,7 @@ public class SearchUserProfileView extends JPanel implements ActionListener, Pro
         String songAlbum = (String) responseInfo.get("Song Album");
         ImageIcon albumArt = (ImageIcon) responseInfo.get("Album Art");
 
-        return new ProfileResponseBox(responseId, username, songName, songArtists, songAlbum, albumArt, promptDate, promptText);
+        return new ProfileResponseBox(responseId, songName, List.of(songArtists), songAlbum, albumArt, promptDate, promptText);
     }
 
 
@@ -115,6 +117,5 @@ public class SearchUserProfileView extends JPanel implements ActionListener, Pro
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
     }
 }

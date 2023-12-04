@@ -10,7 +10,7 @@ public class SearchUsersViewModel extends ViewModel {
     public final String RETURN_LABEL = "RETURN";
 
     public SearchUsersViewModel() {
-        super("Search Users");
+        super("search users");
     }
 
     public void setState(SearchUsersState searchUsersState){
@@ -19,6 +19,7 @@ public class SearchUsersViewModel extends ViewModel {
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     @Override
     public void firePropertyChanged() {
+        System.out.println("search users changed!");
         support.firePropertyChange("state", null, this.state);
     }
 
