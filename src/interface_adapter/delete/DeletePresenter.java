@@ -21,7 +21,10 @@ public class DeletePresenter implements DeleteOutputBoundary {
     public void prepareSuccessView(DeleteOutputData deleteOutputData) {
         ProfileState profileState = profileViewModel.getState();
         profileState.getResponseInfoMap().remove(deleteOutputData.getResponseId());
-        profileState.setNumberOfResponses(profileState.getNumberOfResponses() - 1);
+
+        int numResponses = profileState.getNumberOfResponses();
+        profileState.setNumberOfResponses(numResponses - 1);
+
         profileViewModel.setState(profileState);
         profileViewModel.firePropertyChanged();
 

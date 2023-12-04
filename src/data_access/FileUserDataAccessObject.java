@@ -134,7 +134,6 @@ public class FileUserDataAccessObject {
      * @param response The response for the user with the prompt ID from response.getPromptId()
      */
     public void setResponse(Response response) {
-        System.out.println(accounts.get(response.getUserId()).getUsername());
         accounts.get(response.getUserId()).setResponse(response.getPromptId(), response);
         responses.get(accounts.get(response.getUserId())).add(response);
         save();

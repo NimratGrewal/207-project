@@ -51,7 +51,6 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void preparePromptView(LoginOutputData user, Prompt prompt) {
-        System.out.println("you haven't answered this one");
         SearchState searchState = searchViewModel.getState();
         searchState.setPromptText(prompt.getPromptText());
         this.searchViewModel.setState(searchState);

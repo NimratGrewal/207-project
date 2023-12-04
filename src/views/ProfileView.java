@@ -118,6 +118,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
                 responsesPanel.add(responseBoxPanel);
                 responsesPanel.add(Box.createVerticalStrut(10));
+
             }
         } else {
             JLabel no_responses = new JLabel("No Responses Yet!");
