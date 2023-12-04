@@ -19,9 +19,4 @@ public class SearchTracksPresenter implements SearchTracksOutputBoundary {
         searchTracksViewModel.setState(searchTracksState);
         searchTracksViewModel.firePropertyChanged();
     }
-
-    @Override
-    public void prepareFailView(String error) {
-
-    }
 }
