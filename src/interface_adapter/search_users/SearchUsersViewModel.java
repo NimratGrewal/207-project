@@ -10,7 +10,7 @@ public class SearchUsersViewModel extends ViewModel {
     public final String RETURN_LABEL = "RETURN";
 
     public SearchUsersViewModel() {
-        super("search users");
+        super("search users profile");
     }
 
     public void setState(SearchUsersState searchUsersState){

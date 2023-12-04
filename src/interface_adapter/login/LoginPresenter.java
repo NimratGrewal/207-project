@@ -29,7 +29,6 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void prepareLoggedInView(LoginOutputData user, Song song) {
-        System.out.println("you already answered this one!");
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
         viewResponseState.setSongName(song.getName());
         viewResponseState.setAlbumCover(song.getAlbumArt(100));

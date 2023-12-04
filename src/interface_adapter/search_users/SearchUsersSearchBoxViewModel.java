@@ -11,7 +11,7 @@ import java.beans.PropertyChangeSupport;
 public class SearchUsersSearchBoxViewModel extends ViewModel {
     private SearchUsersSearchBoxState state = new SearchUsersSearchBoxState();
     public SearchUsersSearchBoxViewModel() {
-        super("Search Users Search Box");
+        super("search users");
     }
 
     public final String BUTTON_LABEL ="SEARCH FOR USERS";

@@ -58,6 +58,7 @@ public class ViewManager implements PropertyChangeListener {
                 case "search users", "search users profile" -> {
                     viewsCardLayout.show(views, loggedInViews.getName());
                     loggedInViews.setSelectedIndex(loggedInViews.indexOfTab(searchUsersView.getName()));
+                    searchUsersCardLayout.show(searchUsersView, viewModelName);
                 }
             }
         }
