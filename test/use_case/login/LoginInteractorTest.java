@@ -1,14 +1,10 @@
 package use_case.login;
 
 import app.LoginUseCaseFactory;
-import entities.CommonUserFactory;
-import entities.Song;
+import entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import use_case.signup.SignupInputData;
-import use_case.signup.SignupInteractor;
-import use_case.signup.SignupOutputBoundary;
-import use_case.signup.SignupUserDataInterface;
+import use_case.signup.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,15 +15,18 @@ class LoginInteractorTest {
     private LoginUserDataInterface userDataAccess;
     private LoginOutputBoundary mockPresenter;
     private LoginInteractor interactor;
-
+    private User user;
     private Song song;
+    private Prompt prompt;
     @BeforeEach
     void setup(){
         userDataAccess = mock(LoginUserDataInterface.class);
         mockPresenter = mock(LoginOutputBoundary.class);
         song = mock(Song.class);
+        user = mock(User.class);
+        prompt = mock(Prompt.class);
+
         interactor = new LoginInteractor(userDataAccess, mockPresenter);
-        LoginUseCaseFactory loginUseCaseFactory = new LoginUseCaseFactory();
     }
 
     @Test
@@ -35,8 +34,15 @@ class LoginInteractorTest {
     void test_execute_login(){
         LoginInputData loginInputData = new LoginInputData("validUsername", "validPassword");
         when(userDataAccess.existsByName("validUsername")).thenReturn(true);
+        when(userDataAccess.getUsername("validUsername").getPassword()).thenReturn("validPassword");
+        when(userDataAccess.getUsername("validUsername")).thenReturn(user);
+        when(userDataAccess.getCurrentPrompt()).thenReturn(prompt);
+        when(user.getHistory().containsKey(prompt.getPromptId())).thenReturn(true);
+        interactor.execute(loginInputData);
+        verify(mockPresenter, times(1)).prepareLoggedInView(any(LoginOutputData.class), any(Song.class
+        ));
+
     }
-    @Test
 
     void test_mismatch_password(){
         LoginInputData loginInputData = new LoginInputData("validUsername", "hello");
