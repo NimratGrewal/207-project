@@ -24,7 +24,8 @@ public class Prompt {
     }
 
     public boolean isActive(){
-        return isActive;
+        isActive = LocalDate.now().equals(promptDate);
+        return  isActive;
     }
 
     public void setActive(boolean active){

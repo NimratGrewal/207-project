@@ -20,7 +20,6 @@ import java.util.List;
 public class ProfileView extends JPanel implements PropertyChangeListener {
     public final String viewName = "profile";
     private final ProfileViewModel viewModel;
-    private final ProfileController profileController;
     private final DeleteController deleteController;
     private final JLabel usernameLabel;
     private final JLabel responsesLabel;
@@ -28,10 +27,8 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
 
     public ProfileView(ProfileViewModel viewModel,
-                       ProfileController profileController,
                        DeleteController deleteController) {
         this.viewModel = viewModel;
-        this.profileController = profileController;
         this.deleteController = deleteController;
 
         viewModel.addPropertyChangeListener(this);
@@ -54,7 +51,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         JLabel profilePictureLabel = new JLabel();
 
-        URL resourceUrl = getClass().getResource("/images/Portrait_placeholder.png");
+        URL resourceUrl = getClass().getResource("./assets/Portrait_placeholder.png");
         if (resourceUrl != null) {
             ImageIcon profilePictureIcon = new ImageIcon(resourceUrl);
             profilePictureLabel.setIcon(profilePictureIcon);
@@ -96,18 +93,14 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         setFields(viewModel.getState());
     }
 
-    public void executeProfileController() {
-        profileController.execute();
-    }
-
     private void setFields(ProfileState state) {
         if (state == null) {
-            System.out.println("state is null!");
+            System.out.println("profile state is null!");
             return;
         }
 
-        usernameLabel.setText(viewModel.USERNAME_LABEL);
-        responsesLabel.setText(viewModel.RESPONSES_LABEL);
+        usernameLabel.setText("Username: " + viewModel.getState().getUsername());
+        responsesLabel.setText("Number of Responses: " + viewModel.getState().getNumberOfResponses());
 
         responsesPanel.removeAll();
 
@@ -120,10 +113,12 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
                 LocalDate promptDate = (LocalDate) responseInfo.get("Prompt Date");
                 String promptText = (String) responseInfo.get("Prompt Text");
 
-                JPanel responseBoxPanel = createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
+                ProfileResponseBox responseBoxPanel = (ProfileResponseBox) createProfileResponseBox(responseId, responseInfo, promptDate, promptText);
+                responseBoxPanel.addDeleteButtonListener(this);
 
                 responsesPanel.add(responseBoxPanel);
                 responsesPanel.add(Box.createVerticalStrut(10));
+
             }
         } else {
             JLabel no_responses = new JLabel("No Responses Yet!");
@@ -146,8 +141,11 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        ProfileState state = (ProfileState) evt.getNewValue();
-        setFields(state);
+        if (evt.getNewValue() instanceof ProfileState) {
+            ProfileState state = (ProfileState) evt.getNewValue();
+            setFields(state);
+            responsesLabel.setText("Number of Responses: " + viewModel.getState().getNumberOfResponses());
+        }
 
         if ("deleteResponse".equals(evt.getPropertyName())) {
             UUID responseId = (UUID) evt.getNewValue();

@@ -24,6 +24,7 @@ public class SetResponseInteractor implements SetResponseInputBoundary {
         Song song = caller.getTrack(setResponseInputData.getSongId());
 
         Response response = new Response(
+                UUID.randomUUID(),
                 dataAccessObject.getActivePromptId(),
                 dataAccessObject.getLoggedInUser().getUserId(),
                 song);

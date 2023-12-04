@@ -28,9 +28,4 @@ public class SetResponsePresenter implements SetResponseOutputBoundary {
         viewManagerModel.setActiveView(viewResponseViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
-
-    @Override
-    public void prepareFailView(String error) {
-
-    }
 }

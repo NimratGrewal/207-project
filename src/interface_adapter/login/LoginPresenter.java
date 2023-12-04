@@ -1,6 +1,7 @@
 package interface_adapter.login;
 
 import entities.Prompt;
+import entities.Song;
 import entities.User;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.search.SearchState;
@@ -27,8 +28,16 @@ public class LoginPresenter implements LoginOutputBoundary {
 
 
     @Override
-    public void prepareLoggedInView(LoginOutputData user) {
+    public void prepareLoggedInView(LoginOutputData user, Song song) {
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
+        viewResponseState.setSongName(song.getName());
+        viewResponseState.setAlbumCover(song.getAlbumArt(100));
+        String artists = String.join(",", song.getArtists());
+        viewResponseState.setArtistNames(artists);
+        viewResponseState.setAlbumName(song.getAlbum());
+        this.viewResponseViewModel.setState(viewResponseState);
+        this.viewResponseViewModel.firePropertyChanged();
+
         this.viewManagerModel.setActiveView(viewResponseViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
 
@@ -36,6 +45,7 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
+        System.out.println("an error!");
     }
 
     @Override

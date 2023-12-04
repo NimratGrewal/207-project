@@ -115,6 +115,8 @@ public class SearchView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getNewValue() instanceof SearchState state) {
             promptText.setText(state.getPromptText());
+            searchBarField.setText(state.getSearchBarText());
+            ((DefaultListModel<Map<String, String>>) listModel).removeAllElements();
         } else if (evt.getNewValue() instanceof SearchTracksState state) {
             searchResults.getSelectionModel().clearSelection();
             ((DefaultListModel<Map<String, String>>) listModel).removeAllElements();

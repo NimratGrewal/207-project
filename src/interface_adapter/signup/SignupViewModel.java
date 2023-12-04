@@ -16,7 +16,7 @@ public class SignupViewModel extends ViewModel {
 
 
     public SignupViewModel() {
-        super("sign up");
+        super("signup");
     }
     public void setState(SignupState state) {
         this.state = state;

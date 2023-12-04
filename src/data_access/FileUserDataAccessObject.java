@@ -12,6 +12,8 @@ public class FileUserDataAccessObject {
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final Map<UUID, User> accounts = new LinkedHashMap<>();
     private final Map<User, List<Response>> responses = new LinkedHashMap<>();
+
+    private final Map<String, UUID> usernames = new LinkedHashMap<>();
     private UserFactory userFactory;
     private User loggedInUser;
 
@@ -43,7 +45,7 @@ public class FileUserDataAccessObject {
 
                     User user = this.userFactory.create(userId, username, password);
                     accounts.put(userId, user);
-
+                    usernames.put(username, userId);
                     if (!Objects.equals(responsesText, "null")) {
                         String[] responseInfo = responsesText.split(";");
                         for (String responseStr : responseInfo) {
@@ -60,6 +62,9 @@ public class FileUserDataAccessObject {
                             user.setResponse(promptID, response);
                         }
                     }
+                    if (!this.responses.containsKey(user)){
+                        this.responses.put(user, new ArrayList<>());
+                    }
                 }
             }
         }
@@ -73,6 +78,7 @@ public class FileUserDataAccessObject {
     public void save(User user) {
         accounts.put(user.getUserId(), user);
         responses.put(user, new ArrayList<>(user.getHistory().values()));
+        usernames.put(user.getUsername(), user.getUserId());
         this.save();
     }
 
@@ -126,7 +132,8 @@ public class FileUserDataAccessObject {
      */
     public void setResponse(Response response) {
         accounts.get(response.getUserId()).setResponse(response.getPromptId(), response);
-        responses.get(loggedInUser).add(response);
+        responses.get(accounts.get(response.getUserId())).add(response);
+        save();
     }
 
     public Response getResponseById(UUID userId, UUID responseId) {
@@ -169,6 +176,7 @@ public class FileUserDataAccessObject {
                 if (responseId.equals(r.getResponseId())) {
                     responseList.remove(r);
                     accounts.get(r.getUserId()).deleteResponse(r.getPromptId());
+                    break;
                 }
             }
         }
@@ -198,5 +206,17 @@ public class FileUserDataAccessObject {
             }
         }
         return responseIds;
+    }
+
+    public boolean usernameExists(String username){
+        return usernames.containsKey(username);
+    }
+
+    public UUID getUsername(String username){
+        return usernames.get(username);
+    }
+
+    public Response getLoggedInUserResponse(UUID promptId) {
+        return loggedInUser.getResponse(promptId);
     }
 }

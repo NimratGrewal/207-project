@@ -21,11 +21,9 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
     private final JLabel dateLabel;
     private final JLabel promptLabel;
     private final JPanel responsesPanel;
-    private final FeedController feedController;
 
-    public FeedView(FeedViewModel viewModel, FeedController feedController) {
+    public FeedView(FeedViewModel viewModel) {
         this.viewModel = viewModel;
-        this.feedController = feedController;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -75,15 +73,9 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
         setFields(viewModel.getState());
     }
 
-    public void executeFeedController() {
-        setFields(viewModel.getState());
-        feedController.execute();
-
-    }
-
     public void setFields(FeedState state) {
         if (state == null) {
-            System.out.println("state is null!");
+            System.out.println("feed state is null!");
             return;
         }
 
@@ -128,8 +120,10 @@ public class FeedView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        FeedState state = (FeedState) evt.getNewValue();
-        setFields(state);
+        if (evt.getNewValue() instanceof FeedState state) {
+            state = (FeedState) evt.getNewValue();
+            setFields(state);
+        }
     }
 }
 

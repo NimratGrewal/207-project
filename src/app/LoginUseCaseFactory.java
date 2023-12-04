@@ -33,7 +33,7 @@ public class LoginUseCaseFactory {
                     searchViewModel,
                     viewResponseViewModel,
                     loginUserDataInterface);
-//            return new LoginView(loginController, loginViewModel);
+            return new LoginView(loginController, loginViewModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
         }

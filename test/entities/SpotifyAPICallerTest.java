@@ -21,6 +21,7 @@ class SpotifyAPICallerTest {
         assertEquals("Cut To The Feeling", s.getAlbum());
         assertEquals(1, s.getArtists().size());
         assertEquals("11dFghVXANMlKmJXsNCbNl", s.getSongId());
+        assertNotNull(s.getAlbumArt(10));
     }
 
     @Test

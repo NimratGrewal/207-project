@@ -1,6 +1,7 @@
 package use_case.login;
 
 import data_access.FileUserDataAccessObject;
+import entities.Song;
 import entities.User;
 import entities.Prompt;
 
@@ -18,30 +19,33 @@ public class LoginInteractor implements LoginInputBoundary {
 
     @Override
     public void execute(LoginInputData loginInputData) {
-//        String username = loginInputData.getUsername();
-//        String password = loginInputData.getPassword();
-//        if (!userDataAccessObject.existsByName(username)) {
-//            loginPresenter.prepareFailView(username + ": Account does not exist.");
-//        } else {
-//            String pwd = userDataAccessObject.get(username).getPassword();
-//            if (!password.equals(pwd)) {
-//                loginPresenter.prepareFailView("Incorrect password for " + username + ".");
-//            } else {
-//
-//                User user = userDataAccessObject.get(loginInputData.getUsername());
-//
-//                ((FileUserDataAccessObject) userDataAccessObject).setLoggedInUser(user);
-//
-//                Prompt prompt = userDataAccessObject.getCurrentPrompt();
-//                if(user.getHistory().containsKey(prompt.getPromptId())){
-//                    LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);
-//                    loginPresenter.preparePromptView(promptOutputData, prompt);
-//                }
-//                else{
-//                    LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), true);
-//                    loginPresenter.prepareLoggedInView(loginOutputData);
-//                }
-//            }
-//        }
+        String username = loginInputData.getUsername();
+        String password = loginInputData.getPassword();
+        if (!userDataAccessObject.existsByName(username)) {
+            loginPresenter.prepareFailView(username + ": Account does not exist.");
+        } else {
+            String pwd = userDataAccessObject.getUsername(username).getPassword();
+            if (!password.equals(pwd)) {
+                loginPresenter.prepareFailView("Incorrect password for " + username + ".");
+                System.out.println(pwd);
+            } else {
+
+                User user = userDataAccessObject.getUsername(loginInputData.getUsername());
+
+                userDataAccessObject.setLoggedInUser(user);
+
+                Prompt prompt = userDataAccessObject.getCurrentPrompt();
+                userDataAccessObject.setLoggedInUser(user);
+                if(user.getHistory().containsKey(prompt.getPromptId())){
+                    LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), true);
+                    Song song = user.getResponse(prompt.getPromptId()).getSong();
+                    loginPresenter.prepareLoggedInView(loginOutputData, song);
+                }
+                else{
+                    LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);
+                    loginPresenter.preparePromptView(promptOutputData, prompt);
+                }
+            }
+        }
     }
 }
