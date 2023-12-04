@@ -31,12 +31,14 @@ public class DeleteInteractor implements DeleteInputBoundary {
         UUID promptId = response.getPromptId();
 
         if (responseDataAccessInterface.responseExistsById(responseId)) {
+            if (responseDataAccessInterface.responseExistsById(responseId)) {
 
-            responseDataAccessInterface.deleteResponse(responseId);
+                responseDataAccessInterface.deleteResponse(responseId);
 
-            DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
-            deletePresenter.prepareSuccessView(deleteOutputData);
+                DeleteOutputData deleteOutputData = new DeleteOutputData(responseId);
+                deletePresenter.prepareSuccessView(deleteOutputData);
+            }
+
         }
-
     }
 }

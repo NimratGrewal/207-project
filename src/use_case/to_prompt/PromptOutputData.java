@@ -17,6 +17,14 @@ public class PromptOutputData {
         this.albumArt = albumArt;
     }
 
+    public PromptOutputData(String promptText) {
+        this.promptText = promptText;
+        this.songName = null;
+        this.albumName = null;
+        this.artistNames = null;
+        this.albumArt = null;
+    }
+
     public String getSongName() {
         return songName;
     }

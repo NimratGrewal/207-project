@@ -5,11 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.util.List;
 
 public class ProfileResponseBox extends ResponseBox {
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     JButton delete = new JButton("delete");
 
     public ProfileResponseBox(UUID responseId, String songName, List<String> songArtists,
@@ -33,7 +35,7 @@ public class ProfileResponseBox extends ResponseBox {
 
         add(deletePanel, BorderLayout.EAST);
 
-            delete.addActionListener(new ActionListener() {
+        delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(delete)) {
@@ -42,7 +44,7 @@ public class ProfileResponseBox extends ResponseBox {
                             "Are you sure you want to delete this response" + responseId + "?", "Warning",
                             dialogButton);
                     if (dialogueResult == JOptionPane.YES_OPTION) {
-                        firePropertyChange("deleteResponse", null, responseId);
+                        support.firePropertyChange("deleteResponse", null, responseId);
                     }
                 }
             }
@@ -50,7 +52,7 @@ public class ProfileResponseBox extends ResponseBox {
     }
 
     public void addDeleteButtonListener(PropertyChangeListener listener) {
-        delete.addPropertyChangeListener(listener);
+        support.addPropertyChangeListener(listener);
     }
 
 }

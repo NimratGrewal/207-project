@@ -31,7 +31,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void prepareLoggedInView(LoginOutputData user, Song song) {
         ViewResponseState viewResponseState = viewResponseViewModel.getState();
         viewResponseState.setSongName(song.getName());
-        viewResponseState.setAlbumCover(song.getAlbumArt(10));
+        viewResponseState.setAlbumCover(song.getAlbumArt(100));
         String artists = String.join(",", song.getArtists());
         viewResponseState.setArtistNames(artists);
         viewResponseState.setAlbumName(song.getAlbum());
@@ -45,6 +45,7 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
+        System.out.println("an error!");
     }
 
     @Override

@@ -27,22 +27,23 @@ public class LoginInteractor implements LoginInputBoundary {
             String pwd = userDataAccessObject.getUsername(username).getPassword();
             if (!password.equals(pwd)) {
                 loginPresenter.prepareFailView("Incorrect password for " + username + ".");
+                System.out.println(pwd);
             } else {
 
                 User user = userDataAccessObject.getUsername(loginInputData.getUsername());
 
-                ((FileUserDataAccessObject) userDataAccessObject).setLoggedInUser(user);
+                userDataAccessObject.setLoggedInUser(user);
 
                 Prompt prompt = userDataAccessObject.getCurrentPrompt();
                 userDataAccessObject.setLoggedInUser(user);
                 if(user.getHistory().containsKey(prompt.getPromptId())){
-                    LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);
-                    loginPresenter.preparePromptView(promptOutputData, prompt);
-                }
-                else{
                     LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), true);
                     Song song = user.getResponse(prompt.getPromptId()).getSong();
                     loginPresenter.prepareLoggedInView(loginOutputData, song);
+                }
+                else{
+                    LoginOutputData promptOutputData = new LoginOutputData(user.getUsername(), false);
+                    loginPresenter.preparePromptView(promptOutputData, prompt);
                 }
             }
         }

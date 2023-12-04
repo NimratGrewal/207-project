@@ -7,7 +7,7 @@ import java.beans.PropertyChangeSupport;
 
 public class ViewResponseViewModel extends ViewModel {
     public final String RESET_BUTTON_LABEL = "reset";
-    private ViewResponseState state;
+    private ViewResponseState state = new ViewResponseState();
     public ViewResponseViewModel() { super("view response"); }
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 

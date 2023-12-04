@@ -47,7 +47,7 @@ public class SearchUsersPresenter implements SearchUsersOutputBoundary {
         searchUsersSearchBoxViewModel.firePropertyChanged();
 
         // change the view
-        this.viewManagerModel.setActiveView(searchUsersViewModel.getViewName());
+        this.viewManagerModel.setActiveView(searchUsersSearchBoxViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 }

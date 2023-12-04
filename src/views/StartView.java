@@ -13,8 +13,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class StartView extends JPanel implements ActionListener, PropertyChangeListener {
-//    public final String viewName = "Start View";
-//    public final String viewName = "Home view";
+    public final String viewName = "Start View";
 
     private final LoginViewModel loginViewModel;
 
@@ -40,6 +39,7 @@ public class StartView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         SignupState signupState = signupViewModel.getState();
                         viewManagerModel.setActiveView(signupViewModel.getViewName());
+                        viewManagerModel.firePropertyChanged();
                         //switch to signup view
 
                     }
@@ -52,10 +52,13 @@ public class StartView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         LoginState loginState = loginViewModel.getState();
                         viewManagerModel.setActiveView(loginViewModel.getViewName());
-
+                        viewManagerModel.firePropertyChanged();
                     }
                 }
         );
+
+        this.add(signUp);
+        this.add(login);
     }
 
     @Override
