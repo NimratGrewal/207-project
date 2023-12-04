@@ -19,7 +19,7 @@ class ResponseTest {
         add("Mitski");
     }};
     Song song = new Song("10", "My Love Mine All Mine", artists,
-            "This Land is Inhospitable and So Are We", albumArt);
+            "This Land is Inhospitable and So Are We", albumArt.getImage());
 
     @BeforeEach
     void init() {

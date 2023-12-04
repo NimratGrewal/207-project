@@ -91,4 +91,26 @@ class CommonUserTest {
         newUser.deleteResponse(promptId);
         assertFalse(newUser.getHistory().containsKey(promptId));
     }
+    @Test
+    void getNumberofResponses() {
+        newUser.setResponse(promptId, response);
+        assertEquals(1, newUser.getNumberOfResponses());
+        newUser.deleteResponse(promptId);
+        assertEquals(0, newUser.getNumberOfResponses());
+    }
+
+    @Test
+    void hasResponseForDailyPrompt() {
+        newUser.setResponse(promptId, response);
+        assertTrue(newUser.hasResponseForDailyPrompt(promptId));
+        newUser.deleteResponse(promptId);
+        assertFalse(newUser.hasResponseForDailyPrompt(promptId));
+    }
+
+    @Test
+    void getResponseForDailyPrompt() {
+        newUser.setResponse(promptId, response);
+        assertEquals(response, newUser.getResponseForDailyPrompt(promptId));
+
+    }
 }

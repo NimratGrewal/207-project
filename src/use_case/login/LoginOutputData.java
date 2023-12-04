@@ -13,4 +13,8 @@ public class LoginOutputData {
         return username;
     }
 
+    public boolean isAnsweredPrompt(){
+        return answeredPrompt;
+    }
+
 }

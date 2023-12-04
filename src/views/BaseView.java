@@ -30,19 +30,15 @@ public class BaseView extends JTabbedPane {
                     System.out.println(selectedIndex + "clicked!");
                     switch (selectedIndex) {
                         case 0:
-                            System.out.println("starting prompt");
                             promptController.execute();
                             break;
                         case 1:
-                            System.out.println("starting feed");
                             feedController.execute();
                             break;
                         case 2:
-                            System.out.println("starting profile");
                             profileController.execute();
                             break;
                         case 3:
-                            System.out.println("starting search users");
                             searchUsersController.profileToSearch();
                             break;
                     }

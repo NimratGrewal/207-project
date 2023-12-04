@@ -39,6 +39,7 @@ public class StartView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         SignupState signupState = signupViewModel.getState();
                         viewManagerModel.setActiveView(signupViewModel.getViewName());
+                        viewManagerModel.firePropertyChanged();
                         //switch to signup view
 
                     }
@@ -51,7 +52,7 @@ public class StartView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         LoginState loginState = loginViewModel.getState();
                         viewManagerModel.setActiveView(loginViewModel.getViewName());
-
+                        viewManagerModel.firePropertyChanged();
                     }
                 }
         );

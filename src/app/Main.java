@@ -76,11 +76,17 @@ public class Main {
         CardLayout loginSignupCardLayout = new CardLayout();
         JPanel loginSignUpViews = new JPanel(loginSignupCardLayout);
 
+        JPanel startView = StartUseCaseFactory.create(loginViewModel, signupViewModel, viewManagerModel);
+
         JPanel loginView = LoginUseCaseFactory.create(loginViewModel, viewManagerModel, searchViewModel, viewResponseViewModel,
                 dataAccessObject);
         loginView.setName("log in");
 
-        loginSignUpViews.add(loginView);
+        JPanel signUpView = SignUpUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, dataAccessObject);
+
+        loginSignUpViews.add("log in", loginView);
+        loginSignUpViews.add("signup", signUpView);
+        loginSignUpViews.add("start", startView);
         loginSignUpViews.setName("login signup");
 
         BaseView loggedInViews = BaseViewUseCaseFactory.create(viewManagerModel, searchViewModel, viewResponseViewModel,
@@ -90,7 +96,7 @@ public class Main {
         JPanel promptView = new JPanel(promptViewCardLayout);
         JPanel searchView = SearchUseCaseFactory.create(searchViewModel, searchTracksViewModel, viewManagerModel,
                 dataAccessObject, caller, viewResponseViewModel);
-        JPanel viewResponseView = ViewResponseViewUseCaseFactory.create(viewManagerModel, searchViewModel, viewResponseViewModel);
+        JPanel viewResponseView = ViewResponseViewUseCaseFactory.create(viewManagerModel, searchViewModel, viewResponseViewModel, dataAccessObject);
         promptView.add("search", searchView);
         promptView.add("view response", viewResponseView);
         promptView.setName("prompt");
@@ -130,7 +136,7 @@ public class Main {
         new ViewManager(viewsCardLayout, views, loginSignUpViews, loginSignupCardLayout, loggedInViews,
                 searchUsersViews, searchUsersViewCardLayout, promptView, promptViewCardLayout, viewManagerModel);
 
-        viewManagerModel.setActiveView("search users");
+        viewManagerModel.setActiveView("start");
         viewManagerModel.firePropertyChanged();
 
         application.pack();

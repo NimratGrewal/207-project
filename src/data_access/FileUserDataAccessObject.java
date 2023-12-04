@@ -78,6 +78,7 @@ public class FileUserDataAccessObject {
     public void save(User user) {
         accounts.put(user.getUserId(), user);
         responses.put(user, new ArrayList<>(user.getHistory().values()));
+        usernames.put(user.getUsername(), user.getUserId());
         this.save();
     }
 

@@ -76,13 +76,6 @@ public class ViewResponseView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getNewValue() instanceof ViewResponseState state) {
-            System.out.println(state);
-
-            System.out.println(state.getSongName());
-
-            System.out.println(state.getArtistNames());
-
-            System.out.println(state.getSongName());
             promptText.setText(state.getPromptText());
             albumCover.setImage(state.getAlbumCover().getImage());
             songTitle.setText(state.getSongName());

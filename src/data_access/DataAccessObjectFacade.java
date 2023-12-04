@@ -4,10 +4,12 @@ import entities.Prompt;
 import entities.Response;
 import entities.User;
 import use_case.delete.DeleteResponseDataAccessInterface;
+import use_case.home.HomeDataAccessInterface;
 import use_case.login.LoginUserDataInterface;
-
 import use_case.search_users.SearchUsersDataAccessInterface;
+
 import use_case.set_response.SetResponseDataAccessInterface;
+import use_case.signup.SignupUserDataInterface;
 import use_case.toFeed.FeedDataAccessInterface;
 import use_case.toProfile.UserProfileDataAccessInterface;
 import use_case.to_prompt.PromptDataAccessInterface;
@@ -15,10 +17,11 @@ import use_case.to_prompt.PromptDataAccessInterface;
 import java.util.List;
 import java.util.UUID;
 
+public class DataAccessObjectFacade implements SetResponseDataAccessInterface, DeleteResponseDataAccessInterface,
+        UserProfileDataAccessInterface, FeedDataAccessInterface, LoginUserDataInterface,
+        SearchUsersDataAccessInterface, SignupUserDataInterface, HomeDataAccessInterface,
+        PromptDataAccessInterface{
 
-public class DataAccessObjectFacade implements SetResponseDataAccessInterface, FeedDataAccessInterface,
-    UserProfileDataAccessInterface, LoginUserDataInterface, PromptDataAccessInterface, DeleteResponseDataAccessInterface,
-        SearchUsersDataAccessInterface {
     FileUserDataAccessObject userDataAccessObject;
     PromptDataAccessObject promptDataAccessObject;
 
@@ -82,9 +85,8 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, F
     //begin login
     @Override
     public boolean existsByName(String identifier) {
-        return userDataAccessObject.existsByName(identifier);
+        return userDataAccessObject.usernameExists(identifier);
     }
-
     //login
     @Override
     public void setLoggedInUser(User user) {
@@ -145,4 +147,11 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, F
         return userDataAccessObject.getUser(uuid);
     }
     //end search users
+
+    //begin signup
+    @Override
+    public void save(User user) {
+        userDataAccessObject.save(user);
+    }
+
 }
