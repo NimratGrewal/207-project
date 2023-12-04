@@ -3,7 +3,6 @@ package use_case.home;
 import interface_adapter.home.HomeController;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class HomeInteractorTest {
@@ -15,7 +14,9 @@ class HomeInteractorTest {
         // covers 100% of HomeTnteractor test with coverage
         HomeOutputBoundary mockPresenter = mock(HomeOutputBoundary.class);
 
-        HomeInteractor interactor = new HomeInteractor(mockPresenter);
+        HomeDataAccessInterface homeDataAccessInterface = mock(HomeDataAccessInterface.class);
+
+        HomeInteractor interactor = new HomeInteractor(mockPresenter, homeDataAccessInterface);
 
         HomeController controller = new HomeController(interactor);
 
