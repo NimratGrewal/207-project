@@ -124,7 +124,7 @@ class FileUserDataAccessObjectTest {
 
     @Test
     void getResponseById() {
-        Response r = new Response(UUID.randomUUID(), u1.getUserId(), UUID.randomUUID(), c.getTrack("11dFghVXANMlKmJXsNCbNl"));
+        Response r = new Response(UUID.randomUUID(), UUID.randomUUID(), u1.getUserId(), c.getTrack("11dFghVXANMlKmJXsNCbNl"));
         fudao.save(u1);
         fudao.setLoggedInUser(u1);
         fudao.setResponse(r);
@@ -190,6 +190,35 @@ class FileUserDataAccessObjectTest {
     void setLoggedInUser() {
         fudao.setLoggedInUser(u1);
         assertEquals(u1, fudao.getLoggedInUser());
+        assertEquals(u1.getUserId(), fudao.getLoggedInUserId());
+    }
+
+    @Test
+    void getAllUsers() {
+        fudao.save(u1);
+        fudao.save(u2);
+        assertEquals(3, fudao.getAllUsers().size());
+    }
+
+    @Test
+    void usernameExists() {
+        fudao.save(u1);
+        assertTrue(fudao.usernameExists(u1.getUsername()));
+    }
+
+    @Test
+    void getUsername() {
+        fudao.save(u1);
+        assertEquals(u1.getUserId(), fudao.getUsername(u1.getUsername()));
+    }
+
+    @Test
+    void getLoggedInUserResponse() {
+        fudao.save(u1);
+        fudao.setLoggedInUser(u1);
+        Response r = new Response(UUID.randomUUID(), UUID.randomUUID(), u1.getUserId(), c.getTrack("11dFghVXANMlKmJXsNCbNl"));
+        fudao.setResponse(r);
+        assertEquals(r, fudao.getLoggedInUserResponse(r.getPromptId()));
     }
 
 }

@@ -1,15 +1,10 @@
 package use_case.search_tracks;
 
-import data_access.FileUserDataAccessObject;
 import entities.CommonUserFactory;
 import entities.SpotifyAPICaller;
+import entities.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +15,8 @@ class SearchTracksInteractorTest {
     }
 
     @Test
-    void successPresenter() {
+    void prepareSuccess() {
+        final SpotifyAPICaller c = new SpotifyAPICaller("216b6438ba554128ade0b63afa48ddd8", "56e33aff04bc4aa28dc3d9e54bb231cd");
 
     }
 }
