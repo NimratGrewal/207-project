@@ -1,52 +1,119 @@
 package views;
-import interface_adapter.login.LoginController;
-import interface_adapter.signup.SignupViewModel;
 
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginState;
+import interface_adapter.login.LoginViewModel;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
-
-    private JTextField login = new JTextField();
-
-    private JTextField password = new JPasswordField();
-    private JTextField signup = new JTextField();
+    public final String viewName = "log in";
+    private JTextField usernameInputField = new JTextField(15);
+    private JTextField passwordInputField = new JPasswordField(15);
 
     private final LoginController loginController;
-    private final LoginView loginView;
-    private final JButton signUp;
-    private final JButton cancel;
+    private final LoginViewModel loginViewModel;
+    private final JButton loginButton;
 
-    public LoginView(LoginController loginController, LoginView loginView){
+    public LoginView(LoginController loginController, LoginViewModel loginViewModel){
         this.loginController = loginController;
-        this.loginView = loginView;
-        JPanel loginPanel = new JPanel();
-        this.setSize(1500, 1000);
-        loginPanel.add(login);
-        loginPanel.add(password);
-        loginPanel.add(signup);
+        this.loginViewModel = loginViewModel;
+        loginViewModel.addPropertyChangeListener(this);
+
+        JLabel title = new JLabel(loginViewModel.TITLE_LABEL);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        LabelTextPanel usernameInfo = new LabelTextPanel(
+                new JLabel(loginViewModel.USERNAME_LABEL), usernameInputField);
+        LabelTextPanel passwordInfo = new LabelTextPanel(
+                new JLabel(loginViewModel.PASSWORD_LABEL), passwordInputField);
+
         JPanel buttons = new JPanel();
-        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
-        buttons.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
+        loginButton = new JButton(LoginViewModel.LOGIN_BUTTON_LABEL);
+        buttons.add(loginButton);
+
+        this.add(buttons);
+
+        loginButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(loginButton)) {
+                            LoginState currentState = loginViewModel.getState();
+
+                            loginController.execute(
+                                    currentState.getUsername(),
+                                    currentState.getPassword()
+                            );
+                        }
+                    }
+                }
+        );
+
+        usernameInputField.addKeyListener(
+                new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        LoginState currentState = loginViewModel.getState();
+                        String text = usernameInputField.getText() + e.getKeyChar();
+                        currentState.setUsername(text);
+                        loginViewModel.setState(currentState);
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }
+                });
+
+        passwordInputField.addKeyListener(
+                new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        LoginState currentState = loginViewModel.getState();
+                        String text = passwordInputField.getText() + e.getKeyChar();
+                        currentState.setPassword(text);
+                        loginViewModel.setState(currentState);
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                }
+        );
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.add(title);
+        this.add(usernameInfo);
+        this.add(passwordInfo);
+        this.add(buttons);
+
     }
 
-    public String getUsername(){
-        return login.getText();
-    }
+    public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource().equals(loginButton)) {
+            String username = usernameInputField.getText();
+            String password = passwordInputField.getText();
 
-    public String getPassword(){
-        return password.getText();
+            loginController.execute(username, password);
+        }
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 

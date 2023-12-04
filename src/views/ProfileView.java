@@ -7,6 +7,7 @@ import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.delete.DeleteController;
+import views.components.ProfileResponseBox;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

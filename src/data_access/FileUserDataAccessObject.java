@@ -22,8 +22,7 @@ public class FileUserDataAccessObject {
         headers.put("userId", 0);
         headers.put("username", 1);
         headers.put("password", 2);
-        headers.put("creation_time", 3);
-        headers.put("responses", 4);
+        headers.put("responses", 3);
 
         if (csvFile.length() == 0) {
             save();
@@ -32,7 +31,7 @@ public class FileUserDataAccessObject {
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
 
-                assert header.equals("userId,username,password,creation_time,responses");
+                assert header.equals("userId,username,password,responses");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
@@ -40,11 +39,9 @@ public class FileUserDataAccessObject {
                     UUID userId = UUID.fromString(String.valueOf(col[headers.get("userId")]));
                     String username = String.valueOf(col[headers.get("username")]);
                     String password = String.valueOf(col[headers.get("password")]);
-                    String creationTimeText = String.valueOf(col[headers.get("creation_time")]);
                     String responsesText = String.valueOf(col[headers.get("responses")]);
-                    LocalDateTime ldt = LocalDateTime.parse(creationTimeText);
 
-                    User user = this.userFactory.create(userId, username, password, ldt);
+                    User user = this.userFactory.create(userId, username, password);
                     accounts.put(userId, user);
 
                     if (!Objects.equals(responsesText, "null")) {
@@ -110,8 +107,8 @@ public class FileUserDataAccessObject {
                     }
                     responseString = String.join(";", responses);
                 }
-                String line = "%s,%s,%s,%s,%s".formatted(
-                        user.getUserId().toString(), user.getUsername(), user.getPassword(), user.getCreationTime(), responseString);
+                String line = "%s,%s,%s,%s".formatted(
+                        user.getUserId().toString(), user.getUsername(), user.getPassword(), responseString);
                 writer.write(line);
                 writer.newLine();
             }

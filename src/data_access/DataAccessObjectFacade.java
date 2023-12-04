@@ -60,11 +60,6 @@ public class DataAccessObjectFacade implements SetResponseDataAccessInterface, D
     }
 
     @Override
-    public Prompt getPromptById(UUID promptId) {
-        return null;
-    }
-
-    @Override
     public List<User> getAllUsers() {
         return userDataAccessObject.getAllUsers();
     }
