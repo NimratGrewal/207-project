@@ -11,8 +11,6 @@ public interface User {
 
     UUID getUserId();
 
-    LocalDateTime getCreationTime();
-
     HashMap<UUID, Response> getHistory();
 
     Response getResponse(UUID promptId);

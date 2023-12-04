@@ -25,21 +25,16 @@ public class CommonUser implements User {
         this.creationTime = LocalDateTime.now();
     }
 
-    public CommonUser(UUID userId, String username, String password, LocalDateTime creationTime) {
+    public CommonUser(UUID userId, String username, String password) {
         this.userId = userId;
         this.password = password;
         this.username = username;
-        this.creationTime = creationTime;
         this.history = new HashMap<>();
     }
 
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public LocalDateTime getCreationTime() {
-        return creationTime;
     }
 
     @Override

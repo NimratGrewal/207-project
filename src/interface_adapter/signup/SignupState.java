@@ -1,6 +1,9 @@
 package interface_adapter.signup;
 
+import java.util.UUID;
+
 public class SignupState {
+    private UUID userId;
     private String username = "";
     private String usernameError = null;
     private String password = "";
@@ -9,6 +12,7 @@ public class SignupState {
     private String repeatPasswordError = null;
 
     public SignupState(SignupState copy) {
+        userId = copy.userId;
         username = copy.username;
         usernameError = copy.usernameError;
         password = copy.password;
@@ -19,6 +23,11 @@ public class SignupState {
 
     // Because of the previous copy constructor, the default constructor must be explicit.
     public SignupState() {
+        userId = UUID.randomUUID();
+    }
+
+    public UUID getUserId() {
+        return userId;
     }
 
     public String getUsername() {
@@ -72,6 +81,7 @@ public class SignupState {
     @Override
     public String toString() {
         return "SignupState{" +
+                "userId=" + userId +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", repeatPassword='" + repeatPassword + '\'' +

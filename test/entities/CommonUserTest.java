@@ -24,7 +24,7 @@ class CommonUserTest {
     @BeforeEach
     void setUp() {
         newUser = new CommonUser("Nimrat", "password");
-        existingUser = new CommonUser(existingUUID,"haya", "1234jkl", LocalDateTime.now());
+        existingUser = new CommonUser(existingUUID,"haya", "1234jkl");
 
         promptId = UUID.randomUUID();
         UUID responseId = UUID.randomUUID();
@@ -47,12 +47,6 @@ class CommonUserTest {
     void getUsername() {
         assertEquals("Nimrat", newUser.getUsername());
         assertEquals("haya", existingUser.getUsername());
-    }
-
-    @Test
-    void getCreationTime() {
-        assertEquals(date.getYear(), existingUser.getCreationTime().getYear());
-        // Add similar assertions for month, day, hour, etc. if needed
     }
 
     @Test
