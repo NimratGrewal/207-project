@@ -36,7 +36,8 @@ public class Main {
 
         // This keeps track of and manages which view is currently showing.
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-        SpotifyAPICaller caller = new SpotifyAPICaller(System.getenv("CLIENT_ID"), System.getenv("CLIENT_SECRET"));
+        SpotifyAPICaller caller = new SpotifyAPICaller(System.getenv("216b6438ba554128ade0b63afa48ddd8"),
+                System.getenv("56e33aff04bc4aa28dc3d9e54bb231cd"));
 
         // The data for the views, such as username and password, are in the ViewModels.
         // This information will be changed by a presenter object that is reporting the
