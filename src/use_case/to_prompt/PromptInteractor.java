@@ -20,8 +20,8 @@ public class PromptInteractor implements PromptInputBoundary {
         if (loggedInUser.getHistory().containsKey(dataAccessObject.getActivePrompt().getPromptId())) {
             Song response = dataAccessObject.getLoggedInUserResponse().getSong();
             promptOutputData = new PromptOutputData(response.getName(),
-                    String.join(", ", response.getArtists()),
                     response.getAlbum(),
+                    String.join(", ", response.getArtists()),
                     dataAccessObject.getActivePrompt().getPromptText(),
                     response.getAlbumArt(150));
 
