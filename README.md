@@ -21,8 +21,8 @@
 
 - They can also view all of their Responses to different Prompts on their Profile! <img width="745" alt="Screen Shot 2023-12-06 at 7 45 48 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/604a41a1-1d69-4fe6-a1fc-4691c8a25203">
 
- - Lastly, Users can search for other Users' <img width="745" alt="Screen Shot 2023-12-06 at 7 46 39 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/ba7ee5e4-7146-461c-8e20-e117f2990ae5">
-Responses!
+ - Lastly, Users can search for other Users' Responses! <img width="745" alt="Screen Shot 2023-12-06 at 7 46 39 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/ba7ee5e4-7146-461c-8e20-e117f2990ae5">
+
    
 
 
