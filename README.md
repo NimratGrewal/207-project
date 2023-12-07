@@ -10,9 +10,7 @@
 
 ### Overview of Project Specifications: 
 
- - Users' have the ability to signup/login 
- - <img width="603" alt="Screen Shot 2023-12-06 at 7 42 19 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/43dc599c-19ee-4cb8-ba01-476a1a57f0a9">
-
+- Users' have the ability to signup/login 
 - Users will then get a daily prompt, to which they can select a song as a response!
 - For example, let's say the daily prompt for today is: "What is your go-to Christmas song?". The user will be able to answer this with a song of their choice, which other users' can view! <img width="632" alt="Screen Shot 2023-12-06 at 7 44 27 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/ffc509be-e5d0-4418-9c0e-27635b962553">  <img width="636" alt="Screen Shot 2023-12-06 at 7 44 51 PM" src="https://github.com/NimratGrewal/207-project/assets/114554275/20f19c4e-ca88-45a7-be15-8ecb48bce130">
 
