@@ -1,4 +1,4 @@
-# 207-project
+# iSong
 
 ### Summary of Project Domain: Social/Music
 
